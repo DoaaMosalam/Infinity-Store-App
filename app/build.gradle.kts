@@ -6,6 +6,8 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     //dagger hilt
     id("com.google.dagger.hilt.android")
+
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -45,7 +47,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -81,31 +83,11 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    //Glide library
-    implementation("com.github.bumptech.glide:glide:4.16.0")
-    //Picasso
-    implementation("com.squareup.picasso:picasso:2.71828")
 
-    //View Model
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
-    // ViewModel Factory
-    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.2")
-    //retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    //convert retrofit
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    //OKHTTP
-    //define a BOM and its version
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
-    // define any required OkHttp artifacts without version
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
-    implementation("com.squareup.okhttp3:logging-interceptor")
     //room database
-    implementation("androidx.room:room-runtime:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-common:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
+    implementation(libs.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.room.ktx)
 
     //navigation  components
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
