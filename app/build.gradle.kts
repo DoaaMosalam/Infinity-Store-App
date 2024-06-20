@@ -7,12 +7,13 @@ plugins {
 
 android {
     namespace = "com.doaamosallam.infinitystore"
-    compileSdk = 34 // todo 1- convert to version Catalog in the libs.version.catalog file
+     compileSdk = libs.versions.compileSdk.get().toInt()
+
 
     defaultConfig {
         applicationId = "com.doaamosallam.infinitystore"
-        minSdk = 27 // todo 2- convert to version Catalog in the libs.version.catalog file
-        targetSdk = 34 // todo 3- convert to version Catalog in the libs.version.catalog file
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
@@ -32,17 +33,18 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = libs.versions.javaVersion.get()
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14" // todo 4- convert to version Catalog in the libs.version.catalog file
+        kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
+
     }
     packaging {
         resources {

@@ -14,6 +14,11 @@ material = "1.12.0"
 roomRuntime = "2.6.1"
 daggerHilt = "2.48"
 devtoolsKsp = "1.9.24-1.0.20"
+compileSdk = "34"
+minSdk = "27"
+targetSdk = "34"
+kotlinCompilerExtensionVersion= "1.5.14"
+javaVersion = "17"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +43,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 room-runtime ={group ="androidx.room", name="room-runtime" , version.ref="roomRuntime"}
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
