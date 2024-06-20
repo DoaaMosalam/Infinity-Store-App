@@ -24,11 +24,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8 // todo 2- you should work with Java 17
-        targetCompatibility = JavaVersion.VERSION_1_8 // todo 3- you should work with Java 17
+        sourceCompatibility = JavaVersion.VERSION_1_8 // todo 3- you should work with Java 17
+        targetCompatibility = JavaVersion.VERSION_1_8 // todo 4- you should work with Java 17
     }
     kotlinOptions {
-        jvmTarget = "1.8" // todo 4- you should work with Java 17
+        jvmTarget = "1.8" // todo 5- you should work with Java 17
     }
 }
 
