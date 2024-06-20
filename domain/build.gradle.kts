@@ -5,10 +5,10 @@ plugins {
 
 android {
     namespace = "com.doaamosallam.domain"
-    compileSdk = 34
+    compileSdk = 34 // todo 1- convert to version Catalog in the libs.version.catalog file
 
     defaultConfig {
-        minSdk = 27
+        minSdk = 27 // todo 2- convert to version Catalog in the libs.version.catalog file
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -24,20 +24,14 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8 // todo 3- you should work with Java 17
+        targetCompatibility = JavaVersion.VERSION_1_8 // todo 4- you should work with Java 17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "1.8" // todo 5- you should work with Java 17
     }
 }
 
 dependencies {
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }
