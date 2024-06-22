@@ -8,7 +8,41 @@
 
  <p  align="center">E-commerce App</p>
 
+  ## Project Structure
+<div align="center">
+ <img src="https://github.com/DoaaMosalam/Quotes/assets/40686512/93feb519-da35-4e90-b764-a049de6da98b" width="400" height="300" alt="Project Structure"/>
+</div>
 
+```groovy
+app/
+    src/
+        main/
+            java/
+                com/example/app/
+                    di/
+                    ui/
+                    viewmodel/
+                    MainActivity.kt
+data/
+    src/
+        main/
+            java/
+                com/example/data/
+                    remote/
+                    local/
+                        db/
+                        entities/
+                        dao/
+                    repository/
+domain/
+    src/
+        main/
+            java/
+                com/example/domain/
+                    model/
+                    repository/
+                    usecase/
+```
  
    ## Project Goals:
 
