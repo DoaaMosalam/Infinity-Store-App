@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.com.google.dagger.hilt.android)
+    alias(libs.plugins.com.google.devtools.ksp)
 }
 
 android {
@@ -34,4 +36,7 @@ android {
 
 dependencies {
     testImplementation(libs.junit)
+    // dependency Injection Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 }

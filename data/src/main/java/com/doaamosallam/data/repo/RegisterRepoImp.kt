@@ -1,7 +1,7 @@
 package com.doaamosallam.data.repo
 
-import com.doaamosallam.data.data.local.RegisterDAO
-import com.doaamosallam.data.data.local.RegisterEntity
+import com.doaamosallam.data.local.RegisterDAO
+import com.doaamosallam.data.local.RegisterEntity
 import com.doaamosallam.domain.models.Register
 import com.doaamosallam.domain.repo.RegisterRepo
 
