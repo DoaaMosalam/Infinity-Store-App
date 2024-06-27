@@ -1,7 +1,7 @@
 package com.doaamosallam.infinitystore.di
 
-import com.doaamosallam.data.data.local.LoginDAO
-import com.doaamosallam.data.data.local.RegisterDAO
+import com.doaamosallam.data.local.LoginDAO
+import com.doaamosallam.data.local.RegisterDAO
 import com.doaamosallam.data.repo.LoginRepoImp
 import com.doaamosallam.data.repo.RegisterRepoImp
 import com.doaamosallam.domain.repo.LoginRepo

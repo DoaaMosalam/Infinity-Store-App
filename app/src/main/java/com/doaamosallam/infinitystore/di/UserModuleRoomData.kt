@@ -2,9 +2,9 @@ package com.doaamosallam.infinitystore.di
 
 import android.app.Application
 import androidx.room.Room
-import com.doaamosallam.data.data.local.AppDatabase
-import com.doaamosallam.data.data.local.LoginDAO
-import com.doaamosallam.data.data.local.RegisterDAO
+import com.doaamosallam.data.local.AppDatabase
+import com.doaamosallam.data.local.LoginDAO
+import com.doaamosallam.data.local.RegisterDAO
 import com.doaamosallam.infinitystore.util.Constant
 import dagger.Module
 import dagger.Provides

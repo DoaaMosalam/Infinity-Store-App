@@ -1,4 +1,4 @@
-package com.doaamosallam.data.data.local
+package com.doaamosallam.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

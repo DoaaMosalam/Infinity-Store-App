@@ -1,8 +1,13 @@
+import org.jetbrains.kotlin.gradle.model.Kapt
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.com.google.dagger.hilt.android)
     alias(libs.plugins.com.google.devtools.ksp)
+    alias(libs.plugins.kaptKotlin)
+
+
 }
 
 android {
@@ -33,14 +38,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
-        targetCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = libs.versions.javaVersion.get()
+        jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true
+        viewBinding = true
+        dataBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
@@ -67,8 +74,10 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.appcompat)
     implementation(libs.core.ktx)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
+
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -78,15 +87,18 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+
+    implementation(libs.androidx.ui.text.google.fonts)
     // splash screen
     implementation(libs.androidx.core.splashscreen)
-
     // room
     implementation(libs.room.runtime)
     ksp(libs.androidx.room.compiler)
-    implementation(libs.room.ktx)
 
     // dependency Injection Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    // navigate
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 }
