@@ -1,8 +1,17 @@
 <resources>
     <string name="app_name">Infinity Store</string>
+
+    <string name="welcome_to_infinity"> Welcome To Infinity Store</string>
+    <string name="sign_in_to_continue">Sign In To Continue</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="logo_image">Logo Image</string>
+    <string name="login">Login</string>
+    <string name="enter_your_name">Enter Your Name</string>
+    <string name="enter_your_email">Enter Your Email</string>
+    <string name="enter_your_password">Enter Your Password</string>
+
 </resources>

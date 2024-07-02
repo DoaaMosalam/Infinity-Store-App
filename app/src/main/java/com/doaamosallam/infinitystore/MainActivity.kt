@@ -31,8 +31,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             LoginScreen()
-
-//            InfinityStoreApp()
         }
     }
 
