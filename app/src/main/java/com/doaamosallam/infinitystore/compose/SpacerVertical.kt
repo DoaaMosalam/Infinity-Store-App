@@ -1,4 +1,4 @@
-package com.doaamosallam.infinitystore.modifier
+package com.doaamosallam.infinitystore.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment

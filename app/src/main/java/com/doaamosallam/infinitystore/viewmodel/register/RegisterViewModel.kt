@@ -1,4 +1,4 @@
-package com.doaamosallam.infinitystore.viewmodel.user.register
+package com.doaamosallam.infinitystore.viewmodel.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -5,17 +5,11 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.doaamosallam.domain.models.Login
-import com.doaamosallam.infinitystore.compose.LoginScreen
-import com.doaamosallam.infinitystore.viewmodel.user.Login.LoginViewModel
+import com.doaamosallam.infinitystore.compose.screen.LoginScreen
+import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,7 +24,7 @@ class MainActivity : ComponentActivity() {
         Log.d("Login", "Save data: $loginData")
 
         setContent {
-            LoginScreen()
+
         }
     }
 
@@ -39,7 +33,7 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
-    LoginScreen()
+
 }
 
 

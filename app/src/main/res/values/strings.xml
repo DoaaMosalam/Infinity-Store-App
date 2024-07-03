@@ -13,5 +13,8 @@
     <string name="enter_your_name">Enter Your Name</string>
     <string name="enter_your_email">Enter Your Email</string>
     <string name="enter_your_password">Enter Your Password</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="forget_password">Forget Password?</string>
+    <string name="register">Register</string>
 
 </resources>
