@@ -1,13 +1,14 @@
-package com.doaamosallam.infinitystore.compose
+package com.doaamosallam.infinitystore.compose.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,17 +18,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.doaamosallam.infinitystore.R
-import com.doaamosallam.infinitystore.modifier.AuthButton
-import com.doaamosallam.infinitystore.modifier.Header
-import com.doaamosallam.infinitystore.modifier.ImageAuth
+import com.doaamosallam.infinitystore.compose.AuthButton
+import com.doaamosallam.infinitystore.compose.ForgetTextButton
+import com.doaamosallam.infinitystore.compose.Header
+import com.doaamosallam.infinitystore.compose.ImageAuth
+import com.doaamosallam.infinitystore.compose.Images
+import com.doaamosallam.infinitystore.compose.RegisterTextButton
+
 
 @Composable
 fun LoginScreen(
 //    viewModel: LoginViewModel = viewModel()
-
 ) {
 
     Column(
@@ -74,6 +79,7 @@ fun LoginScreen(
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next
                 ),
+                visualTransformation = VisualTransformation.None
 
                 )
             OutlinedTextField(
@@ -105,6 +111,44 @@ fun LoginScreen(
             buttonColor = Color.White, // Set your desired background color
             textColor = colorResource(id = R.color.primary_color) // Set your desired text color
         )
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(start = 16.dp)
+        ) {
+            ForgetTextButton(
+                text = stringResource(R.string.forget_password),
+                onClick = { /*TODO*/ },
+                modifier = Modifier.height(16.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "-----------------------------------OR-------------------------------")
+        Spacer(modifier = Modifier.height(20.dp))
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(start = 16.dp)
+        ) {
+
+            Text(text ="Don't have a account?" )
+                Spacer(modifier = Modifier.width(8.dp))
+            RegisterTextButton(
+                text = "Register" ,
+                onClick = { /*TODO*/ },
+                modifier = Modifier.height(16.dp)
+            )
+                Images(
+                    painter = painterResource(id = R.drawable.baseline_arrow_forward_24),
+                    description = ""
+                )
+            }
+
+        }
     }
 
 //    val emailState = remember { mutableStateOf("") }

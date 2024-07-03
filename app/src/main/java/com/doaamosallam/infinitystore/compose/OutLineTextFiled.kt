@@ -1,4 +1,4 @@
-package com.doaamosallam.infinitystore.modifier
+package com.doaamosallam.infinitystore.compose
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,7 +14,8 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-    fun TextField(
+    fun AuthTextField(
+        modifier: Modifier = Modifier,
         value:String,
         onValueChange:(String) -> Unit,
         label:String,

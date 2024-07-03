@@ -1,5 +1,5 @@
 
-package com.doaamosallam.infinitystore.viewmodel.user.Login
+package com.doaamosallam.infinitystore.viewmodel.Login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
