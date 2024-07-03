@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import com.doaamosallam.infinitystore.R
 import com.doaamosallam.infinitystore.compose.AuthButton
 import com.doaamosallam.infinitystore.compose.ForgetTextButton
@@ -28,12 +29,21 @@ import com.doaamosallam.infinitystore.compose.Header
 import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
 import com.doaamosallam.infinitystore.compose.RegisterTextButton
+import com.doaamosallam.infinitystore.viewmodel.Login.LoginIntent
+import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewModel
+import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewState
 
 
 @Composable
 fun LoginScreen(
+//    viewModel: LoginViewModel = hiltViewModel()
 //    viewModel: LoginViewModel = viewModel()
 ) {
+//    val viewState by viewModel.viewState.collectAsState()
+
+    // Separate state variables for email and password
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -56,9 +66,7 @@ fun LoginScreen(
             contentAlignment = Alignment.Center
         )
         {
-            // Separate state variables for email and password
-            var email by remember { mutableStateOf("") }
-            var password by remember { mutableStateOf("") }
+
 
             OutlinedTextField(
                 modifier = Modifier
@@ -106,12 +114,19 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(30.dp))
 
         AuthButton(
-            onClick = { /* Handle login action here */ },
+            onClick = { },
+//                viewModel.handleIntent(LoginIntent.Login(email, password)) },
             buttonText = stringResource(id = R.string.login),
             buttonColor = Color.White, // Set your desired background color
             textColor = colorResource(id = R.color.primary_color) // Set your desired text color
         )
         Spacer(modifier = Modifier.height(20.dp))
+//        when (viewState) {
+//            is LoginViewState.Loading -> Text(text = "Loading...")
+//            is LoginViewState.Success -> Text(text = "Login Successful: ${(viewState as LoginViewState.Success).login.email}")
+//            is LoginViewState.Error -> Text(text = (viewState as LoginViewState.Error).message, color = Color.Red)
+//            else -> {}
+//        }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -151,30 +166,7 @@ fun LoginScreen(
         }
     }
 
-//    val emailState = remember { mutableStateOf("") }
-//    val passwordState = remember { mutableStateOf("") }
-//    val loginData = "$emailState, $passwordState"
-//
-//    val loginState by viewModel.loginState.collectAsState(initial = RequestStatus.Success(loginData))
-//    val errorMessage by viewModel.errorMessage.collectAsState(initial = "")
-//
-//
-//        Button(
-//            onClick = {
-//                val login = Login(email = emailState.value, password = passwordState.value)
-//                viewModel.login(login)
-//            },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(bottom = 16.dp)
-//        ) {
-//            Text("Login")
-//        }
-//
-//        if (loginState is RequestStatus.Error) {
-//            Text(errorMessage)
-//        }
-//    }
+
 }
 
 
