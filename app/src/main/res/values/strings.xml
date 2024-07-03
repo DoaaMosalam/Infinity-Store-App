@@ -16,5 +16,10 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="forget_password">Forget Password?</string>
     <string name="register">Register</string>
+    <string name="let_s_get_started">Let\'s Get Started</string>
+    <string name="create_an_new_account">Create an new account.</string>
+    <string name="enter_you_phone_number">Enter Your Phone Number</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="don_t_have_a_account">Don\'t have a account?</string>
 
 </resources>

@@ -150,10 +150,10 @@ fun LoginScreen(
             modifier = Modifier.padding(start = 16.dp)
         ) {
 
-            Text(text ="Don't have a account?" )
+            Text(text = stringResource(R.string.don_t_have_a_account) )
                 Spacer(modifier = Modifier.width(8.dp))
             RegisterTextButton(
-                text = "Register" ,
+                text = stringResource(id = R.string.register) ,
                 onClick = { /*TODO*/ },
                 modifier = Modifier.height(16.dp)
             )
