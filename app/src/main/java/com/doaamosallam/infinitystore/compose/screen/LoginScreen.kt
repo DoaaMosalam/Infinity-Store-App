@@ -1,14 +1,24 @@
 package com.doaamosallam.infinitystore.compose.screen
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.*
-import androidx.compose.ui.AbsoluteAlignment
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +31,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.doaamosallam.infinitystore.R
 import com.doaamosallam.infinitystore.compose.AuthButton
 import com.doaamosallam.infinitystore.compose.ForgetTextButton
@@ -29,22 +40,39 @@ import com.doaamosallam.infinitystore.compose.Header
 import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
 import com.doaamosallam.infinitystore.compose.RegisterTextButton
-import com.doaamosallam.infinitystore.viewmodel.Login.LoginIntent
 import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewModel
-import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewState
+import kotlin.math.log
 
-
+//State Hoisting
+//onEmailChange = { loginViewModel.handleIntent(LoginIntent.Login(it, viewState.password)) },
 @Composable
-fun LoginScreen(
-//    viewModel: LoginViewModel = hiltViewModel()
-//    viewModel: LoginViewModel = viewModel()
-) {
-//    val viewState by viewModel.viewState.collectAsState()
-
-    // Separate state variables for email and password
+fun LoginUser(
+    loginViewModel: LoginViewModel = hiltViewModel()
+){
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
+    LoginScreen(
+        email = email,
+        onEmailChange = { email = it },
+        password = password,
+        onPasswordChange = { password = it },
+        onClickLogin = {
+//            TODO()
+        }
+    )
+}
+
+@Composable
+private fun LoginScreen(
+    email: String,
+    onEmailChange: (String) -> Unit,
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    onClickLogin: () -> Unit
+) {
+
+//    val viewState by loginViewModel.viewState.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,14 +94,12 @@ fun LoginScreen(
             contentAlignment = Alignment.Center
         )
         {
-
-
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 100.dp, start = 10.dp, end = 10.dp, bottom = 100.dp),
                 value = email,
-                onValueChange = { email = it },
+                onValueChange = { onEmailChange(it) },
                 label = { Text(text = stringResource(id = R.string.enter_your_email)) },
                 trailingIcon = {
                     Icon(
@@ -89,13 +115,13 @@ fun LoginScreen(
                 ),
                 visualTransformation = VisualTransformation.None
 
-                )
+            )
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 190.dp, start = 10.dp, end = 10.dp),
                 value = password,
-                onValueChange = { password = it },
+                onValueChange = { onPasswordChange(it) },
                 singleLine = true,
                 label = { Text(text = stringResource(id = R.string.enter_your_password)) },
                 trailingIcon = {
@@ -145,18 +171,18 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(start = 16.dp)
-        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(start = 16.dp)
+            ) {
 
-            Text(text = stringResource(R.string.don_t_have_a_account) )
+                Text(text = stringResource(R.string.don_t_have_a_account))
                 Spacer(modifier = Modifier.width(8.dp))
-            RegisterTextButton(
-                text = stringResource(id = R.string.register) ,
-                onClick = { /*TODO*/ },
-                modifier = Modifier.height(16.dp)
-            )
+                RegisterTextButton(
+                    text = stringResource(id = R.string.register),
+                    onClick = { onClickLogin },
+                    modifier = Modifier.height(16.dp)
+                )
                 Images(
                     painter = painterResource(id = R.drawable.baseline_arrow_forward_24),
                     description = ""
@@ -170,9 +196,8 @@ fun LoginScreen(
 }
 
 
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
-    LoginScreen()
+    LoginUser()
 }
