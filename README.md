@@ -62,4 +62,10 @@ domain/
     <p><a href ="https://developer.android.com/topic/architecture">- Clean Arechticutre</a></p>
     <p><a href ="https://developer.android.com/build/migrate-to-ksp">- Migrate from kapt to KSP </a></p>
     <p><a href="https://medium.com/@mohammedkhudair57/mvi-architecture-pattern-in-android-0046bf9b8a2e"> -MVI</p>
+      
+  ## UI && UX Dsign Project
+
+   <img width="1836" alt="Brand Store App (1)" src="https://github.com/DoaaMosalam/Infinity-Store-App/assets/40686512/7e035968-8d92-4683-80f5-d396d1a2c37e">
+
+    
        
