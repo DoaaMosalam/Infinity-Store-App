@@ -38,9 +38,7 @@ import com.doaamosallam.infinitystore.compose.Images
 import com.doaamosallam.infinitystore.compose.RegisterTextButton
 
 @Composable
-fun RegisterScreen(
-
-){
+fun RegisterUser(){
     // Separate state variables for name, phone, email, password, and confirmPassword
     var name by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
@@ -48,6 +46,39 @@ fun RegisterScreen(
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
+    RegisterScreen(
+       name = name,
+        onNameChange = {name=it},
+        phone= phone,
+        onPhoneChange = {phone=it},
+        email=email,
+        onEmailChange = {email=it},
+        password=password,
+        onPasswordChange = {password=it},
+        confirmPassword = confirmPassword,
+        onConfirmPasswordChange = {confirmPassword=it},
+        onClickRegister = {
+//            TODO()
+        }
+
+    )
+}
+
+@Composable
+private fun RegisterScreen(
+    name:String,
+    onNameChange:(String)->Unit,
+    phone:String,
+    onPhoneChange:(String)->Unit,
+    email:String,
+    onEmailChange:(String)->Unit,
+    password:String,
+    onPasswordChange:(String)->Unit,
+    confirmPassword:String,
+    onConfirmPasswordChange:(String)->Unit,
+    onClickRegister:()->Unit
+
+){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -69,7 +100,7 @@ fun RegisterScreen(
                 .fillMaxWidth()
                 .padding(top = 20.dp, start = 10.dp, end = 10.dp),
             value = name,
-            onValueChange = { name = it },
+            onValueChange = { onNameChange(it) },
             label = { Text(text = stringResource(id = R.string.enter_your_name)) },
             trailingIcon = {
                 Icon(
@@ -91,7 +122,7 @@ fun RegisterScreen(
                 .fillMaxWidth()
                 .padding(top = 10.dp, start = 10.dp, end = 10.dp),
             value = phone,
-            onValueChange = { phone = it },
+            onValueChange = { onPhoneChange(it) },
             label = { Text(text = stringResource(R.string.enter_you_phone_number)) },
             trailingIcon = {
                 Icon(
@@ -113,7 +144,7 @@ fun RegisterScreen(
                 .fillMaxWidth()
                 .padding(top = 10.dp, start = 10.dp, end = 10.dp),
             value = email,
-            onValueChange = { email = it },
+            onValueChange = { onEmailChange(it) },
             label = { Text(text = stringResource(id = R.string.enter_your_email)) },
             trailingIcon = {
                 Icon(
@@ -135,7 +166,7 @@ fun RegisterScreen(
                 .fillMaxWidth()
                 .padding(top = 10.dp, start = 10.dp, end = 10.dp),
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { onPasswordChange(it) },
             singleLine = true,
             label = { Text(text = stringResource(id = R.string.enter_your_password)) },
             trailingIcon = {
@@ -156,7 +187,7 @@ fun RegisterScreen(
                 .fillMaxWidth()
                 .padding(top = 10.dp, start = 10.dp, end = 10.dp, bottom = 20.dp),
             value = confirmPassword,
-            onValueChange = { confirmPassword = it },
+            onValueChange = { onConfirmPasswordChange(it) },
             singleLine = true,
             label = { Text(text = stringResource(R.string.confirm_password)) },
             trailingIcon = {
@@ -197,7 +228,7 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.width(8.dp))
                 RegisterTextButton(
                     text = stringResource(id = R.string.login),
-                    onClick = { /*TODO*/ },
+                    onClick = {onClickRegister },
                     modifier = Modifier.height(16.dp)
                 )
                 Images(
@@ -212,5 +243,5 @@ fun RegisterScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewRegisterScreen() {
-    RegisterScreen()
+   RegisterUser()
 }

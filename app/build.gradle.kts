@@ -98,6 +98,7 @@ dependencies {
     // dependency Injection Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    implementation (libs.androidx.hilt.navigation.compose)
     // navigate
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
