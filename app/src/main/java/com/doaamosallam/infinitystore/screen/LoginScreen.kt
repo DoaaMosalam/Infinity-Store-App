@@ -1,4 +1,4 @@
-package com.doaamosallam.infinitystore.compose.screen
+package com.doaamosallam.infinitystore.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,25 +41,29 @@ import com.doaamosallam.infinitystore.compose.Header
 import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
 import com.doaamosallam.infinitystore.compose.RegisterTextButton
+import com.doaamosallam.infinitystore.viewmodel.Login.LoginIntent
 import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewModel
+import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewState
 import kotlin.math.log
 
 //State Hoisting
-//onEmailChange = { loginViewModel.handleIntent(LoginIntent.Login(it, viewState.password)) },
 @Composable
 fun LoginUser(
     loginViewModel: LoginViewModel = hiltViewModel()
 ){
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val viewState by loginViewModel.viewState.collectAsState()
+    // Extract email and password from viewState
+    val email = if (viewState is LoginViewState.Content) (viewState as LoginViewState.Content).email else ""
+    val password = if (viewState is LoginViewState.Content) (viewState as LoginViewState.Content).password else ""
 
     LoginScreen(
         email = email,
-        onEmailChange = { email = it },
+        onEmailChange = loginViewModel::onEmailChange,
         password = password,
-        onPasswordChange = { password = it },
+        onPasswordChange = loginViewModel::onPasswordChange,
         onClickLogin = {
-//            TODO()
+            // Trigger login event
+            loginViewModel.handleIntent(LoginIntent.Login(email, password))
         }
     )
 }
@@ -71,8 +76,6 @@ private fun LoginScreen(
     onPasswordChange: (String) -> Unit,
     onClickLogin: () -> Unit
 ) {
-
-//    val viewState by loginViewModel.viewState.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -140,19 +143,13 @@ private fun LoginScreen(
         Spacer(modifier = Modifier.height(30.dp))
 
         AuthButton(
-            onClick = { },
-//                viewModel.handleIntent(LoginIntent.Login(email, password)) },
+            onClick = onClickLogin,
+
             buttonText = stringResource(id = R.string.login),
             buttonColor = Color.White, // Set your desired background color
             textColor = colorResource(id = R.color.primary_color) // Set your desired text color
         )
         Spacer(modifier = Modifier.height(20.dp))
-//        when (viewState) {
-//            is LoginViewState.Loading -> Text(text = "Loading...")
-//            is LoginViewState.Success -> Text(text = "Login Successful: ${(viewState as LoginViewState.Success).login.email}")
-//            is LoginViewState.Error -> Text(text = (viewState as LoginViewState.Error).message, color = Color.Red)
-//            else -> {}
-//        }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -180,7 +177,7 @@ private fun LoginScreen(
                 Spacer(modifier = Modifier.width(8.dp))
                 RegisterTextButton(
                     text = stringResource(id = R.string.register),
-                    onClick = { onClickLogin },
+                    onClick = { /*TODO*/  },
                     modifier = Modifier.height(16.dp)
                 )
                 Images(

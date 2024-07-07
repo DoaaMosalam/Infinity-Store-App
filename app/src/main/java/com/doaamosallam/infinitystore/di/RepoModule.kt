@@ -25,6 +25,9 @@ object RepoModule {
     @Provides
     @Singleton
     fun provideRegisterRepo(
-        registerDAO: RegisterDAO
-    ):RegisterRepo = RegisterRepoImp(registerDAO)
+        registerDAO: RegisterDAO,
+        loginDAO: LoginDAO
+    ):RegisterRepo = RegisterRepoImp(
+        registerDAO,
+        loginDAO)
 }

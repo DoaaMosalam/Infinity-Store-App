@@ -1,4 +1,4 @@
-package com.doaamosallam.infinitystore.compose.screen
+package com.doaamosallam.infinitystore.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,35 +31,41 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.doaamosallam.infinitystore.R
 import com.doaamosallam.infinitystore.compose.AuthButton
 import com.doaamosallam.infinitystore.compose.Header
 import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
 import com.doaamosallam.infinitystore.compose.RegisterTextButton
-
+import com.doaamosallam.infinitystore.viewmodel.register.RegisterIntent
+import com.doaamosallam.infinitystore.viewmodel.register.RegisterViewModel
+import com.doaamosallam.infinitystore.viewmodel.register.RegisterViewState
+//State Hoisting
 @Composable
-fun RegisterUser(){
-    // Separate state variables for name, phone, email, password, and confirmPassword
-    var name by remember { mutableStateOf("") }
-    var phone by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-
+fun RegisterUser(
+    registerViewModel: RegisterViewModel = hiltViewModel()
+){
+    val viewState by registerViewModel.viewState.collectAsState()
+//     Separate state variables for name, phone, email, password, and confirmPassword
+    val name = if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).name else ""
+    val phone = if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).phone else ""
+    val email = if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).email else ""
+    val password = if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).password else ""
+    val confirmPassword = if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).confirmPassword else ""
     RegisterScreen(
        name = name,
-        onNameChange = {name=it},
+        onNameChange = registerViewModel::onNameChange,
         phone= phone,
-        onPhoneChange = {phone=it},
+        onPhoneChange = registerViewModel::onPhoneChange,
         email=email,
-        onEmailChange = {email=it},
+        onEmailChange = registerViewModel::onEmailChange,
         password=password,
-        onPasswordChange = {password=it},
+        onPasswordChange = registerViewModel::onPasswordChange,
         confirmPassword = confirmPassword,
-        onConfirmPasswordChange = {confirmPassword=it},
+        onConfirmPasswordChange = registerViewModel::onConfirmPasswordChange,
         onClickRegister = {
-//            TODO()
+            registerViewModel.handleIntent(RegisterIntent.Register(name, phone, email, password, confirmPassword))
         }
 
     )
@@ -204,7 +211,7 @@ private fun RegisterScreen(
         )
 
         AuthButton(
-            onClick = { },
+            onClick = onClickRegister,
             buttonText = stringResource(id = R.string.register),
             buttonColor = Color.White, // Set your desired background color
             textColor = colorResource(id = R.color.primary_color) // Set your desired text color
@@ -228,7 +235,9 @@ private fun RegisterScreen(
                 Spacer(modifier = Modifier.width(8.dp))
                 RegisterTextButton(
                     text = stringResource(id = R.string.login),
-                    onClick = {onClickRegister },
+                    onClick = {
+                       // TODO()
+                              },
                     modifier = Modifier.height(16.dp)
                 )
                 Images(
