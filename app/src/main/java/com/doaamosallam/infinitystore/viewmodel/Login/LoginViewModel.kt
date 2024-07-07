@@ -1,6 +1,7 @@
 
 package com.doaamosallam.infinitystore.viewmodel.Login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.models.Login
@@ -11,6 +12,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,8 +21,8 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ):ViewModel() {
-    private val _viewState = MutableStateFlow<LoginViewState>(LoginViewState.Idle)
-    val viewState:StateFlow<LoginViewState> get() = _viewState
+    private val _viewState = MutableStateFlow<LoginViewState>(LoginViewState.Content())
+    val viewState:StateFlow<LoginViewState> get() = _viewState.asStateFlow()
     // process
     fun handleIntent(event:LoginIntent){
         when(event){
@@ -29,11 +32,14 @@ class LoginViewModel @Inject constructor(
     }
     //reduce
     private fun login(email: String, password: String)= viewModelScope.launch {
+        Log.d("Login", "Login is Success : $email $password")
         _viewState.value = LoginViewState.Loading
         try {
             val result = loginUseCase.LoginUser(Login(email, password))
             if (result!=null){
+
                 _viewState.value = LoginViewState.Success(result)
+
             }else{
                 _viewState.value = LoginViewState.Error("Login Failed")
             }
@@ -43,9 +49,25 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    fun onEmailChange(newEmail:String){
+       // used update
+        Log.d("Email", "onEmailChange: $newEmail")
+        val currentState = _viewState.value
+        if (currentState is LoginViewState.Content){
+            _viewState.value = currentState.copy(email = newEmail)
+        }
+    }
+
+    fun onPasswordChange(newPassword:String){
+        val currentState = _viewState.value
+        if (currentState is LoginViewState.Content){
+            _viewState.value = currentState.copy(password = newPassword)
+        }
+    }
 
 
 
+// Login by MVVM
 //    private val _loginState = MutableSharedFlow<RequestStatus<Login>>()
 //    val loginState :SharedFlow<RequestStatus<Login>> get()= _loginState
 //

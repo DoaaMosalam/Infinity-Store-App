@@ -7,4 +7,5 @@ sealed class LoginViewState {
     object Loading:LoginViewState()
     data class Success(val login:Login):LoginViewState()
     data class Error(val message:String):LoginViewState()
+    data class Content(val email:String ="", val password:String = ""):LoginViewState()
 }

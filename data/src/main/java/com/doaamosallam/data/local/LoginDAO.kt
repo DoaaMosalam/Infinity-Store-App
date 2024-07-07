@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface LoginDAO {
     //save info User after Login in data.
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertLogin(loginEntity: LoginEntity):Long
 
     //return user in login data
