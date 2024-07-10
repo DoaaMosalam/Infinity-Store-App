@@ -1,5 +1,6 @@
 package com.doaamosallam.infinitystore.screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,14 +13,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +35,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.doaamosallam.infinitystore.R
 import com.doaamosallam.infinitystore.compose.AuthButton
 import com.doaamosallam.infinitystore.compose.ForgetTextButton
@@ -41,31 +43,52 @@ import com.doaamosallam.infinitystore.compose.Header
 import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
 import com.doaamosallam.infinitystore.compose.RegisterTextButton
+import com.doaamosallam.infinitystore.util.AppDestination
 import com.doaamosallam.infinitystore.viewmodel.Login.LoginIntent
 import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewModel
 import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewState
-import kotlin.math.log
 
 //State Hoisting
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginUser(
+    navController: NavController,
     loginViewModel: LoginViewModel = hiltViewModel()
-){
+) {
     val viewState by loginViewModel.viewState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
     // Extract email and password from viewState
-    val email = if (viewState is LoginViewState.Content) (viewState as LoginViewState.Content).email else ""
-    val password = if (viewState is LoginViewState.Content) (viewState as LoginViewState.Content).password else ""
-
-    LoginScreen(
-        email = email,
-        onEmailChange = loginViewModel::onEmailChange,
-        password = password,
-        onPasswordChange = loginViewModel::onPasswordChange,
-        onClickLogin = {
-            // Trigger login event
-            loginViewModel.handleIntent(LoginIntent.Login(email, password))
+    val email =
+        if (viewState is LoginViewState.Content) (viewState as LoginViewState.Content).email else ""
+    val password =
+        if (viewState is LoginViewState.Content) (viewState as LoginViewState.Content).password else ""
+    LaunchedEffect(viewState) {
+        if (viewState is LoginViewState.Success) {
+            snackbarHostState.showSnackbar("Login successful!")
+            navController.navigate(AppDestination.HomeScreen)
         }
-    )
+
+    }
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) {
+        LoginScreen(
+            email = email,
+            onEmailChange = loginViewModel::onEmailChange,
+            password = password,
+            onPasswordChange = loginViewModel::onPasswordChange,
+            onClickLogin = {
+                // Trigger login event
+                loginViewModel.handleIntent(LoginIntent.Login(email, password))
+            },
+            onClickRegister = {
+                navController.navigate(AppDestination.RegisterScreen)
+            },
+            OnClickForgetPassword = {
+                navController.navigate(AppDestination.ForgetPassword)
+            }
+        )
+    }
 }
 
 @Composable
@@ -74,7 +97,9 @@ private fun LoginScreen(
     onEmailChange: (String) -> Unit,
     password: String,
     onPasswordChange: (String) -> Unit,
-    onClickLogin: () -> Unit
+    onClickLogin: () -> Unit,
+    onClickRegister: () -> Unit,
+    OnClickForgetPassword:()->Unit
 ) {
     Column(
         modifier = Modifier
@@ -144,7 +169,6 @@ private fun LoginScreen(
 
         AuthButton(
             onClick = onClickLogin,
-
             buttonText = stringResource(id = R.string.login),
             buttonColor = Color.White, // Set your desired background color
             textColor = colorResource(id = R.color.primary_color) // Set your desired text color
@@ -157,7 +181,7 @@ private fun LoginScreen(
         ) {
             ForgetTextButton(
                 text = stringResource(R.string.forget_password),
-                onClick = { /*TODO*/ },
+                onClick = OnClickForgetPassword,
                 modifier = Modifier.height(16.dp)
             )
         }
@@ -177,18 +201,17 @@ private fun LoginScreen(
                 Spacer(modifier = Modifier.width(8.dp))
                 RegisterTextButton(
                     text = stringResource(id = R.string.register),
-                    onClick = { /*TODO*/  },
+                    onClick = onClickRegister,
                     modifier = Modifier.height(16.dp)
                 )
                 Images(
                     painter = painterResource(id = R.drawable.baseline_arrow_forward_24),
-                    description = ""
+                    description = null.toString()
                 )
             }
 
         }
     }
-
 
 }
 
@@ -196,5 +219,12 @@ private fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
-    LoginUser()
+   LoginScreen(
+       email = "",
+       onEmailChange ={/*TODO*/} ,
+       password = "",
+       onPasswordChange ={/*TODO*/} ,
+       onClickLogin = { /*TODO*/ },
+       onClickRegister = { /*TODO*/ }) {
+   }
 }

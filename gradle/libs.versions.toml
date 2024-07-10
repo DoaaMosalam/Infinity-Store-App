@@ -17,6 +17,7 @@ lifecycleRuntimeKtxVersion = "2.4.0"
 lifecycleViewmodelCompose = "2.4.0-alpha03"
 lifecycleViewmodelKtx = "2.4.0"
 material = "1.12.0"
+material3 = "1.2.1"
 materialVersion = "1.6.8"
 roomRuntime = "2.6.1"
 daggerHilt = "2.48"
@@ -29,11 +30,11 @@ targetSdk = "34"
 kotlinCompilerExtensionVersion= "1.5.14"
 javaVersion = "17"
 coreKtxVersion = "1.5.0"
-navigationFragmentKtx = "2.7.7"
-navigationUiKtx = "2.7.7"
+nav_version = "2.7.7"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
 uiTextGoogleFonts = "1.6.8"
+
 
 [libraries]
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
@@ -66,11 +67,14 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 room-runtime ={group ="androidx.room", name="room-runtime" , version.ref="roomRuntime"}
 core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
-androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
-androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "nav_version" }
+androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "nav_version" }
+androidx-navigation-compose ={group="androidx.navigation",name ="navigation-compose", version.ref="nav_version"}
+
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
