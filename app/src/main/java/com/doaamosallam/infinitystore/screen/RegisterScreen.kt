@@ -1,5 +1,6 @@
 package com.doaamosallam.infinitystore.screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,10 +11,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,61 +39,111 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.util.PatternsCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.doaamosallam.infinitystore.R
 import com.doaamosallam.infinitystore.compose.AuthButton
 import com.doaamosallam.infinitystore.compose.Header
 import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
 import com.doaamosallam.infinitystore.compose.RegisterTextButton
+import com.doaamosallam.infinitystore.util.AppDestination
 import com.doaamosallam.infinitystore.viewmodel.register.RegisterIntent
 import com.doaamosallam.infinitystore.viewmodel.register.RegisterViewModel
 import com.doaamosallam.infinitystore.viewmodel.register.RegisterViewState
+
 //State Hoisting
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RegisterUser(
+    navController: NavController,
     registerViewModel: RegisterViewModel = hiltViewModel()
-){
+) {
     val viewState by registerViewModel.viewState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+// Separate state variables for errors
+    var nameError by remember { mutableStateOf(false) }
+    var phoneError by remember { mutableStateOf(false) }
+    var emailError by remember { mutableStateOf(false) }
+    var passwordError by remember { mutableStateOf(false) }
+    var confirmPasswordError by remember { mutableStateOf(false) }
 //     Separate state variables for name, phone, email, password, and confirmPassword
-    val name = if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).name else ""
-    val phone = if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).phone else ""
-    val email = if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).email else ""
-    val password = if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).password else ""
-    val confirmPassword = if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).confirmPassword else ""
-    RegisterScreen(
-       name = name,
-        onNameChange = registerViewModel::onNameChange,
-        phone= phone,
-        onPhoneChange = registerViewModel::onPhoneChange,
-        email=email,
-        onEmailChange = registerViewModel::onEmailChange,
-        password=password,
-        onPasswordChange = registerViewModel::onPasswordChange,
-        confirmPassword = confirmPassword,
-        onConfirmPasswordChange = registerViewModel::onConfirmPasswordChange,
-        onClickRegister = {
-            registerViewModel.handleIntent(RegisterIntent.Register(name, phone, email, password, confirmPassword))
-        }
+    val name =
+        if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).name else ""
+    val phone =
+        if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).phone else ""
+    val email =
+        if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).email else ""
+    val password =
+        if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).password else ""
+    val confirmPassword =
+        if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).confirmPassword else ""
 
-    )
+        LaunchedEffect(viewState) {
+            if (viewState is RegisterViewState.Success) {
+                snackbarHostState.showSnackbar("Registration successful!")
+                navController.navigate(AppDestination.LoginScreen)
+            }
+        }
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    )  {
+        RegisterScreen(
+            name = name,
+            errorName = nameError,
+            onNameChange = registerViewModel::onNameChange,
+            phone = phone,
+            onPhoneChange = registerViewModel::onPhoneChange,
+            errorPhone = phoneError,
+            email = email,
+            onEmailChange = registerViewModel::onEmailChange,
+            errorEmail = emailError,
+            password = password,
+            onPasswordChange = registerViewModel::onPasswordChange,
+            errorPassword = passwordError,
+            confirmPassword = confirmPassword,
+            onConfirmPasswordChange = registerViewModel::onConfirmPasswordChange,
+            errorConfirmPassword = confirmPasswordError,
+            onClickRegister = {
+                    registerViewModel.handleIntent(
+                        RegisterIntent.Register(
+                            name,
+                            phone,
+                            email,
+                            password,
+                            confirmPassword
+                        )
+                    )
+            },
+            onClickLogin = { navController.navigate(AppDestination.LoginScreen) }
+
+        )
+    }
 }
 
 @Composable
 private fun RegisterScreen(
-    name:String,
-    onNameChange:(String)->Unit,
-    phone:String,
-    onPhoneChange:(String)->Unit,
-    email:String,
-    onEmailChange:(String)->Unit,
-    password:String,
-    onPasswordChange:(String)->Unit,
-    confirmPassword:String,
-    onConfirmPasswordChange:(String)->Unit,
-    onClickRegister:()->Unit
+    name: String,
+    onNameChange: (String) -> Unit,
+    errorName:Boolean,
+    phone: String,
+    onPhoneChange: (String) -> Unit,
+    errorPhone:Boolean,
+    email: String,
+    onEmailChange: (String) -> Unit,
+    errorEmail:Boolean,
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    errorPassword:Boolean,
+    confirmPassword: String,
+    onConfirmPasswordChange: (String) -> Unit,
+    errorConfirmPassword:Boolean,
+    onClickRegister: () -> Unit,
+    onClickLogin: () -> Unit
 
-){
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -108,12 +166,18 @@ private fun RegisterScreen(
                 .padding(top = 20.dp, start = 10.dp, end = 10.dp),
             value = name,
             onValueChange = { onNameChange(it) },
+            isError = errorName,
             label = { Text(text = stringResource(id = R.string.enter_your_name)) },
             trailingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.outline_person_24),
                     contentDescription = null
                 )
+                if (name.isNotEmpty()){
+                    IconButton(onClick = { onNameChange("") }) {
+                        Icon(Icons.Filled.Clear, contentDescription = "Clear name")
+                    }
+                }
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
@@ -124,18 +188,35 @@ private fun RegisterScreen(
             visualTransformation = VisualTransformation.None
         )
 
+        if (errorName){
+            Text(
+                text = stringResource(R.string.your_name_is_not_valid),
+                color = Color.Red,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
+
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp, start = 10.dp, end = 10.dp),
             value = phone,
             onValueChange = { onPhoneChange(it) },
+            isError = errorPhone,
             label = { Text(text = stringResource(R.string.enter_you_phone_number)) },
             trailingIcon = {
+
                 Icon(
                     painter = painterResource(id = R.drawable.outline_phone_24),
                     contentDescription = null
                 )
+                if (phone.isNotEmpty()) {
+                    IconButton(onClick = {onPhoneChange("")}) {
+                        Icon(Icons.Filled.Clear, contentDescription = "Clear phone")
+
+                    }
+                }
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
@@ -145,6 +226,14 @@ private fun RegisterScreen(
             ),
             visualTransformation = VisualTransformation.None
         )
+        if (errorPhone){
+            Text(
+                text = stringResource(R.string.number_phone_must_be_11_number),
+                color = Color.Red,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
 
         OutlinedTextField(
             modifier = Modifier
@@ -152,12 +241,18 @@ private fun RegisterScreen(
                 .padding(top = 10.dp, start = 10.dp, end = 10.dp),
             value = email,
             onValueChange = { onEmailChange(it) },
+            isError = errorEmail,
             label = { Text(text = stringResource(id = R.string.enter_your_email)) },
             trailingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.outline_email_24),
                     contentDescription = null
                 )
+                if (email.isNotEmpty()) {
+                    IconButton(onClick = { onEmailChange("") }) {
+                        Icon(Icons.Filled.Clear, contentDescription = "Clear email")
+                    }
+                }
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
@@ -167,6 +262,14 @@ private fun RegisterScreen(
             ),
             visualTransformation = VisualTransformation.None
         )
+        if (errorEmail){
+            Text(
+                text = stringResource(R.string.not_a_valid_email_address_should_be_your_email_com),
+                color = Color.Red,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
 
         OutlinedTextField(
             modifier = Modifier
@@ -174,6 +277,7 @@ private fun RegisterScreen(
                 .padding(top = 10.dp, start = 10.dp, end = 10.dp),
             value = password,
             onValueChange = { onPasswordChange(it) },
+            isError = errorPassword,
             singleLine = true,
             label = { Text(text = stringResource(id = R.string.enter_your_password)) },
             trailingIcon = {
@@ -181,6 +285,11 @@ private fun RegisterScreen(
                     painter = painterResource(id = R.drawable.outline_lock_24),
                     contentDescription = null
                 )
+                if (password.isNotEmpty()) {
+                    IconButton(onClick = { onPasswordChange("") }) {
+                        Icon(Icons.Filled.Clear, contentDescription = "Clear email")
+                    }
+                }
             },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
@@ -188,6 +297,14 @@ private fun RegisterScreen(
                 imeAction = ImeAction.Next
             )
         )
+        if (errorPassword){
+            Text(
+                text = stringResource(R.string.password_must_be_11_number),
+                color = Color.Red,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
 
         OutlinedTextField(
             modifier = Modifier
@@ -195,9 +312,15 @@ private fun RegisterScreen(
                 .padding(top = 10.dp, start = 10.dp, end = 10.dp, bottom = 20.dp),
             value = confirmPassword,
             onValueChange = { onConfirmPasswordChange(it) },
+            isError = errorConfirmPassword,
             singleLine = true,
             label = { Text(text = stringResource(R.string.confirm_password)) },
             trailingIcon = {
+                if (confirmPassword.isNotEmpty()){
+                    IconButton(onClick = { onConfirmPasswordChange("") }) {
+                        Icon(Icons.Filled.Clear, contentDescription = "Clear email")
+                    }
+                }
                 Icon(
                     painter = painterResource(id = R.drawable.outline_lock_24),
                     contentDescription = null
@@ -209,6 +332,14 @@ private fun RegisterScreen(
                 imeAction = ImeAction.Done
             )
         )
+        if (errorConfirmPassword){
+            Text(
+                text = "Confirm Password do not match",
+                color = Color.Red,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
 
         AuthButton(
             onClick = onClickRegister,
@@ -235,9 +366,7 @@ private fun RegisterScreen(
                 Spacer(modifier = Modifier.width(8.dp))
                 RegisterTextButton(
                     text = stringResource(id = R.string.login),
-                    onClick = {
-                       // TODO()
-                              },
+                    onClick = onClickLogin,
                     modifier = Modifier.height(16.dp)
                 )
                 Images(
@@ -252,5 +381,23 @@ private fun RegisterScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewRegisterScreen() {
-   RegisterUser()
+    RegisterScreen(
+        name = "",
+        onNameChange = {},
+        errorName = false,
+        phone = "",
+        onPhoneChange = {},
+        errorPhone = false,
+        email = "",
+        onEmailChange = {},
+        errorEmail = false,
+        password = "",
+        onPasswordChange = {},
+        errorPassword = false,
+        confirmPassword = "",
+        onConfirmPasswordChange = {},
+        errorConfirmPassword = false,
+        onClickRegister = { /*TODO*/ }) {
+
+    }
 }

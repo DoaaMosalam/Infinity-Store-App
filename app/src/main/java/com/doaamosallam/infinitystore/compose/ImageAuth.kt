@@ -1,6 +1,7 @@
 package com.doaamosallam.infinitystore.compose
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -31,5 +32,19 @@ fun Images(painter: Painter, description: String){
         modifier = Modifier
             .width(16.dp)
             .height(16.dp)
+    )
+}
+
+@Composable
+fun ClickableImage(
+    painter: Painter,
+    contentDescription: String?,
+    onClick: () -> Unit
+) {
+    Image(
+        painter = painter,
+        contentDescription = contentDescription,
+        modifier = Modifier
+            .clickable(onClick = onClick)
     )
 }
