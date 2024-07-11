@@ -20,14 +20,15 @@ object RepoModule {
     @Singleton
     fun provideLoginRepo(
         loginDAO: LoginDAO
-    ):LoginRepo = LoginRepoImp(loginDAO)
+    ): LoginRepo = LoginRepoImp(loginDAO)
 
     @Provides
     @Singleton
     fun provideRegisterRepo(
         registerDAO: RegisterDAO,
         loginDAO: LoginDAO
-    ):RegisterRepo = RegisterRepoImp(
+    ): RegisterRepo = RegisterRepoImp(
         registerDAO,
-        loginDAO)
+        loginDAO
+    )
 }

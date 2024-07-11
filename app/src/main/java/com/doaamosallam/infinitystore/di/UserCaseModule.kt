@@ -9,19 +9,20 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+
 @Module
 @InstallIn(SingletonComponent::class)
 
 object UserCaseModule {
     @Provides
     @Singleton
-    fun provideLoginUseCase(loginRepo: LoginRepo):LoginUseCase{
+    fun provideLoginUseCase(loginRepo: LoginRepo): LoginUseCase {
         return LoginUseCase(loginRepo)
     }
 
     @Provides
     @Singleton
-    fun provideRegisterUseCase(registerRepo: RegisterRepo):RegisterUseCase{
+    fun provideRegisterUseCase(registerRepo: RegisterRepo): RegisterUseCase {
         return RegisterUseCase(registerRepo)
     }
 }

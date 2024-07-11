@@ -9,15 +9,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.doaamosallam.infinitystore.R
 
 @Composable
-fun ImageAuth(painter: Painter, description:String){
+fun ImageAuth(painter: Painter, description: String) {
     Image(
-        painter = painter
-        , description,
+        painter = painter, description,
         modifier = Modifier
             .padding(top = 50.dp)
             .size(120.dp)
@@ -25,9 +22,9 @@ fun ImageAuth(painter: Painter, description:String){
 }
 
 @Composable
-fun Images(painter: Painter, description: String){
+fun Images(painter: Painter, description: String) {
     Image(
-        painter =painter,
+        painter = painter,
         contentDescription = description,
         modifier = Modifier
             .width(16.dp)

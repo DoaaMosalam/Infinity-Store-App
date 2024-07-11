@@ -14,15 +14,16 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-    fun AuthTextField(
-        modifier: Modifier = Modifier,
-        value:String,
-        onValueChange:(String) -> Unit,
-        label:String,
-        trailingIconResId: Int,
-        keyboardOptions: KeyboardOptions,
-        visualTransformation: VisualTransformation = VisualTransformation.None
-    ) {
+fun AuthTextField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    isError: Boolean,
+    label: String,
+    trailingIconResId: Int,
+    keyboardOptions: KeyboardOptions,
+    visualTransformation: VisualTransformation = VisualTransformation.None
+) {
 
     OutlinedTextField(
         modifier = Modifier
@@ -41,4 +42,6 @@ import androidx.compose.ui.unit.dp
         keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation
     )
+
 }
+

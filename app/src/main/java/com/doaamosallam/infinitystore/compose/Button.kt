@@ -22,7 +22,9 @@ fun AuthButton(
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier.width(250.dp).height(40.dp),
+        modifier = modifier
+            .width(250.dp)
+            .height(40.dp),
         shape = RoundedCornerShape(20.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = buttonColor,
