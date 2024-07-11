@@ -1,13 +1,12 @@
 package com.doaamosallam.infinitystore.ui.theme
 
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import com.doaamosallam.infinitystore.R
 
-val playWriteRegular= FontFamily(
+val playWriteRegular = FontFamily(
     Font(R.font.playwrite_regular, weight = FontWeight.Normal, FontStyle.Italic)
 )
 val playWriteThin = FontFamily(

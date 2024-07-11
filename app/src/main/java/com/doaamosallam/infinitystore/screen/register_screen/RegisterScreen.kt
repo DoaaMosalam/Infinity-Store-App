@@ -1,4 +1,4 @@
-package com.doaamosallam.infinitystore.screen
+package com.doaamosallam.infinitystore.screen.register_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
@@ -49,7 +49,7 @@ import com.doaamosallam.infinitystore.compose.Header
 import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
 import com.doaamosallam.infinitystore.compose.RegisterTextButton
-import com.doaamosallam.infinitystore.util.AppDestination
+import com.doaamosallam.infinitystore.util.Constant
 import com.doaamosallam.infinitystore.viewmodel.register.RegisterIntent
 import com.doaamosallam.infinitystore.viewmodel.register.RegisterViewModel
 import com.doaamosallam.infinitystore.viewmodel.register.RegisterViewState
@@ -62,6 +62,7 @@ fun RegisterUser(
     registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
     val viewState by registerViewModel.viewState.collectAsState()
+    // Create a SnackbarHostState
     val snackbarHostState = remember { SnackbarHostState() }
 // Separate state variables for errors
     var nameError by remember { mutableStateOf(false) }
@@ -70,54 +71,79 @@ fun RegisterUser(
     var passwordError by remember { mutableStateOf(false) }
     var confirmPasswordError by remember { mutableStateOf(false) }
 //     Separate state variables for name, phone, email, password, and confirmPassword
-    val name =
+    var name =
         if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).name else ""
-    val phone =
+    var phone =
         if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).phone else ""
-    val email =
+    var email =
         if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).email else ""
-    val password =
+    var password =
         if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).password else ""
-    val confirmPassword =
+    var confirmPassword =
         if (viewState is RegisterViewState.Content) (viewState as RegisterViewState.Content).confirmPassword else ""
 
-        LaunchedEffect(viewState) {
-            if (viewState is RegisterViewState.Success) {
-                snackbarHostState.showSnackbar("Registration successful!")
-                navController.navigate(AppDestination.LoginScreen)
-            }
+    LaunchedEffect(viewState) {
+        if (viewState is RegisterViewState.Success) {
+            snackbarHostState.showSnackbar("Registration successful!,\n Verification email and password, so you must be login.")
+            navController.navigate(Constant.LoginScreen)
+
         }
+    }
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-    )  {
+    ) {
         RegisterScreen(
             name = name,
             errorName = nameError,
-            onNameChange = registerViewModel::onNameChange,
-            phone = phone,
-            onPhoneChange = registerViewModel::onPhoneChange,
-            errorPhone = phoneError,
-            email = email,
-            onEmailChange = registerViewModel::onEmailChange,
-            errorEmail = emailError,
-            password = password,
-            onPasswordChange = registerViewModel::onPasswordChange,
-            errorPassword = passwordError,
-            confirmPassword = confirmPassword,
-            onConfirmPasswordChange = registerViewModel::onConfirmPasswordChange,
-            errorConfirmPassword = confirmPasswordError,
-            onClickRegister = {
-                    registerViewModel.handleIntent(
-                        RegisterIntent.Register(
-                            name,
-                            phone,
-                            email,
-                            password,
-                            confirmPassword
-                        )
-                    )
+            onNameChange = { newName ->
+                name = newName
+                registerViewModel.onNameChange(newName)
+                nameError = name.isNotEmpty()
             },
-            onClickLogin = { navController.navigate(AppDestination.LoginScreen) }
+            phone = phone,
+            errorPhone = phoneError,
+            onPhoneChange = { newPhone ->
+                phone = newPhone
+                registerViewModel.onPhoneChange(newPhone)
+                phoneError = phone.length == 11
+            },
+
+            email = email,
+            errorEmail = emailError,
+            onEmailChange = { newEmail ->
+                email = newEmail
+                registerViewModel.onEmailChange(newEmail)
+                emailError = !PatternsCompat.EMAIL_ADDRESS.matcher(newEmail).matches()
+            },
+
+            password = password,
+            errorPassword = passwordError,
+            onPasswordChange = { newPassword ->
+                password = newPassword
+                registerViewModel.onPasswordChange(newPassword)
+                passwordError = password.length < 11 && password.matches(".*[A-Z].*".toRegex())
+            },
+
+            confirmPassword = confirmPassword,
+            errorConfirmPassword = confirmPasswordError,
+            onConfirmPasswordChange = { newConfirmPassword ->
+                confirmPassword
+                registerViewModel.onConfirmPasswordChange(newConfirmPassword)
+                confirmPasswordError = confirmPassword == password
+            },
+
+            onClickRegister = {
+                registerViewModel.handleIntent(
+                    RegisterIntent.Register(
+                        name,
+                        phone,
+                        email,
+                        password,
+                        confirmPassword
+                    )
+                )
+            },
+            onClickLogin = { navController.navigate(Constant.LoginScreen) }
 
         )
     }
@@ -127,19 +153,19 @@ fun RegisterUser(
 private fun RegisterScreen(
     name: String,
     onNameChange: (String) -> Unit,
-    errorName:Boolean,
+    errorName: Boolean,
     phone: String,
     onPhoneChange: (String) -> Unit,
-    errorPhone:Boolean,
+    errorPhone: Boolean,
     email: String,
     onEmailChange: (String) -> Unit,
-    errorEmail:Boolean,
+    errorEmail: Boolean,
     password: String,
     onPasswordChange: (String) -> Unit,
-    errorPassword:Boolean,
+    errorPassword: Boolean,
     confirmPassword: String,
     onConfirmPasswordChange: (String) -> Unit,
-    errorConfirmPassword:Boolean,
+    errorConfirmPassword: Boolean,
     onClickRegister: () -> Unit,
     onClickLogin: () -> Unit
 
@@ -173,7 +199,7 @@ private fun RegisterScreen(
                     painter = painterResource(id = R.drawable.outline_person_24),
                     contentDescription = null
                 )
-                if (name.isNotEmpty()){
+                if (name.isNotEmpty()) {
                     IconButton(onClick = { onNameChange("") }) {
                         Icon(Icons.Filled.Clear, contentDescription = "Clear name")
                     }
@@ -188,7 +214,7 @@ private fun RegisterScreen(
             visualTransformation = VisualTransformation.None
         )
 
-        if (errorName){
+        if (errorName) {
             Text(
                 text = stringResource(R.string.your_name_is_not_valid),
                 color = Color.Red,
@@ -212,7 +238,7 @@ private fun RegisterScreen(
                     contentDescription = null
                 )
                 if (phone.isNotEmpty()) {
-                    IconButton(onClick = {onPhoneChange("")}) {
+                    IconButton(onClick = { onPhoneChange("") }) {
                         Icon(Icons.Filled.Clear, contentDescription = "Clear phone")
 
                     }
@@ -226,7 +252,7 @@ private fun RegisterScreen(
             ),
             visualTransformation = VisualTransformation.None
         )
-        if (errorPhone){
+        if (errorPhone) {
             Text(
                 text = stringResource(R.string.number_phone_must_be_11_number),
                 color = Color.Red,
@@ -262,7 +288,7 @@ private fun RegisterScreen(
             ),
             visualTransformation = VisualTransformation.None
         )
-        if (errorEmail){
+        if (errorEmail) {
             Text(
                 text = stringResource(R.string.not_a_valid_email_address_should_be_your_email_com),
                 color = Color.Red,
@@ -297,7 +323,7 @@ private fun RegisterScreen(
                 imeAction = ImeAction.Next
             )
         )
-        if (errorPassword){
+        if (errorPassword) {
             Text(
                 text = stringResource(R.string.password_must_be_11_number),
                 color = Color.Red,
@@ -316,7 +342,7 @@ private fun RegisterScreen(
             singleLine = true,
             label = { Text(text = stringResource(R.string.confirm_password)) },
             trailingIcon = {
-                if (confirmPassword.isNotEmpty()){
+                if (confirmPassword.isNotEmpty()) {
                     IconButton(onClick = { onConfirmPasswordChange("") }) {
                         Icon(Icons.Filled.Clear, contentDescription = "Clear email")
                     }
@@ -332,7 +358,7 @@ private fun RegisterScreen(
                 imeAction = ImeAction.Done
             )
         )
-        if (errorConfirmPassword){
+        if (errorConfirmPassword) {
             Text(
                 text = "Confirm Password do not match",
                 color = Color.Red,

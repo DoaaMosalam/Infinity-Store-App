@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 //}
 
 @Composable
-fun HorizontalAlignment(){
+fun HorizontalAlignment() {
     Alignment.CenterHorizontally
 //    var horizontalAlignment = Alignment.CenterHorizontally
 }

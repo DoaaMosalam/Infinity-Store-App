@@ -16,19 +16,21 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object UserModuleRoomData {
 
-   @Provides
-   @Singleton
-   fun provideAppDatabaseBuilder(application: Application): AppDatabase {
-       return Room.databaseBuilder(
-           application,
-           AppDatabase::class.java,
-           Constant.DATABASE_NAME
-       )
-           .build()
-   }
+    @Provides
+    @Singleton
+    fun provideAppDatabaseBuilder(application: Application): AppDatabase {
+        return Room.databaseBuilder(
+            application,
+            AppDatabase::class.java,
+            Constant.DATABASE_NAME
+        )
+            .build()
+    }
+
     @Provides
     @Singleton
     fun provideLoginDao(db: AppDatabase): LoginDAO = db.loginDao()
+
     @Provides
     @Singleton
     fun provideRegisterDao(db: AppDatabase): RegisterDAO = db.registerDao()

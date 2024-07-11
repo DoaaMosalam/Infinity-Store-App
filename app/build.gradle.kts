@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.model.Kapt
-
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -12,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.doaamosallam.infinitystore"
-     compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
 
     defaultConfig {
@@ -98,10 +96,10 @@ dependencies {
     // dependency Injection Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-    implementation (libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
     // navigate
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.compose)
-    implementation (libs.material3)
+    implementation(libs.material3)
 }

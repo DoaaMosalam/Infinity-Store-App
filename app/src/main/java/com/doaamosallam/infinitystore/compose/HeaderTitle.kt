@@ -12,7 +12,7 @@ import com.doaamosallam.infinitystore.ui.theme.PrimaryColor
 import com.doaamosallam.infinitystore.ui.theme.playWriteRegular
 
 @Composable
-fun Header( title:String,  subtitle:String){
+fun Header(title: String, subtitle: String) {
     Text(
         text = title,
         textAlign = TextAlign.Center,
