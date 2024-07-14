@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "726448401964",
+    "project_id": "infinity-store-37956",
+    "storage_bucket": "infinity-store-37956.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726448401964:android:edb413ff37959b3b312b89",
+        "android_client_info": {
+          "package_name": "com.doaamosallam.infinitystore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8IpYx1p3IaDVMW7DCVNk4qS9U5BlmGg4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

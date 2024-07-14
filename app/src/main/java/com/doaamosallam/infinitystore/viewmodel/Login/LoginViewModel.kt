@@ -62,28 +62,4 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-
-// Login by MVVM
-//    private val _loginState = MutableSharedFlow<RequestStatus<Login>>()
-//    val loginState :SharedFlow<RequestStatus<Login>> get()= _loginState
-//
-//    private val _errorMessage = MutableSharedFlow<String>()
-//    val errorMessage:SharedFlow<String> get() = _errorMessage
-//
-//    fun login(login: Login)=
-//        viewModelScope.launch {
-//            try {
-//                val result = loginUseCase.LoginUser(login)
-//                if (result!=null){
-//                    _loginState.collect{ user->
-//                        _loginState.emit(user)
-//                    }
-//                }else{
-//                   _errorMessage.emit("Login Failed")
-//                }
-//            }catch (e:Exception){
-//                _errorMessage.emit("An error occurred:${e.message}")
-//
-//            }
-//        }
 }
