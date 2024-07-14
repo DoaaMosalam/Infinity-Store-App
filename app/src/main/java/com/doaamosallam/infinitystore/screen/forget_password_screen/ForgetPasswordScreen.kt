@@ -41,13 +41,11 @@ import androidx.navigation.NavController
 import com.doaamosallam.infinitystore.R
 import com.doaamosallam.infinitystore.compose.AuthButton
 import com.doaamosallam.infinitystore.compose.ClickableImage
-import com.doaamosallam.infinitystore.util.Constant
-import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewState
+import com.doaamosallam.infinitystore.util.Screen
 import com.doaamosallam.infinitystore.viewmodel.forget_password.ForgetPasViewState
 import com.doaamosallam.infinitystore.viewmodel.forget_password.ForgetPasswordIntent
 import com.doaamosallam.infinitystore.viewmodel.forget_password.ForgetPasswordViewModel
 import kotlinx.coroutines.launch
-
 
 // state hoisting
 @Composable
@@ -56,12 +54,13 @@ fun ForgetPassword(
     forgetPasswordViewModel: ForgetPasswordViewModel = hiltViewModel()
 
 ) {
-    val viewState  by forgetPasswordViewModel.forgetViewState.collectAsState()
+    val viewState by forgetPasswordViewModel.forgetViewState.collectAsState()
     // Separate state variables for errors
     var emailError by remember { mutableStateOf(false) }
     // Extract email and password from viewState
-    var email = if (viewState is ForgetPasViewState.Content) (viewState as ForgetPasViewState.Content).email else ""
-//    var email by remember { mutableStateOf("") }
+    var email =
+        if (viewState is ForgetPasViewState.Content) (viewState as ForgetPasViewState.Content).email else ""
+
     // Create a SnackbarHostState
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
@@ -81,7 +80,7 @@ fun ForgetPassword(
             if (!emailError && email.isNotEmpty()) {
                 coroutineScope.launch {
                     snackbarHostState.showSnackbar("Check your email, you will receive a link to create a new password via email")
-                    navController.navigate(Constant.LoginScreen)
+                    navController.navigate(Screen.Login.route)
                 }
 
             }

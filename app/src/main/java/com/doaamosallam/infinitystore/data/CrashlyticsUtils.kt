@@ -2,7 +2,9 @@ package com.doaamosallam.infinitystore.data
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
-object CrashlyticsUtils /**
+object CrashlyticsUtils
+
+/**
  * Endpoint Keys
  */
 const val CUSTOME_ENDPOINT_KEY = "CUSTOME_ENDPOINT_KEY"
