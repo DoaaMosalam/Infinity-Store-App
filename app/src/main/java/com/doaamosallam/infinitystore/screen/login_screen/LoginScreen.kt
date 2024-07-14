@@ -50,7 +50,7 @@ import com.doaamosallam.infinitystore.compose.Header
 import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
 import com.doaamosallam.infinitystore.compose.RegisterTextButton
-import com.doaamosallam.infinitystore.util.Constant
+import com.doaamosallam.infinitystore.util.Screen
 import com.doaamosallam.infinitystore.viewmodel.Login.LoginIntent
 import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewModel
 import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewState
@@ -76,7 +76,7 @@ fun LoginUser(
     LaunchedEffect(viewState) {
         if (viewState is LoginViewState.Success) {
             snackbarHostState.showSnackbar("Login successful!")
-            navController.navigate(Constant.HomeScreen)
+            navController.navigate(Screen.HomeScreen.route)
         }
 
     }
@@ -105,10 +105,10 @@ fun LoginUser(
                 loginViewModel.handleIntent(LoginIntent.Login(email, password))
             },
             onClickRegister = {
-                navController.navigate(Constant.RegisterScreen)
+                navController.navigate(Screen.Register.route)
             },
             OnClickForgetPassword = {
-                navController.navigate(Constant.ForgetPassword)
+                navController.navigate(Screen.ForgetPassword.route)
             }
         )
     }

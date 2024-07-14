@@ -8,6 +8,7 @@ import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
 import io.reactivex.schedulers.Schedulers
+
 /*
 * using Hilt
 * using Crashlytics
@@ -15,7 +16,7 @@ import io.reactivex.schedulers.Schedulers
 * */
 
 @HiltAndroidApp
-class MyApplication : Application(){
+class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         listenToNetworkConnectivity()

@@ -10,7 +10,7 @@ import kotlinx.coroutines.tasks.await
 
 class FirebaseAuthRepositoryImpl(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-):FirebaseAuthRepository {
+) : FirebaseAuthRepository {
     override suspend fun loginWithGoogle(idToken: String): Flow<Resource<String>> = flow {
         try {
             emit(Resource.Loading())

@@ -49,7 +49,7 @@ import com.doaamosallam.infinitystore.compose.Header
 import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
 import com.doaamosallam.infinitystore.compose.RegisterTextButton
-import com.doaamosallam.infinitystore.util.Constant
+import com.doaamosallam.infinitystore.util.Screen
 import com.doaamosallam.infinitystore.viewmodel.register.RegisterIntent
 import com.doaamosallam.infinitystore.viewmodel.register.RegisterViewModel
 import com.doaamosallam.infinitystore.viewmodel.register.RegisterViewState
@@ -85,7 +85,7 @@ fun RegisterUser(
     LaunchedEffect(viewState) {
         if (viewState is RegisterViewState.Success) {
             snackbarHostState.showSnackbar("Registration successful!,\n Verification email and password, so you must be login.")
-            navController.navigate(Constant.LoginScreen)
+            navController.navigate(Screen.Login.route)
 
         }
     }
@@ -98,7 +98,7 @@ fun RegisterUser(
             onNameChange = { newName ->
                 name = newName
                 registerViewModel.onNameChange(newName)
-                nameError = name.isNotEmpty()
+                nameError = name.isEmpty()
             },
             phone = phone,
             errorPhone = phoneError,
@@ -143,7 +143,7 @@ fun RegisterUser(
                     )
                 )
             },
-            onClickLogin = { navController.navigate(Constant.LoginScreen) }
+            onClickLogin = { navController.navigate(Screen.Login.route) }
 
         )
     }
