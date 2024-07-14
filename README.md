@@ -44,12 +44,13 @@ domain/
                     usecase/
 ```
  
-   ## Project Goals:
+   ## Goals and requirements:
 
 <p> - Migrate from kapt tp kps. </p>
 <p> - using git flow</p>
 <p> - using version catalog to implement libraries. </p>
 <p> - Convert From MVVM to MVI</p>
+<p> - Using Firebase and Crashlytics
 <p>- Using Navigation component with Compose</p>
 
 
