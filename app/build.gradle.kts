@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.com.google.dagger.hilt.android)
     alias(libs.plugins.com.google.devtools.ksp)
     alias(libs.plugins.kaptKotlin)
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.firebase.crashlytics)
 
 
 }
@@ -85,13 +87,21 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-
+ // google font
     implementation(libs.androidx.ui.text.google.fonts)
     // splash screen
     implementation(libs.androidx.core.splashscreen)
     // room
     implementation(libs.room.runtime)
     ksp(libs.androidx.room.compiler)
+    // firebase
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.crashlytics)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.play.services.auth)
+    implementation(libs.firebase.analytics)
+    // third party libraries
+    implementation(libs.reactivenetwork.rx2)
 
     // dependency Injection Hilt
     implementation(libs.hilt.android)

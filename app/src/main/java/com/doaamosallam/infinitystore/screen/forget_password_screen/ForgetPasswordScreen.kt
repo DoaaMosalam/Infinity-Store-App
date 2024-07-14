@@ -19,6 +19,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,33 +36,48 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.util.PatternsCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.doaamosallam.infinitystore.R
 import com.doaamosallam.infinitystore.compose.AuthButton
 import com.doaamosallam.infinitystore.compose.ClickableImage
 import com.doaamosallam.infinitystore.util.Constant
+import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewState
+import com.doaamosallam.infinitystore.viewmodel.forget_password.ForgetPasViewState
+import com.doaamosallam.infinitystore.viewmodel.forget_password.ForgetPasswordIntent
+import com.doaamosallam.infinitystore.viewmodel.forget_password.ForgetPasswordViewModel
 import kotlinx.coroutines.launch
 
 
 // state hoisting
-
 @Composable
 fun ForgetPassword(
     navController: NavController,
+    forgetPasswordViewModel: ForgetPasswordViewModel = hiltViewModel()
+
 ) {
-    var email by remember { mutableStateOf("") }
+    val viewState  by forgetPasswordViewModel.forgetViewState.collectAsState()
+    // Separate state variables for errors
     var emailError by remember { mutableStateOf(false) }
+    // Extract email and password from viewState
+    var email = if (viewState is ForgetPasViewState.Content) (viewState as ForgetPasViewState.Content).email else ""
+//    var email by remember { mutableStateOf("") }
+    // Create a SnackbarHostState
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+
 
     ForgetScreen(
         email = email,
         emailError = emailError,
         onEmailChanged = { newEmail ->
-            email = newEmail
+            forgetPasswordViewModel.onEmailChange(newEmail)
             emailError = !PatternsCompat.EMAIL_ADDRESS.matcher(newEmail).matches()
         },
         onClickSend = {
+            // Trigger login event
+            forgetPasswordViewModel.handleIntent(ForgetPasswordIntent.ForgetPassword(email))
+            // Show a snackbar
             if (!emailError && email.isNotEmpty()) {
                 coroutineScope.launch {
                     snackbarHostState.showSnackbar("Check your email, you will receive a link to create a new password via email")

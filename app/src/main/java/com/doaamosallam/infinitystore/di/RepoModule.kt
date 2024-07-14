@@ -6,6 +6,8 @@ import com.doaamosallam.data.repo.LoginRepoImp
 import com.doaamosallam.data.repo.RegisterRepoImp
 import com.doaamosallam.domain.repo.LoginRepo
 import com.doaamosallam.domain.repo.RegisterRepo
+import com.doaamosallam.infinitystore.data.FirebaseAuthRepository
+import com.doaamosallam.infinitystore.data.FirebaseAuthRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,4 +33,10 @@ object RepoModule {
         registerDAO,
         loginDAO
     )
+    // app module firebase
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuthRepository(): FirebaseAuthRepository = FirebaseAuthRepositoryImpl()
+
 }
