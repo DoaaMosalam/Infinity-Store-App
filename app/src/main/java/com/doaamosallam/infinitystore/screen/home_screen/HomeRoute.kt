@@ -7,5 +7,5 @@ import com.doaamosallam.infinitystore.util.Screen
 
 
 fun NavGraphBuilder.HomeRoute(navController: NavController) {
-    composable(Screen.HomeScreen.route) { HomeContainer() }
+    composable(Screen.HomeScreen.route) { HomeContainer(navController) }
 }

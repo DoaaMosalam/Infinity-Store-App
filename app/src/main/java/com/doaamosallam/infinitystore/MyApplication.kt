@@ -22,7 +22,6 @@ class MyApplication : Application() {
         listenToNetworkConnectivity()
 
     }
-
     @SuppressLint("CheckResult")
     fun listenToNetworkConnectivity() {
         ReactiveNetwork.observeInternetConnectivity().subscribeOn(Schedulers.io())

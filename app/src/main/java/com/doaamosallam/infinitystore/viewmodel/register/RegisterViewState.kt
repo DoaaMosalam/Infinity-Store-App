@@ -1,6 +1,6 @@
 package com.doaamosallam.infinitystore.viewmodel.register
 
-import com.doaamosallam.domain.models.Register
+import com.doaamosallam.domain.models.auth.Register
 
 
 sealed class RegisterViewState {

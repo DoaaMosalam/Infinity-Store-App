@@ -2,7 +2,7 @@ package com.doaamosallam.infinitystore.viewmodel.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.doaamosallam.domain.models.Register
+import com.doaamosallam.domain.models.auth.Register
 import com.doaamosallam.domain.usecase.RegisterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

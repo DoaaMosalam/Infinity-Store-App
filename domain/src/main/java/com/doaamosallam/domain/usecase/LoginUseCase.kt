@@ -1,6 +1,6 @@
 package com.doaamosallam.domain.usecase
 
-import com.doaamosallam.domain.models.Login
+import com.doaamosallam.domain.models.auth.Login
 import com.doaamosallam.domain.repo.LoginRepo
 import javax.inject.Inject
 

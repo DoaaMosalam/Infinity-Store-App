@@ -38,11 +38,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = libs.versions.javaVersion.get()
     }
     buildFeatures {
         compose = true
@@ -102,6 +102,10 @@ dependencies {
     implementation(libs.firebase.analytics)
     // third party libraries
     implementation(libs.reactivenetwork.rx2)
+    //retrofit
+    implementation(libs.retrofit)
+    //convert retrofit
+    implementation(libs.converter.gson)
 
     // dependency Injection Hilt
     implementation(libs.hilt.android)

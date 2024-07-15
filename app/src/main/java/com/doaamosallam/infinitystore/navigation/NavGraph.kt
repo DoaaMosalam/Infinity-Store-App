@@ -16,7 +16,6 @@ fun InfinityNavGraph(navController: NavHostController) {
         RegisterRoute(navController)
         LoginRoute(navController)
         ForgetPasswordRoute(navController)
-//        composable(Screen.ForgetPassword.toString()){ ForgetPassword(navController)}
         HomeRoute(navController)
     }
 }

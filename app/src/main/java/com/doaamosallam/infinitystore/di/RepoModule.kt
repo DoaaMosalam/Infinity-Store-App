@@ -5,9 +5,12 @@ import com.doaamosallam.data.local.RegisterDAO
 import com.doaamosallam.data.repo.LoginRepoImp
 import com.doaamosallam.data.repo.RegisterRepoImp
 import com.doaamosallam.domain.repo.LoginRepo
+import com.doaamosallam.domain.repo.ProductsRepo
 import com.doaamosallam.domain.repo.RegisterRepo
 import com.doaamosallam.infinitystore.data.FirebaseAuthRepository
 import com.doaamosallam.infinitystore.data.FirebaseAuthRepositoryImpl
+import com.doaamosallam.remote.APIService
+import com.doaamosallam.repo.ProductsRepoImp
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,9 +37,13 @@ object RepoModule {
         loginDAO
     )
     // app module firebase
-
     @Provides
     @Singleton
     fun provideFirebaseAuthRepository(): FirebaseAuthRepository = FirebaseAuthRepositoryImpl()
+
+   @Provides
+   @Singleton
+   fun provideProductRepo(apiService: APIService):ProductsRepo = ProductsRepoImp(apiService)
+
 
 }
