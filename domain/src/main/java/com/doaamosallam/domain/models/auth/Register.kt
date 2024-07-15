@@ -1,4 +1,4 @@
-package com.doaamosallam.domain.models
+package com.doaamosallam.domain.models.auth
 
 data class Register(
     var name:String,

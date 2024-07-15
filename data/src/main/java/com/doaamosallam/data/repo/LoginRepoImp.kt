@@ -1,8 +1,7 @@
 package com.doaamosallam.data.repo
 
 import com.doaamosallam.data.local.LoginDAO
-import com.doaamosallam.data.local.LoginEntity
-import com.doaamosallam.domain.models.Login
+import com.doaamosallam.domain.models.auth.Login
 import com.doaamosallam.domain.repo.LoginRepo
 
 class LoginRepoImp(private val loginDAO: LoginDAO):LoginRepo {

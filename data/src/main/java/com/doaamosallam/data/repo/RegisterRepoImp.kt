@@ -4,7 +4,7 @@ import com.doaamosallam.data.local.LoginDAO
 import com.doaamosallam.data.local.LoginEntity
 import com.doaamosallam.data.local.RegisterDAO
 import com.doaamosallam.data.local.RegisterEntity
-import com.doaamosallam.domain.models.Register
+import com.doaamosallam.domain.models.auth.Register
 import com.doaamosallam.domain.repo.RegisterRepo
 
 class RegisterRepoImp(

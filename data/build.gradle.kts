@@ -42,4 +42,8 @@ dependencies {
     implementation(libs.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.room.ktx)
+    //retrofit
+    implementation(libs.retrofit)
+    //convert retrofit
+    implementation(libs.converter.gson)
 }

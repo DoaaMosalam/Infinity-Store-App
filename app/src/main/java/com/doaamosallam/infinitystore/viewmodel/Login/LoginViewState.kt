@@ -1,6 +1,6 @@
 package com.doaamosallam.infinitystore.viewmodel.Login
 
-import com.doaamosallam.domain.models.Login
+import com.doaamosallam.domain.models.auth.Login
 
 sealed class LoginViewState {
     object Idle : LoginViewState()

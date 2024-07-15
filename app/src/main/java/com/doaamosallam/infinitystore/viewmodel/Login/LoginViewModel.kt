@@ -3,7 +3,7 @@ package com.doaamosallam.infinitystore.viewmodel.Login
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.doaamosallam.domain.models.Login
+import com.doaamosallam.domain.models.auth.Login
 import com.doaamosallam.domain.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

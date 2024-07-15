@@ -127,7 +127,6 @@ fun RegisterUser(
             confirmPassword = confirmPassword,
             errorConfirmPassword = confirmPasswordError,
             onConfirmPasswordChange = { newConfirmPassword ->
-                confirmPassword
                 registerViewModel.onConfirmPasswordChange(newConfirmPassword)
                 confirmPasswordError = confirmPassword == password
             },
