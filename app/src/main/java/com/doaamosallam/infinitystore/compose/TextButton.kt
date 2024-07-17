@@ -10,12 +10,6 @@ import androidx.compose.ui.unit.sp
 import com.doaamosallam.infinitystore.ui.theme.Merri
 import com.doaamosallam.infinitystore.ui.theme.PrimaryColor
 
-
-@Composable
-fun Text(text: String) {
-    Text(text = text)
-}
-
 @Composable
 fun ForgetTextButton(
     text: String,
@@ -49,3 +43,4 @@ fun RegisterTextButton(
 
         )
 }
+

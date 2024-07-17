@@ -1,7 +1,7 @@
 package com.doaamosallam.infinitystore.di
 
+import com.doaamosallam.data.remote.APIService
 import com.doaamosallam.infinitystore.util.Constant
-import com.doaamosallam.remote.APIService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,14 +17,15 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideOkHttp():OkHttpClient{
+    fun provideOkHttp(): OkHttpClient {
         return OkHttpClient()
             .newBuilder()
-            .hostnameVerifier{_,_->true}
+            .hostnameVerifier { _, _ -> true }
             .readTimeout(30, TimeUnit.SECONDS)
-            .connectTimeout(30,TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
             .build()
     }
+
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {

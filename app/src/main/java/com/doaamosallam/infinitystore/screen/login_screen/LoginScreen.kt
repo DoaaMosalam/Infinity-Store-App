@@ -50,7 +50,7 @@ import com.doaamosallam.infinitystore.compose.Header
 import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
 import com.doaamosallam.infinitystore.compose.RegisterTextButton
-import com.doaamosallam.infinitystore.util.Screen
+import com.doaamosallam.infinitystore.navigation.Screen
 import com.doaamosallam.infinitystore.viewmodel.Login.LoginIntent
 import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewModel
 import com.doaamosallam.infinitystore.viewmodel.Login.LoginViewState

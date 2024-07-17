@@ -1,5 +1,6 @@
-package com.doaamosallam.remote
+package com.doaamosallam.data.remote
 
+import com.doaamosallam.domain.models.products.Product
 import com.doaamosallam.domain.models.products.ProductResponse
 import retrofit2.http.GET
 

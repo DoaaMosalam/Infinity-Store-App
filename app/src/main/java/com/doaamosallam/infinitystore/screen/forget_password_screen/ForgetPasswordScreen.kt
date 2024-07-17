@@ -41,7 +41,7 @@ import androidx.navigation.NavController
 import com.doaamosallam.infinitystore.R
 import com.doaamosallam.infinitystore.compose.AuthButton
 import com.doaamosallam.infinitystore.compose.ClickableImage
-import com.doaamosallam.infinitystore.util.Screen
+import com.doaamosallam.infinitystore.navigation.Screen
 import com.doaamosallam.infinitystore.viewmodel.forget_password.ForgetPasViewState
 import com.doaamosallam.infinitystore.viewmodel.forget_password.ForgetPasswordIntent
 import com.doaamosallam.infinitystore.viewmodel.forget_password.ForgetPasswordViewModel
