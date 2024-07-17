@@ -115,5 +115,10 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.compose)
+    // loading image from URL
+    implementation(libs.coil.compose)
+
     implementation(libs.material3)
+    implementation(libs.accompanist.pager)
+
 }

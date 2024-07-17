@@ -49,7 +49,7 @@ import com.doaamosallam.infinitystore.compose.Header
 import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
 import com.doaamosallam.infinitystore.compose.RegisterTextButton
-import com.doaamosallam.infinitystore.util.Screen
+import com.doaamosallam.infinitystore.navigation.Screen
 import com.doaamosallam.infinitystore.viewmodel.register.RegisterIntent
 import com.doaamosallam.infinitystore.viewmodel.register.RegisterViewModel
 import com.doaamosallam.infinitystore.viewmodel.register.RegisterViewState
