@@ -10,7 +10,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-                // Your UI content
+            // Your UI content
             InfinityApp()
 
         }

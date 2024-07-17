@@ -14,8 +14,8 @@ object UseCaseModule {
     // provide product use case
     @Provides
     @Singleton
-    fun provideProductUseCase(productsRepo: ProductsRepo):ProductsUseCase {
-       return ProductsUseCase(productsRepo)
+    fun provideProductUseCase(productsRepo: ProductsRepo): ProductsUseCase {
+        return ProductsUseCase(productsRepo)
     }
 
 }

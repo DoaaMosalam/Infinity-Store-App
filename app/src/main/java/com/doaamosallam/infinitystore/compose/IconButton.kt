@@ -20,6 +20,5 @@ fun IconButtonHome(
         painter = painter,
         contentDescription = contentDescription,
         modifier = modifier.clickable { onClick() })
-
 }
 
