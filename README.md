@@ -52,6 +52,7 @@ domain/
 <p> - Convert From MVVM to MVI</p>
 <p> - Using Firebase and Crashlytics
 <p>- Using Navigation component with Compose</p>
+</p> - Get All Data From API </p>
 
 
   ## Best practice:
@@ -63,6 +64,7 @@ domain/
      <p><a href ="https://developer.android.com/develop/ui/compose">- Jetpack Compose</a></p>
     <p><a href ="https://developer.android.com/topic/architecture">- Clean Arechticutre</a></p>
     <p><a href ="https://developer.android.com/build/migrate-to-ksp">- Migrate from kapt to KSP </a></p>
+        <p><a href ="https://developer.android.com/training/dependency-injection/hilt-android">- Hilt </a></p>
     <p><a href="https://medium.com/@mohammedkhudair57/mvi-architecture-pattern-in-android-0046bf9b8a2e"> -MVI</p>
       
   ## UI && UX Dsign Project
