@@ -69,6 +69,7 @@ fun HomeContainer(
 ) {
     val state by homeViewModel.viewState.collectAsState()
     val search by remember { mutableStateOf("") }
+    // appear Bottom bar Navigation
     Scaffold(
         bottomBar = { BottomNavigationBar(navController = navController) }
     ) {

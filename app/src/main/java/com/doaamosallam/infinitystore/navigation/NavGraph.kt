@@ -10,8 +10,6 @@ import androidx.navigation.compose.composable
 import com.doaamosallam.infinitystore.screen.cart_screen.CartContainer
 import com.doaamosallam.infinitystore.screen.cart_screen.CartRoute
 import com.doaamosallam.infinitystore.screen.category_screen.CategoryContainer
-import com.doaamosallam.infinitystore.screen.favorite_screen.FavoriteContainer
-import com.doaamosallam.infinitystore.screen.favorite_screen.FavoriteRoute
 import com.doaamosallam.infinitystore.screen.forget_password_screen.ForgetPasswordRoute
 import com.doaamosallam.infinitystore.screen.home_screen.HomeRoute
 import com.doaamosallam.infinitystore.screen.login_screen.LoginRoute
@@ -26,7 +24,6 @@ fun InfinityNavGraph(navController: NavHostController) {
         ForgetPasswordRoute(navController)
         HomeRoute(navController)
         composable(Screen.CategoryScreen.route) { CategoryContainer(navController) }
-        FavoriteRoute(navController)
       CartRoute(navController)
         ProfileRoute(navController)
 
