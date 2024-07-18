@@ -53,6 +53,7 @@ domain/
 <p> - Using Firebase and Crashlytics
 <p>- Using Navigation component with Compose</p>
 </p> - Get All Data From API </p>
+</p> - Hide API keys and other sensitive information in Android by using BuildConfig</p>
 
 
   ## Best practice:
