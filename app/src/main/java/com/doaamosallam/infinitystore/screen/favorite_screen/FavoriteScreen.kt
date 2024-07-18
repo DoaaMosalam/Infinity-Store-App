@@ -1,4 +1,4 @@
-package com.doaamosallam.infinitystore.screen.category_screen
+package com.doaamosallam.infinitystore.screen.favorite_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
@@ -16,34 +16,33 @@ import com.doaamosallam.infinitystore.navigation.BottomNavigationBar
 //state hoisting
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CategoryContainer(navController: NavController) {
+fun FavoriteContainer(navController: NavController) {
     Scaffold(
         bottomBar = { BottomNavigationBar(navController = navController) }
     ) {
-        // do  code here category screen
-    CategoryScreen()
+        FavoriteScreen()
     }
 }
 
 @Composable
-fun CategoryScreen() {
-    CategoryDisplay()
+fun FavoriteScreen() {
+    FavoriteDisplay()
 
 }
 
 @Composable
-fun CategoryDisplay() {
+fun FavoriteDisplay() {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 30.dp)
     ) {
-        HeaderHome(title = "Category Screen", subtitle = "")
+        HeaderHome(title = "Favorite Screen", subtitle = "")
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewPCategoryScreen() {
-    CategoryScreen()
+fun PreviewProfileScreen() {
+    FavoriteScreen()
 }

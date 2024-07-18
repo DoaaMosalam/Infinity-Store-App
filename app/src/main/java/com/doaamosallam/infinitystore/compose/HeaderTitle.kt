@@ -69,7 +69,7 @@ fun HeaderHome(title: String, subtitle: String) {
         text = title,
         textAlign = TextAlign.Center,
         modifier = Modifier.padding(top = 20.dp, start = 16.dp),
-        fontSize = 20.sp,
+        fontSize = 30.sp,
         fontFamily = Merri,
         color = Color.Black
     )
@@ -78,7 +78,7 @@ fun HeaderHome(title: String, subtitle: String) {
         text = subtitle,
         textAlign = TextAlign.Center,
         modifier = Modifier.padding(top = 5.dp, start = 16.dp),
-        fontSize = 9.sp,
+        fontSize = 16.sp,
         fontFamily = playWriteRegular,
         color = Color.Gray
     )

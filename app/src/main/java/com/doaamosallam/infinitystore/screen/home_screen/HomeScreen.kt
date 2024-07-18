@@ -1,6 +1,10 @@
 package com.doaamosallam.infinitystore.screen.home_screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,7 +20,14 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,7 +37,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,47 +55,56 @@ import com.doaamosallam.infinitystore.compose.HeaderHome
 import com.doaamosallam.infinitystore.compose.IconButtonHome
 import com.doaamosallam.infinitystore.compose.ProductItem
 import com.doaamosallam.infinitystore.compose.SpacerGeneral
+import com.doaamosallam.infinitystore.navigation.BottomNavigationBar
 import com.doaamosallam.infinitystore.navigation.Screen
 import com.doaamosallam.infinitystore.viewmodel.home.HomeViewModel
 import com.doaamosallam.infinitystore.viewmodel.home.HomeViewState
 
 //state hoisting
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeContainer(
     navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     val state by homeViewModel.viewState.collectAsState()
-    when (state) {
-        is HomeViewState.Loading -> {
-            // Display loading indicator
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-
-        is HomeViewState.Success -> {
-            HomeScreen(
-                products = (state as HomeViewState.Success).products,
-                onClickMenu = {
-                    navController.navigate(Screen.CartScreen.route)
-                },
-                onClickProfile = {
-                    navController.navigate(Screen.ProfileScreen.route)
+    val search by remember { mutableStateOf("") }
+    Scaffold(
+        bottomBar = { BottomNavigationBar(navController = navController) }
+    ) {
+        when (state) {
+            is HomeViewState.Loading -> {
+                // Display loading indicator
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    CircularProgressIndicator()
                 }
-            )
-        }
+            }
 
-        is HomeViewState.Error -> {
-            // Display error message
-            Text(text = (state as HomeViewState.Error).message)
-        }
+            is HomeViewState.Success -> {
+                HomeScreen(
+                    products = (state as HomeViewState.Success).products,
+                    onClickMenu = {
+                        navController.navigate(Screen.CartScreen.route)
+                    },
+                    onClickProfile = {
+                        navController.navigate(Screen.ProfileScreen.route)
+                    },
+                    search = search,
+                    onSearchChange = {}
+                )
+            }
 
-        else -> {}
+            is HomeViewState.Error -> {
+                // Display error message
+                Text(text = (state as HomeViewState.Error).message)
+            }
+
+            else -> {}
+        }
     }
 
 }
@@ -88,7 +114,9 @@ fun HomeContainer(
 private fun HomeScreen(
     products: List<Product>,
     onClickMenu: () -> Unit,
-    onClickProfile: () -> Unit
+    onClickProfile: () -> Unit,
+    search: String,
+    onSearchChange: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -98,7 +126,9 @@ private fun HomeScreen(
         HomeDisplay(
             products = products,
             onClickMenu = onClickMenu,
-            onClickProfile = onClickProfile
+            onClickProfile = onClickProfile,
+            search = search,
+            onSearchChange = onSearchChange
         )
     }
 }
@@ -108,7 +138,9 @@ private fun HomeScreen(
 fun HomeDisplay(
     products: List<Product>,
     onClickMenu: () -> Unit,
-    onClickProfile: () -> Unit
+    onClickProfile: () -> Unit,
+    search:String,
+    onSearchChange: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -133,7 +165,30 @@ fun HomeDisplay(
             modifier = Modifier.size(24.dp)
         )
     }
+    // header title and subtitle
     HeaderHome(title = "Explore", subtitle = "Best trendy collection!")
+    // search bar
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp, start = 10.dp, end = 10.dp),
+        value = search,
+        onValueChange = onSearchChange,
+
+        label = { Text(text = stringResource(R.string.search)) },
+        trailingIcon = {
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_search_24),
+                contentDescription = null
+            )
+        },
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.Sentences,
+            keyboardType = KeyboardType.Text,
+        ),
+        visualTransformation = VisualTransformation.None
+    )
 
     SpacerGeneral(Spacer(modifier = Modifier.height(16.dp)))
     // display category
@@ -149,19 +204,19 @@ fun DisplayProducts(
     products: List<Product>
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(count = 3),
+        columns = GridCells.Fixed(count = 2),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         modifier = Modifier.fillMaxSize()
     ) {
         items(
-            items = products
-        ) { product ->
+            items = products) { product ->
             ProductItem(
                 product = product,
                 onClick = {},
                 modifier = Modifier.animateItemPlacement()
             )
         }
+
     }
 }
 
@@ -174,7 +229,8 @@ fun DisplayCategory() {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 6.dp)
     ) {
-        items(collectionsList) { collection ->
+        items(collectionsList) {
+            collection ->
             CategoryItem(
                 collection = collection,
                 isSelected = collection == selectedCollection,
@@ -225,6 +281,8 @@ fun PreviewHomeScreen() {
     HomeScreen(
         products = emptyList(),
         onClickMenu = {},
-        onClickProfile = {}
+        onClickProfile = {},
+        search = "",
+        onSearchChange = {}
     )
 }

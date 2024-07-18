@@ -26,6 +26,11 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            "\"https://dummyjson.com/\""
+        )
     }
 
     buildTypes {
