@@ -1,6 +1,7 @@
 package com.doaamosallam.infinitystore.di
 
 import com.doaamosallam.data.remote.APIService
+import com.doaamosallam.infinitystore.BuildConfig
 import com.doaamosallam.infinitystore.util.Constant
 import dagger.Module
 import dagger.Provides
@@ -30,7 +31,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(Constant.BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

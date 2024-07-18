@@ -27,5 +27,6 @@
     <string name="your_name_is_not_valid">Your name is Not Valid</string>
     <string name="password_must_be_11_number">Password must be 11 number</string>
     <string name="number_phone_must_be_11_number">Number Phone Must be 11 number</string>
+    <string name="search">Search</string>
 
 </resources>

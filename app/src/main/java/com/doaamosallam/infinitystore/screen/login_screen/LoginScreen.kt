@@ -76,7 +76,9 @@ fun LoginUser(
     LaunchedEffect(viewState) {
         if (viewState is LoginViewState.Success) {
             snackbarHostState.showSnackbar("Login successful!")
-            navController.navigate(Screen.HomeScreen.route)
+            navController.navigate(Screen.HomeScreen.route) {
+                popUpTo(Screen.Login.route) { inclusive = true }
+            }
         }
 
     }

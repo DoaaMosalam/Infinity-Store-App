@@ -12,3 +12,6 @@ fun InfinityApp() {
         InfinityNavGraph(navController = navController)
     }
 }
+
+
+
