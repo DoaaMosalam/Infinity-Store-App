@@ -1,8 +1,7 @@
-package com.doaamosallam.infinitystore
+package com.doaamosallam.infinitystore.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
-import com.doaamosallam.infinitystore.navigation.InfinityNavGraph
 import com.doaamosallam.infinitystore.ui.theme.InfinityStoreTheme
 
 @Composable

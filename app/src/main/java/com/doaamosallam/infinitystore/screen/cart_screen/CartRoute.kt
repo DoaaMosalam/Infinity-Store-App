@@ -6,5 +6,5 @@ import androidx.navigation.compose.composable
 import com.doaamosallam.infinitystore.navigation.Screen
 
 fun NavGraphBuilder.CartRoute(navController: NavController) {
-    composable(Screen.CartScreen.route){ CartContainer(navController)}
+    composable(Screen.CartScreen.route) { CartContainer(navController) }
 }

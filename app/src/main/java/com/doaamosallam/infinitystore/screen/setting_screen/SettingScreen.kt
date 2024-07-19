@@ -1,4 +1,4 @@
-package com.doaamosallam.infinitystore.screen.profile_screen
+package com.doaamosallam.infinitystore.screen.setting_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
@@ -16,31 +16,34 @@ import com.doaamosallam.infinitystore.navigation.BottomNavigationBar
 //state hoisting
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-
-fun ProfileContainer(navController: NavController) {
-    ProfileScreen()
+fun SettingContainer(navController: NavController) {
+    Scaffold(
+        bottomBar = { BottomNavigationBar(navController = navController) }
+    ) {
+        // do  code here category screen
+        SettingScreen()
+    }
 }
 
 @Composable
-fun ProfileScreen() {
-    ProfileDisplay()
+fun SettingScreen() {
+    SettingDisplay()
 
 }
 
 @Composable
-fun ProfileDisplay() {
+fun SettingDisplay() {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 30.dp)
     ) {
-        HeaderHome(title = "Profile Screen", subtitle = "")
+        HeaderHome(title = "Setting Screen", subtitle = "")
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewProfileScreen() {
-    ProfileScreen()
+fun PreviewPCategoryScreen() {
+    SettingScreen()
 }
-

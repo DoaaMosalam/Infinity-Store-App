@@ -2,7 +2,6 @@ package com.doaamosallam.infinitystore.di
 
 import com.doaamosallam.data.remote.APIService
 import com.doaamosallam.infinitystore.BuildConfig
-import com.doaamosallam.infinitystore.util.Constant
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

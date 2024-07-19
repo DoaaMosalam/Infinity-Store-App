@@ -2,9 +2,6 @@ package com.doaamosallam.infinitystore.screen.home_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,11 +18,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -37,10 +31,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
@@ -48,17 +40,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.doaamosallam.domain.models.categories.CategoryList
 import com.doaamosallam.domain.models.products.Product
 import com.doaamosallam.infinitystore.R
-import com.doaamosallam.infinitystore.compose.CategoryItem
 import com.doaamosallam.infinitystore.compose.HeaderHome
 import com.doaamosallam.infinitystore.compose.IconButtonHome
-import com.doaamosallam.infinitystore.compose.ProductItem
 import com.doaamosallam.infinitystore.compose.SpacerGeneral
 import com.doaamosallam.infinitystore.navigation.BottomNavigationBar
 import com.doaamosallam.infinitystore.navigation.Screen
+import com.doaamosallam.infinitystore.viewmodel.category_list.CategoryListViewModel
+import com.doaamosallam.infinitystore.viewmodel.category_list.CategoryListViewState
 import com.doaamosallam.infinitystore.viewmodel.home.HomeViewModel
 import com.doaamosallam.infinitystore.viewmodel.home.HomeViewState
+import com.doaamosallam.infinitystore.viewmodel.search_product.ProductSearchIntent
+import com.doaamosallam.infinitystore.viewmodel.search_product.ProductSearchViewModel
+import com.doaamosallam.infinitystore.viewmodel.search_product.ProductSearchViewState
 
 //state hoisting
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -66,14 +62,19 @@ import com.doaamosallam.infinitystore.viewmodel.home.HomeViewState
 fun HomeContainer(
     navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel(),
+    categoryList: CategoryListViewModel = hiltViewModel(),
+    productSearchViewModel: ProductSearchViewModel = hiltViewModel()
 ) {
-    val state by homeViewModel.viewState.collectAsState()
-    val search by remember { mutableStateOf("") }
+    val homeState by homeViewModel.viewState.collectAsState()
+    val categoryListState by categoryList.viewState.collectAsState()
+    val productSearchState by productSearchViewModel.viewState.collectAsState()
+    // search bar
+    var searchQuery by remember { mutableStateOf("") }
     // appear Bottom bar Navigation
     Scaffold(
         bottomBar = { BottomNavigationBar(navController = navController) }
     ) {
-        when (state) {
+        when (homeState) {
             is HomeViewState.Loading -> {
                 // Display loading indicator
                 Column(
@@ -86,22 +87,37 @@ fun HomeContainer(
             }
 
             is HomeViewState.Success -> {
+                val productsToDisplay = if (searchQuery.isEmpty()) {
+                    (homeState as HomeViewState.Success).products
+                } else {
+                    (productSearchState as? ProductSearchViewState.Success)?.products ?: emptyList()
+                }
                 HomeScreen(
-                    products = (state as HomeViewState.Success).products,
+                    products = productsToDisplay,
+                    categoryList = (categoryListState as CategoryListViewState.Success).data,
+
                     onClickMenu = {
                         navController.navigate(Screen.CartScreen.route)
                     },
                     onClickProfile = {
                         navController.navigate(Screen.ProfileScreen.route)
                     },
-                    search = search,
-                    onSearchChange = {}
+                    // search bar
+                    search = searchQuery,
+                    onSearchChange = {query->
+                        searchQuery = query
+                        if ( searchQuery.isNotEmpty()) {
+                            productSearchViewModel.handleIntent(
+                                ProductSearchIntent.SearchProducts(query)
+                            )
+                        }
+                    }
                 )
             }
 
             is HomeViewState.Error -> {
                 // Display error message
-                Text(text = (state as HomeViewState.Error).message)
+                Text(text = (homeState as HomeViewState.Error).message)
             }
 
             else -> {}
@@ -114,6 +130,7 @@ fun HomeContainer(
 @Composable
 private fun HomeScreen(
     products: List<Product>,
+    categoryList: List<CategoryList>,
     onClickMenu: () -> Unit,
     onClickProfile: () -> Unit,
     search: String,
@@ -126,10 +143,11 @@ private fun HomeScreen(
     ) {
         HomeDisplay(
             products = products,
+            categoryList= categoryList,
             onClickMenu = onClickMenu,
             onClickProfile = onClickProfile,
             search = search,
-            onSearchChange = onSearchChange
+            onSearchChange = {onSearchChange (it)}
         )
     }
 }
@@ -138,9 +156,10 @@ private fun HomeScreen(
 @Composable
 fun HomeDisplay(
     products: List<Product>,
+    categoryList: List<CategoryList>,
     onClickMenu: () -> Unit,
     onClickProfile: () -> Unit,
-    search:String,
+    search: String,
     onSearchChange: (String) -> Unit
 ) {
     Row(
@@ -174,7 +193,7 @@ fun HomeDisplay(
             .fillMaxWidth()
             .padding(top = 10.dp, start = 10.dp, end = 10.dp),
         value = search,
-        onValueChange = onSearchChange,
+        onValueChange = {onSearchChange (it)},
 
         label = { Text(text = stringResource(R.string.search)) },
         trailingIcon = {
@@ -193,7 +212,7 @@ fun HomeDisplay(
 
     SpacerGeneral(Spacer(modifier = Modifier.height(16.dp)))
     // display category
-    DisplayCategory()
+    DisplayCategory(categoryList)
     SpacerGeneral(Spacer(modifier = Modifier.height(16.dp)))
     // display products
     DisplayProducts(products)
@@ -210,7 +229,8 @@ fun DisplayProducts(
         modifier = Modifier.fillMaxSize()
     ) {
         items(
-            items = products) { product ->
+            items = products
+        ) { product ->
             ProductItem(
                 product = product,
                 onClick = {},
@@ -222,16 +242,15 @@ fun DisplayProducts(
 }
 
 @Composable
-fun DisplayCategory() {
-    val collectionsList = categoryList()
+fun DisplayCategory(categoryList: List<CategoryList>) {
+    val collectionsList = categoryList.map { it.name }
     var selectedCollection by remember { mutableStateOf("All") }
 
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 6.dp)
     ) {
-        items(collectionsList) {
-            collection ->
+        items(collectionsList) { collection ->
             CategoryItem(
                 collection = collection,
                 isSelected = collection == selectedCollection,
@@ -244,43 +263,13 @@ fun DisplayCategory() {
 }
 
 
-@Composable
-fun categoryList(): List<String> {
-    return listOf(
-        "All",
-        "beauty",
-        "fragrances",
-        "furniture",
-        "groceries",
-        "home-decoration",
-        "kitchen-accessories",
-        "laptops",
-        "mens-shirts",
-        "mens-shoes",
-        "mens-watches",
-        "mobile-accessories",
-        "motorcycle",
-        "skin-care",
-        "smartphones",
-        "sports-accessories",
-        "sunglasses",
-        "tablets",
-        "tops",
-        "vehicle",
-        "womens-bags",
-        "womens-dresses",
-        "womens-jewellery",
-        "womens-shoes",
-        "womens-watches"
-    )
-}
-
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomeScreen() {
     HomeScreen(
         products = emptyList(),
+        categoryList = emptyList(),
         onClickMenu = {},
         onClickProfile = {},
         search = "",
