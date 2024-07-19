@@ -1,4 +1,4 @@
-package com.doaamosallam.infinitystore.compose
+package com.doaamosallam.infinitystore.screen.home_screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,16 +9,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.doaamosallam.domain.models.products.Product
 import com.doaamosallam.infinitystore.R
+import com.doaamosallam.infinitystore.compose.SpacerGeneral
 
 @Composable
 fun ProductItem(product: Product, onClick: () -> Unit, modifier: Modifier = Modifier) {
@@ -84,7 +80,7 @@ fun ProductItem(product: Product, onClick: () -> Unit, modifier: Modifier = Modi
     }
 }
 
-
+// Category List in Home Screen
 @Composable
 fun CategoryItem(collection: String, isSelected: Boolean, onClick: (String) -> Unit) {
     Row(
@@ -107,6 +103,44 @@ fun CategoryItem(collection: String, isSelected: Boolean, onClick: (String) -> U
         )
     }
 }
+
+// Categories in Category Screen
+@Composable
+fun CategoriesItem(category: Product, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .clickable(onClick = onClick)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxHeight()
+                .clickable { onClick() },
+            contentAlignment = Alignment.BottomEnd
+        ) {
+            Image(
+                painter =
+                rememberImagePainter(data = category.thumbnail),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .height(200.dp)
+                    .background(Color.White)
+            )
+            SpacerGeneral(Spacer(modifier = Modifier.height(8.dp)))
+            Text(
+                text = category.title,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Thin,
+                color = Color.DarkGray,
+                fontFamily = FontFamily.Serif
+            )
+        }
+    }
+}
+
 
 
 
