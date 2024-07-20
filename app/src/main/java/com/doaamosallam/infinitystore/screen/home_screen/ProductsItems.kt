@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -34,6 +35,7 @@ import com.doaamosallam.domain.models.products.Product
 import com.doaamosallam.infinitystore.R
 import com.doaamosallam.infinitystore.compose.IconButtonCart
 import com.doaamosallam.infinitystore.compose.SpacerGeneral
+import com.doaamosallam.infinitystore.ui.theme.PrimaryColor
 
 @Composable
 fun ProductItem(product: Product,
@@ -67,7 +69,7 @@ fun ProductItem(product: Product,
         }
         SpacerGeneral(Spacer(modifier = Modifier.height(8.dp)))
         Text(
-            text = "${"$"} ${product.price}",
+            text = "\$${product.price}",
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold
         )
@@ -86,8 +88,8 @@ fun ProductItem(product: Product,
             painter = painterResource(id = R.drawable.shopping_bag_24),
             contentDescription = null,
             tint = Color.White,
-            modifier = Modifier.
-            size(40.dp)
+            modifier = Modifier
+                .size(40.dp)
                 .background(Color.Black, shape = CircleShape)
                 .padding(4.dp) )
     }
@@ -134,8 +136,8 @@ fun CategoriesItem(category: CategoriesItem, onClick: () -> Unit, modifier: Modi
             contentAlignment = Alignment.BottomEnd
         ) {
             Image(
-                painter =
-                rememberImagePainter(data = category.url),
+                painter = painterResource(id = R.drawable.logo),
+//                rememberImagePainter(data = category.url),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
@@ -146,10 +148,11 @@ fun CategoriesItem(category: CategoriesItem, onClick: () -> Unit, modifier: Modi
             SpacerGeneral(Spacer(modifier = Modifier.height(8.dp)))
             Text(
                 text = category.name,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Thin,
-                color = Color.DarkGray,
-                fontFamily = FontFamily.Serif
+                modifier = Modifier.padding(15.dp),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = colorResource(id = R.color.baby_blue),
+                fontFamily = FontFamily.Default
             )
         }
     }

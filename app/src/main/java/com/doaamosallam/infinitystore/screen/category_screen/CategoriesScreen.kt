@@ -90,8 +90,8 @@ fun CategoryScreen(
             text = "Categories",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 70.dp, top = 10.dp),
-            fontSize = 40.sp,
+                .padding(start = 150.dp, top = 10.dp),
+            fontSize = 20.sp,
             fontFamily = playWriteThin,
             fontWeight = FontWeight.Bold,
             color = Color.DarkGray

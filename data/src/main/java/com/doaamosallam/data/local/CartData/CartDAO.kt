@@ -7,10 +7,8 @@ import androidx.room.Query
 
 @Dao
 interface CartDAO {
-
-
     // save(insert) product in cart table
-   @Insert(onConflict = OnConflictStrategy.IGNORE)
+   @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addProductToCart(cartProduct: CartProductEntity)
 
 //    // get all cart from table

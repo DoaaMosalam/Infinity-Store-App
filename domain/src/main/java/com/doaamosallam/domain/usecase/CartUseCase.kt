@@ -10,5 +10,5 @@ class CartUseCase(
    // insert product to cart
     suspend fun addProductToCart(cart: CartProduct) = cartRepo.addProductToCart(cart)
     // get product from cart
-    suspend fun getProductFromCart()=cartRepo.getProductFromCart()
+    suspend fun getProductFromCart():List<CartProduct> =cartRepo.getProductFromCart()
 }
