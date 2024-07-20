@@ -20,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,9 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.doaamosallam.domain.models.categories.CategoriesItem
-import com.doaamosallam.infinitystore.R
 import com.doaamosallam.infinitystore.navigation.BottomNavigationBar
-import com.doaamosallam.infinitystore.screen.home_screen.CategoriesItem
+import com.doaamosallam.infinitystore.screen.home.CategoriesItem
 import com.doaamosallam.infinitystore.ui.theme.playWriteThin
 import com.doaamosallam.infinitystore.viewmodel.categories.CategoriesViewModel
 import com.doaamosallam.infinitystore.viewmodel.categories.CategoriesViewState

@@ -10,7 +10,7 @@ data class Product(
     val discountPercentage: Double,
     val images: List<String>,
     val rating: Double,
-//    val reviews: List<Review>,
+    val reviews: List<Review>,
     val thumbnail: String,
     val stock: Int,
 )

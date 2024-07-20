@@ -1,14 +1,20 @@
 package com.doaamosallam.domain.usecase
 
-import com.doaamosallam.domain.models.cart.Cart
 import com.doaamosallam.domain.models.cart.CartProduct
-import com.doaamosallam.domain.repo.CartRepo
+import com.doaamosallam.domain.repo.CartRepository
+import dagger.hilt.android.scopes.ViewModelScoped
+import javax.inject.Inject
 
-class CartUseCase(
-    private val cartRepo: CartRepo
+/**
+ * Use case class for interacting with the cart repository.
+ * @property cartRepo The cart repository to interact with.
+ */
+@ViewModelScoped
+class CartUseCase @Inject constructor(
+    private val cartRepo: CartRepository,
 ) {
-   // insert product to cart
+
     suspend fun addProductToCart(cart: CartProduct) = cartRepo.addProductToCart(cart)
-    // get product from cart
-    suspend fun getProductFromCart():List<CartProduct> =cartRepo.getProductFromCart()
+
+    suspend fun getProductFromCart() = cartRepo.getProductFromCart()
 }

@@ -1,15 +1,14 @@
 package com.doaamosallam.infinitystore.di
 
-import com.doaamosallam.data.local.CartData.CartDAO
-import com.doaamosallam.data.local.LoginData.LoginDAO
-import com.doaamosallam.data.local.RegisterData.RegisterDAO
-import com.doaamosallam.domain.repo.CartRepo
+import com.doaamosallam.local.cartData.CartDAO
+import com.doaamosallam.local.loginData.LoginDAO
+import com.doaamosallam.local.registerData.RegisterDAO
+import com.doaamosallam.domain.repo.CartRepository
 import com.doaamosallam.domain.repo.LoginRepo
 import com.doaamosallam.domain.repo.RegisterRepo
-import com.doaamosallam.repo.CartRepoImp
-import com.doaamosallam.repo.LoginRepoImp
-import com.doaamosallam.repo.RegisterRepoImp
-import dagger.Binds
+import com.doaamosallam.repository.CartRepoImp
+import com.doaamosallam.repository.LoginRepoImp
+import com.doaamosallam.repository.RegisterRepoImp
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,5 +37,5 @@ object RepoRoomDataModule {
     // provide cart product repo room database
     @Provides
     @Singleton
-    fun provideCartRepo(cartDAO: CartDAO):CartRepo = CartRepoImp(cartDAO)
+    fun provideCartRepo(cartDAO: CartDAO):CartRepository = CartRepoImp(cartDAO)
 }
