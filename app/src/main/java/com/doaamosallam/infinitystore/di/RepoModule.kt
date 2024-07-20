@@ -1,8 +1,11 @@
 package com.doaamosallam.infinitystore.di
 
-import com.doaamosallam.data.local.LoginDAO
-import com.doaamosallam.data.local.RegisterDAO
+import com.doaamosallam.data.local.CartData.CartDAO
+import com.doaamosallam.data.local.LoginData.LoginDAO
+import com.doaamosallam.data.local.RegisterData.RegisterDAO
 import com.doaamosallam.data.remote.APIService
+import com.doaamosallam.domain.repo.CartRepo
+import com.doaamosallam.domain.repo.CategoriesRepo
 import com.doaamosallam.domain.repo.CategoryListRepo
 import com.doaamosallam.domain.repo.LoginRepo
 import com.doaamosallam.domain.repo.ProductSearchRepo
@@ -10,6 +13,8 @@ import com.doaamosallam.domain.repo.ProductsRepo
 import com.doaamosallam.domain.repo.RegisterRepo
 import com.doaamosallam.infinitystore.data.FirebaseAuthRepository
 import com.doaamosallam.infinitystore.data.FirebaseAuthRepositoryImpl
+import com.doaamosallam.repo.CartRepoImp
+import com.doaamosallam.repo.CategoriesRepoImp
 import com.doaamosallam.repo.CategoryListRepoImp
 import com.doaamosallam.repo.LoginRepoImp
 import com.doaamosallam.repo.ProductSearchRepoImp
@@ -24,23 +29,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RepoModule {
-
-    @Provides
-    @Singleton
-    fun provideLoginRepo(
-        loginDAO: LoginDAO
-    ): LoginRepo = LoginRepoImp(loginDAO)
-
-    @Provides
-    @Singleton
-    fun provideRegisterRepo(
-        registerDAO: RegisterDAO,
-        loginDAO: LoginDAO
-    ): RegisterRepo = RegisterRepoImp(
-        registerDAO,
-        loginDAO
-    )
-
     // app module firebase
     @Provides
     @Singleton
@@ -61,4 +49,8 @@ object RepoModule {
     @Singleton
     fun provideSearchProductRepo(apiService: APIService):ProductSearchRepo = ProductSearchRepoImp(apiService)
 
+    //provide categories repo
+    @Provides
+    @Singleton
+    fun provideCategoriesRepo(apiService: APIService):CategoriesRepo = CategoriesRepoImp(apiService)
 }

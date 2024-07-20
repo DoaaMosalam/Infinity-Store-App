@@ -1,7 +1,9 @@
 package com.doaamosallam.infinitystore.di
 
+import com.doaamosallam.domain.repo.CartRepo
 import com.doaamosallam.domain.repo.LoginRepo
 import com.doaamosallam.domain.repo.RegisterRepo
+import com.doaamosallam.domain.usecase.CartUseCase
 import com.doaamosallam.domain.usecase.LoginUseCase
 import com.doaamosallam.domain.usecase.RegisterUseCase
 import dagger.Module
@@ -13,7 +15,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 
-object UserCaseModule {
+object UseCaseRoomDataModule {
     @Provides
     @Singleton
     fun provideLoginUseCase(loginRepo: LoginRepo): LoginUseCase {
@@ -24,5 +26,11 @@ object UserCaseModule {
     @Singleton
     fun provideRegisterUseCase(registerRepo: RegisterRepo): RegisterUseCase {
         return RegisterUseCase(registerRepo)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCartUseCase(cartRepo: CartRepo):CartUseCase{
+        return CartUseCase(cartRepo )
     }
 }

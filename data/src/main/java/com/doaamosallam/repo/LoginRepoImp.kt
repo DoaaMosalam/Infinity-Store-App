@@ -1,6 +1,6 @@
 package com.doaamosallam.repo
 
-import com.doaamosallam.data.local.LoginDAO
+import com.doaamosallam.data.local.LoginData.LoginDAO
 import com.doaamosallam.domain.models.auth.Login
 import com.doaamosallam.domain.repo.LoginRepo
 

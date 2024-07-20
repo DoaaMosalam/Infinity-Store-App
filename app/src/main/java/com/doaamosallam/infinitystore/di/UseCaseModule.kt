@@ -1,8 +1,10 @@
 package com.doaamosallam.infinitystore.di
 
+import com.doaamosallam.domain.repo.CategoriesRepo
 import com.doaamosallam.domain.repo.CategoryListRepo
 import com.doaamosallam.domain.repo.ProductSearchRepo
 import com.doaamosallam.domain.repo.ProductsRepo
+import com.doaamosallam.domain.usecase.CategoriesUseCase
 import com.doaamosallam.domain.usecase.CategoryListUseCase
 import com.doaamosallam.domain.usecase.ProductSearchUseCase
 import com.doaamosallam.domain.usecase.ProductsUseCase
@@ -29,4 +31,9 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideProductSearchUseCase(productSearchRepo: ProductSearchRepo): ProductSearchUseCase = ProductSearchUseCase(productSearchRepo)
+    // provide categories use case
+    @Provides
+    @Singleton
+    fun provideCategoriesUseCase(categoriesRepo: CategoriesRepo): CategoriesUseCase = CategoriesUseCase(categoriesRepo)
+
 }

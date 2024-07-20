@@ -1,9 +1,9 @@
 package com.doaamosallam.repo
 
-import com.doaamosallam.data.local.LoginDAO
-import com.doaamosallam.data.local.LoginEntity
-import com.doaamosallam.data.local.RegisterDAO
-import com.doaamosallam.data.local.RegisterEntity
+import com.doaamosallam.data.local.LoginData.LoginDAO
+import com.doaamosallam.data.local.LoginData.LoginEntity
+import com.doaamosallam.data.local.RegisterData.RegisterDAO
+import com.doaamosallam.data.local.RegisterData.RegisterEntity
 import com.doaamosallam.domain.models.auth.Register
 import com.doaamosallam.domain.repo.RegisterRepo
 
