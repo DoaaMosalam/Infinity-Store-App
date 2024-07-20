@@ -1,7 +1,6 @@
 package com.doaamosallam.data.remote
 
-import com.doaamosallam.domain.models.categories.CategoryList
-import com.doaamosallam.domain.models.products.Product
+import com.doaamosallam.domain.models.categories.CategoriesItem
 import com.doaamosallam.domain.models.products.ProductResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -18,4 +17,7 @@ interface APIService {
     // search products
     @GET("products/search")
     suspend fun searchProducts(@Query("q") query: String): ProductResponse
+    // get all Categories
+    @GET("products/categories")
+    suspend fun getAllCategories(): List<CategoriesItem>
 }

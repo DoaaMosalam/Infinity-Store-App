@@ -1,4 +1,4 @@
-package com.doaamosallam.data.local
+package com.doaamosallam.data.local.LoginData
 
 import androidx.room.Dao
 import androidx.room.Insert
