@@ -76,8 +76,9 @@ fun HomeContainer(
     navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel(),
     categoryList: CategoryListViewModel = hiltViewModel(),
+    productSearchViewModel: ProductSearchViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
-    productSearchViewModel: ProductSearchViewModel = hiltViewModel()
+
 ) {
     val homeState by homeViewModel.viewState.collectAsState()
     val categoryListState by categoryList.viewState.collectAsState()
@@ -130,8 +131,16 @@ fun HomeContainer(
                     onClickProduct = {
 
                     },
-                    onClickCart = {
-//                       cartViewModel.handleIntent(CartIntent.AddToCart(CartProduct())
+                    onClickCart = {product ->
+                        cartViewModel.handleIntent(CartIntent.AddToCart(
+                            CartProduct(id = product.id,
+                            title = product.title,
+                            price = product.price,
+                            quantity = 1,
+                            thumbnail = product.thumbnail,
+                            total = product.price,
+                            discountPercentage = 0.0,
+                            discountedTotal = product.price)))
                     }
                 )
             }
