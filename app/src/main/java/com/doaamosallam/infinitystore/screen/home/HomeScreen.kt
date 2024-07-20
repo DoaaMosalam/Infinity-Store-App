@@ -64,7 +64,6 @@ fun HomeContainer(navController: NavController) {
     Scaffold(
         bottomBar = { BottomNavigationBar(navController = navController) }
     ) {
-
         FullScreenLoading(
             modifier = Modifier.fillMaxSize(),
             isLoading = uiState.isLoading,
