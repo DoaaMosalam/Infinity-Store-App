@@ -1,6 +1,6 @@
 package com.doaamosallam.infinitystore.di
 
-import com.doaamosallam.domain.repo.CartRepo
+import com.doaamosallam.domain.repo.CartRepository
 import com.doaamosallam.domain.repo.LoginRepo
 import com.doaamosallam.domain.repo.RegisterRepo
 import com.doaamosallam.domain.usecase.CartUseCase
@@ -30,7 +30,7 @@ object UseCaseRoomDataModule {
 
     @Provides
     @Singleton
-    fun provideCartUseCase(cartRepo: CartRepo):CartUseCase{
+    fun provideCartUseCase(cartRepo: CartRepository):CartUseCase{
         return CartUseCase(cartRepo )
     }
 }

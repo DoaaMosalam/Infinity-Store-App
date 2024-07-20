@@ -2,10 +2,10 @@ package com.doaamosallam.infinitystore.di
 
 import android.app.Application
 import androidx.room.Room
-import com.doaamosallam.data.local.AppDatabase
-import com.doaamosallam.data.local.CartData.CartDAO
-import com.doaamosallam.data.local.LoginData.LoginDAO
-import com.doaamosallam.data.local.RegisterData.RegisterDAO
+import com.doaamosallam.local.AppDatabase
+import com.doaamosallam.local.cartData.CartDAO
+import com.doaamosallam.local.loginData.LoginDAO
+import com.doaamosallam.local.registerData.RegisterDAO
 import com.doaamosallam.infinitystore.util.Constant
 import dagger.Module
 import dagger.Provides
@@ -38,6 +38,6 @@ object NetworkRoomDataModule {
 
     @Provides
     @Singleton
-    fun provideCartDao(db: AppDatabase):CartDAO = db.cartDao()
+    fun provideCartDao(db: AppDatabase): CartDAO = db.cartDao()
 
 }

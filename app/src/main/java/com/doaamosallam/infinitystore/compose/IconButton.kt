@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import com.doaamosallam.domain.models.products.Product
 
 
 @Composable
@@ -13,9 +14,9 @@ fun IconButtonHome(
     onClick: () -> Unit,
     painter: Painter,
     contentDescription: String?,
-    modifier: Modifier
+    modifier: Modifier,
 
-) {
+    ) {
     Icon(
         painter = painter,
         contentDescription = contentDescription,
@@ -29,12 +30,12 @@ fun IconButtonCart(
     painter: Painter,
     contentDescription: String?,
     tint: Color,
-    modifier: Modifier
-    ) {
+    modifier: Modifier,
+) {
     Icon(
         painter = painter,
         contentDescription = contentDescription,
-       tint = tint,
+        tint = tint,
         modifier = modifier.clickable { onClick() }
     )
 }

@@ -1,6 +1,6 @@
 package com.doaamosallam.infinitystore.di
 
-import com.doaamosallam.data.remote.APIService
+import com.doaamosallam.remote.APIService
 import com.doaamosallam.infinitystore.BuildConfig
 import com.doaamosallam.infinitystore.data.FirebaseAuthRepository
 import com.doaamosallam.infinitystore.data.FirebaseAuthRepositoryImpl
