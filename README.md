@@ -67,6 +67,8 @@ domain/
     <p><a href ="https://developer.android.com/build/migrate-to-ksp">- Migrate from kapt to KSP </a></p>
         <p><a href ="https://developer.android.com/training/dependency-injection/hilt-android">- Hilt </a></p>
     <p><a href="https://medium.com/@mohammedkhudair57/mvi-architecture-pattern-in-android-0046bf9b8a2e"> -MVI</p>
+          <p><a href="https://developer.android.com/training/data-storage/room"> - Room Database</p>
+    
       
   ## UI && UX Dsign Project
 
