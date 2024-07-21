@@ -39,17 +39,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.doaamosallam.mapper.mapToCart
 import com.doaamosallam.domain.models.categories.CategoryList
 import com.doaamosallam.domain.models.products.Product
 import com.doaamosallam.infinitystore.R
+import com.doaamosallam.infinitystore.compose.CategoryItem
 import com.doaamosallam.infinitystore.compose.FullScreenLoading
 import com.doaamosallam.infinitystore.compose.HeaderHome
 import com.doaamosallam.infinitystore.compose.IconButtonHome
+import com.doaamosallam.infinitystore.compose.ProductItem
 import com.doaamosallam.infinitystore.compose.SpacerGeneral
 import com.doaamosallam.infinitystore.navigation.BottomNavigationBar
 import com.doaamosallam.infinitystore.navigation.Screen
-import com.doaamosallam.infinitystore.screen.home.event.HomeEvent
 
 
 //state hoisting
@@ -59,7 +59,6 @@ fun HomeContainer(navController: NavController) {
 
     val viewModel: HomeViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
-
 
     Scaffold(
         bottomBar = { BottomNavigationBar(navController = navController) }
@@ -74,7 +73,7 @@ fun HomeContainer(navController: NavController) {
             products = uiState.products,
             categoryList = uiState.categories,
             onClickMenu = {
-                navController.navigate(Screen.CartScreen.route)
+                navController.navigate(Screen.MenuScreen.route)
             },
             onClickProfile = {
                 navController.navigate(Screen.ProfileScreen.route)
@@ -194,7 +193,6 @@ fun HomeDisplay(
         onClickCart = onClickCart
     )
 
-
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -225,7 +223,7 @@ fun DisplayProducts(
 
 @Composable
 fun DisplayCategory(categoryList: List<CategoryList>) {
-    val collectionsList = categoryList.map { it.name }
+    val collectionsList = listOf("All") + categoryList.map { it.name }
     var selectedCollection by remember { mutableStateOf("All") }
 
     LazyRow(

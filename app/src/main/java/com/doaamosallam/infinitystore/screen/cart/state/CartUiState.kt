@@ -2,10 +2,11 @@ package com.doaamosallam.infinitystore.screen.cart.state
 
 import com.doaamosallam.domain.models.cart.CartProduct
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
-sealed class CartUiState {
-    data object Idle : CartUiState()
-    data object Loading: CartUiState()
-    data class Success(val cart: Flow<List<CartProduct>>): CartUiState()
-    data class Error(val message: String): CartUiState()
-}
+data class CartUiState(
+    val cart: Flow<List<CartProduct>> = emptyFlow(),
+    val isLoading:Boolean = false,
+    val success:Boolean = false,
+    val error:String = ""
+)
