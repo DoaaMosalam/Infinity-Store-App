@@ -17,4 +17,6 @@ class CartUseCase @Inject constructor(
     suspend fun addProductToCart(cart: CartProduct) = cartRepo.addProductToCart(cart)
 
     suspend fun getProductFromCart() = cartRepo.getProductFromCart()
+
+    suspend fun deleteProductFromCart(cart: CartProduct) = cartRepo.deleteProductFromCart(cart)
 }

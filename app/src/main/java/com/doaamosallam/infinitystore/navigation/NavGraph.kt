@@ -4,34 +4,36 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.doaamosallam.infinitystore.screen.cart.navigation.cartRoute
-import com.doaamosallam.infinitystore.screen.category_screen.CategoryContainer
-import com.doaamosallam.infinitystore.screen.forget_password_screen.ForgetPasswordRoute
+import com.doaamosallam.infinitystore.screen.cart.navigation.cartNav
+import com.doaamosallam.infinitystore.screen.category.CategoryContainer
+import com.doaamosallam.infinitystore.screen.forget_password.navigation.forgetPasswordNav
 import com.doaamosallam.infinitystore.screen.home.navigation.homeRoute
-import com.doaamosallam.infinitystore.screen.login_screen.LoginRoute
-import com.doaamosallam.infinitystore.screen.profile_screen.ProfileRoute
-import com.doaamosallam.infinitystore.screen.register_screen.RegisterRoute
-import com.doaamosallam.infinitystore.screen.setting_screen.SettingContainer
+import com.doaamosallam.infinitystore.screen.login.navigation.loginNav
+import com.doaamosallam.infinitystore.screen.menu.navigation.menuNav
+import com.doaamosallam.infinitystore.screen.profile.profileNav
+import com.doaamosallam.infinitystore.screen.register.navigation.registerNav
+import com.doaamosallam.infinitystore.screen.setting.SettingContainer
 
 @Composable
 fun InfinityNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.HomeScreen.route) {
 
-        RegisterRoute(navController)
+        registerNav(navController)
 
-        LoginRoute(navController)
+        loginNav(navController)
 
-        ForgetPasswordRoute(navController)
+        forgetPasswordNav(navController)
 
         homeRoute(navController)
 
         composable(Screen.CategoryScreen.route) { CategoryContainer(navController) }
 
-        cartRoute(navController)
+        cartNav(navController)
 
         composable(Screen.SettingScreen.route) { SettingContainer(navController) }
 
-        ProfileRoute(navController)
+        profileNav(navController)
+        menuNav(navController)
 
     }
 }

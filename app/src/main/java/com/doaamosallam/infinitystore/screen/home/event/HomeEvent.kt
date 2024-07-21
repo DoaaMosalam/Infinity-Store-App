@@ -10,7 +10,6 @@ import com.doaamosallam.infinitystore.util.ScreenEvent
  */
 sealed class HomeEvent : ScreenEvent {
     data class OnSearchQueryChange(val query: String) : HomeEvent()
-
     data class OnFetchProducts(val products: List<Product>) : HomeEvent()
     data class OnFetchCategories(val categories: List<CategoryList>) : HomeEvent()
     data class LoadingState(val isLoading: Boolean) : HomeEvent()

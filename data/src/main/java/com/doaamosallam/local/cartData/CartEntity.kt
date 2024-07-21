@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "cart_product_table")
 data class CartProductEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey
+    val id: Int,
     val title: String,
     val price: Double,
     val quantity: Int,

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.models.cart.CartProduct
 import com.doaamosallam.domain.usecase.CartUseCase
+import com.doaamosallam.infinitystore.screen.cart.event.CartEvent
 import com.doaamosallam.infinitystore.screen.cart.state.CartUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,29 +17,64 @@ class CartViewModel @Inject constructor(
     private val cartUseCase: CartUseCase,
 ) : ViewModel() {
 
-    private val _viewState = MutableStateFlow<CartUiState>(CartUiState.Idle)
-    val viewState: StateFlow<CartUiState> get() = _viewState
-
-
-    private fun addToCart(cart: CartProduct) = viewModelScope.launch {
-        _viewState.value = CartUiState.Loading
-        try {
-            cartUseCase.addProductToCart(cart)
-            getCart() // Refresh the cart to show the updated state
-        } catch (e: Exception) {
-            _viewState.value = CartUiState.Error(e.message ?: "An error occurred")
-        }
+    private val _uiState = MutableStateFlow(CartUiState())
+    val uiState: StateFlow<CartUiState> get() = _uiState
+    init {
+        getCart()
     }
+    private fun emitEvent(event: CartEvent) {
+       when(event){
+           is CartEvent.GetAllProduct ->{
+               _uiState.value = _uiState.value.copy(
+                   isLoading = false,
+                   cart = event.products,
+                   success = true
+               )
+           }
+           is CartEvent.LoadingState->{
+               _uiState.value = _uiState.value.copy(
+                   isLoading = event.isLoading
+               )
+           }
+           is CartEvent.OnError ->{
+               _uiState.value =_uiState.value.copy(
+                   isLoading = false,
+                   error = event.message,
+                   success = false
+               )
+           }
+           is CartEvent.OnDeleteProduct ->{
+               _uiState.value = _uiState.value.copy(
+                   isLoading = true,
+                   success = true
+               )
 
+           }
+       }
+
+    }
     private fun getCart() = viewModelScope.launch {
-        _viewState.value = CartUiState.Loading
         try {
+            emitEvent(CartEvent.LoadingState(true))
             val result = cartUseCase.getProductFromCart()
-            _viewState.value = CartUiState.Success(result)
+            emitEvent(CartEvent.GetAllProduct(result))
+            emitEvent(CartEvent.LoadingState(false))
         } catch (e: Exception) {
-            _viewState.value = CartUiState.Error(e.message ?: "An error occurred")
+            emitEvent(CartEvent.OnError(e.message ?: "An error occurred"))
         }
     }
+
+   fun onDeleteProduct(product: CartProduct) = viewModelScope.launch {
+       try {
+           emitEvent(CartEvent.LoadingState(false))
+            cartUseCase.deleteProductFromCart(product)
+           emitEvent(CartEvent.OnDeleteProduct(product))
+           getCart()
+       }catch (e:Exception){
+           emitEvent(CartEvent.OnError(e.message ?: "An error occurred"))
+       }
+
+   }
 }
 
 
