@@ -1,11 +1,11 @@
 package com.doaamosallam.infinitystore.di
 
-import com.doaamosallam.local.cartData.CartDAO
-import com.doaamosallam.local.loginData.LoginDAO
-import com.doaamosallam.local.registerData.RegisterDAO
 import com.doaamosallam.domain.repo.CartRepository
 import com.doaamosallam.domain.repo.LoginRepo
 import com.doaamosallam.domain.repo.RegisterRepo
+import com.doaamosallam.local.cartData.CartDAO
+import com.doaamosallam.local.loginData.LoginDAO
+import com.doaamosallam.local.registerData.RegisterDAO
 import com.doaamosallam.repository.CartRepoImp
 import com.doaamosallam.repository.LoginRepoImp
 import com.doaamosallam.repository.RegisterRepoImp
@@ -24,6 +24,7 @@ object RepoRoomDataModule {
     fun provideLoginRepo(
         loginDAO: LoginDAO
     ): LoginRepo = LoginRepoImp(loginDAO)
+
     // register user repo room database
     @Provides
     @Singleton
@@ -34,8 +35,9 @@ object RepoRoomDataModule {
         registerDAO,
         loginDAO
     )
+
     // provide cart product repo room database
     @Provides
     @Singleton
-    fun provideCartRepo(cartDAO: CartDAO):CartRepository = CartRepoImp(cartDAO)
+    fun provideCartRepo(cartDAO: CartDAO): CartRepository = CartRepoImp(cartDAO)
 }

@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.doaamosallam.domain.models.categories.CategoriesItem
+import com.doaamosallam.infinitystore.compose.CategoriesItem
 import com.doaamosallam.infinitystore.compose.FullScreenLoading
 import com.doaamosallam.infinitystore.navigation.BottomNavigationBar
-import com.doaamosallam.infinitystore.compose.CategoriesItem
 import com.doaamosallam.infinitystore.ui.theme.playWriteThin
 
 //state hoisting
@@ -137,9 +137,21 @@ fun CategoriesItem(
 fun PreviewCategoryScreen() {
     CategoryScreen(
         categories = listOf(
-            CategoriesItem(slug = "Beauty", name = "Beauty", url = "https://dummyjson.com/products/category/beauty"),
-            CategoriesItem(slug = "Electronics", name = "Electronics", url = "https://dummyjson.com/products/category/fragrances"),
-            CategoriesItem(slug = "Furniture", name = "Furniture", url = "https://dummyjson.com/products/category/furniture")
+            CategoriesItem(
+                slug = "Beauty",
+                name = "Beauty",
+                url = "https://dummyjson.com/products/category/beauty"
+            ),
+            CategoriesItem(
+                slug = "Electronics",
+                name = "Electronics",
+                url = "https://dummyjson.com/products/category/fragrances"
+            ),
+            CategoriesItem(
+                slug = "Furniture",
+                name = "Furniture",
+                url = "https://dummyjson.com/products/category/furniture"
+            )
         ),
         onClickCategories = {}
     )

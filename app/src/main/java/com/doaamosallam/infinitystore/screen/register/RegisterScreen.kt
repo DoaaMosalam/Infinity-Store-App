@@ -44,7 +44,7 @@ import androidx.core.util.PatternsCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.doaamosallam.infinitystore.R
-import com.doaamosallam.infinitystore.compose.AuthButton
+import com.doaamosallam.infinitystore.compose.GenericButton
 import com.doaamosallam.infinitystore.compose.Header
 import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
@@ -365,7 +365,7 @@ private fun RegisterScreen(
             )
         }
 
-        AuthButton(
+        GenericButton(
             onClick = onClickRegister,
             buttonText = stringResource(id = R.string.register),
             buttonColor = Color.White, // Set your desired background color

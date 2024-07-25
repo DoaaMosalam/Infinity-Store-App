@@ -30,7 +30,7 @@ object UseCaseRoomDataModule {
 
     @Provides
     @Singleton
-    fun provideCartUseCase(cartRepo: CartRepository):CartUseCase{
-        return CartUseCase(cartRepo )
+    fun provideCartUseCase(cartRepo: CartRepository): CartUseCase {
+        return CartUseCase(cartRepo)
     }
 }

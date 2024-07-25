@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
@@ -25,16 +26,18 @@ fun TextGeneral(
     modifier: Modifier,
     fontSize: TextUnit,
     fontWeight: FontWeight,
+    fontFamily: FontFamily,
     color: Color,
 ) {
-//   Text(
-//       text = title,
-//       textAlign = TextAlign.Center,
-//       modifier = Modifier.padding(top = 5.dp),
-//       fontSize = fontSize,
-//       fontWeight =  fontWeight,
-//       color = Color,
-//       )
+    Text(
+        text = title,
+        textAlign = TextAlign.Center,
+        modifier = modifier,
+        fontSize = fontSize,
+        fontWeight = fontWeight,
+        fontFamily = fontFamily,
+        color = color
+    )
 
 }
 

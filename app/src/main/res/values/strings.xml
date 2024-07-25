@@ -28,5 +28,11 @@
     <string name="password_must_be_11_number">Password must be 11 number</string>
     <string name="number_phone_must_be_11_number">Number Phone Must be 11 number</string>
     <string name="search">Search</string>
+    <string name="checkout">CheckOut</string>
+    <string name="pay_now">Pay Now</string>
+    <string name="total_items">Total Items: %1$s</string>
+    <string name="stander_delivery_fee_12_00">Stander Delivery Fee: $12.00</string>
+    <string name="total_payment">Total Payment: $%1$s</string>
+    <string name="x">%1$sx</string>
 
 </resources>

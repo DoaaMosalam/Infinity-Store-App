@@ -20,20 +20,25 @@ object UseCaseModule {
     // provide product use case
     @Provides
     @Singleton
-    fun provideProductUseCase(productsRepo: ProductsRepo): ProductsUseCase = ProductsUseCase(productsRepo)
+    fun provideProductUseCase(productsRepo: ProductsRepo): ProductsUseCase =
+        ProductsUseCase(productsRepo)
 
     // provide category list use case
     @Provides
     @Singleton
-    fun provideCategoryListUseCase(categoryListRepo: CategoryListRepo): CategoryListUseCase = CategoryListUseCase(categoryListRepo)
+    fun provideCategoryListUseCase(categoryListRepo: CategoryListRepo): CategoryListUseCase =
+        CategoryListUseCase(categoryListRepo)
 
     // provide search product use case
     @Provides
     @Singleton
-    fun provideProductSearchUseCase(productSearchRepo: ProductSearchRepo): ProductSearchUseCase = ProductSearchUseCase(productSearchRepo)
+    fun provideProductSearchUseCase(productSearchRepo: ProductSearchRepo): ProductSearchUseCase =
+        ProductSearchUseCase(productSearchRepo)
+
     // provide categories use case
     @Provides
     @Singleton
-    fun provideCategoriesUseCase(categoriesRepo: CategoriesRepo): CategoriesUseCase = CategoriesUseCase(categoriesRepo)
+    fun provideCategoriesUseCase(categoriesRepo: CategoriesRepo): CategoriesUseCase =
+        CategoriesUseCase(categoriesRepo)
 
 }

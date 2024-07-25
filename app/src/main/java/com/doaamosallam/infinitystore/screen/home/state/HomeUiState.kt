@@ -11,4 +11,4 @@ data class HomeUiState(
     val success: Boolean = false,
     val error: String = "",
     val search: String = "",
-): ScreenState
+) : ScreenState

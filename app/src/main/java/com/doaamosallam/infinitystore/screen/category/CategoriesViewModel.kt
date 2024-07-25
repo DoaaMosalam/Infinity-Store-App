@@ -1,6 +1,5 @@
 package com.doaamosallam.infinitystore.screen.category
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.usecase.CategoriesUseCase
@@ -15,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
     private val categoriesUseCase: CategoriesUseCase
-) : ViewModel(){
+) : ViewModel() {
     private val _uiState = MutableStateFlow(CategoriesUiState())
     val viewState: StateFlow<CategoriesUiState> get() = _uiState
 
@@ -23,22 +22,24 @@ class CategoriesViewModel @Inject constructor(
         onFetchCategories()
     }
 
-    fun emitEvent(event: CategoriesEvent){
-        when(event){
-           is CategoriesEvent.OnFetchCategories ->{
-               _uiState.value = _uiState.value.copy(
-                   isLoading = false,
-                   categories = event.categories,
-                   success = true
-               )
+    fun emitEvent(event: CategoriesEvent) {
+        when (event) {
+            is CategoriesEvent.OnFetchCategories -> {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    categories = event.categories,
+                    success = true
+                )
 
-           }
-            is CategoriesEvent.LoadingState ->{
+            }
+
+            is CategoriesEvent.LoadingState -> {
                 _uiState.value = _uiState.value.copy(
                     isLoading = event.isLoading
                 )
             }
-            is CategoriesEvent.OnError ->{
+
+            is CategoriesEvent.OnError -> {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     error = event.message,
@@ -50,7 +51,7 @@ class CategoriesViewModel @Inject constructor(
     }
 
 
-    private fun  onFetchCategories() = viewModelScope.launch{
+    private fun onFetchCategories() = viewModelScope.launch {
         try {
             emitEvent(CategoriesEvent.LoadingState(true))
 

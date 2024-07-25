@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -61,56 +62,56 @@ fun ProductItem(
         )
 
     ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .padding(7.dp)
-            .clickable(onClick = onClickProduct)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .clickable { onClickProduct() },
-            contentAlignment = Alignment.BottomEnd
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .padding(7.dp)
+                .clickable(onClick = onClickProduct)
         ) {
-            Image(
-                painter =
-                rememberImagePainter(data = product.thumbnail),
-                contentDescription = null,
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .height(200.dp)
-                    .background(Color.White)
-            )
-            IconButtonCart(
-                onClick = { onClickCart(product) },
-                painter = painterResource(id = R.drawable.shopping_bag_24),
-                contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier
-                    .size(40.dp)
-                    .background(Color.Black, shape = CircleShape)
-                    .padding(4.dp)
-            )
+                    .clickable { onClickProduct() },
+                contentAlignment = Alignment.BottomEnd
+            ) {
+                Image(
+                    painter =
+                    rememberImagePainter(data = product.thumbnail),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .height(200.dp)
+                        .background(Color.White)
+                )
+                IconButtonCart(
+                    onClick = { onClickCart(product) },
+                    painter = painterResource(id = R.drawable.shopping_bag_24),
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .background(Color.Black, shape = CircleShape)
+                        .padding(4.dp)
+                )
 
+            }
+            SpacerGeneral(Spacer(modifier = Modifier.height(8.dp)))
+            Text(
+                text = "\$${product.price}",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
+            )
+            SpacerGeneral(Spacer(modifier = Modifier.height(8.dp)))
+            Text(
+                text = product.title,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Thin,
+                color = Color.DarkGray,
+                fontFamily = FontFamily.Serif
+            )
+            Spacer(modifier = Modifier.weight(1f))
         }
-        SpacerGeneral(Spacer(modifier = Modifier.height(8.dp)))
-        Text(
-            text = "\$${product.price}",
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold
-        )
-        SpacerGeneral(Spacer(modifier = Modifier.height(8.dp)))
-        Text(
-            text = product.title,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.Thin,
-            color = Color.DarkGray,
-            fontFamily = FontFamily.Serif
-        )
-        Spacer(modifier = Modifier.weight(1f))
-    }
 
     }
 }
@@ -153,7 +154,8 @@ fun CategoriesItem(category: CategoriesItem, onClick: () -> Unit, modifier: Modi
     ) {
         Column(
             modifier = modifier
-                .fillMaxSize()
+                .fillMaxWidth()
+                .fillMaxHeight()
                 .padding(7.dp)
                 .clickable(onClick = onClick),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -194,76 +196,91 @@ fun CartItem(
     onClickDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
+    Card(
         modifier = modifier
-            .scrollable(
-                orientation = Orientation.Horizontal,
-                enabled = true,
-                state = rememberScrollState())
-            .fillMaxSize()
-            .height(200.dp)
-            .padding(7.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            painter = rememberImagePainter(data = cart.thumbnail),
-            contentDescription = null,
-            modifier = Modifier
-                .size(120.dp)
-                .background(Color.White)
-                .padding(8.dp)
+            .fillMaxSize(),
+        colors = CardDefaults.cardColors(
+            colorResource(id = R.color.melon_moledy)
         )
-        Spacer(modifier = Modifier.width(16.dp))
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1f)
+    ) {
+        Row(
+            modifier = modifier
+                .scrollable(
+                    orientation = Orientation.Horizontal,
+                    enabled = true,
+                    state = rememberScrollState()
+                )
+                .fillMaxWidth()
+                .height(100.dp)
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-                Text(
-                    text = cart.title,
+            Image(
+                painter = rememberImagePainter(data = cart.thumbnail),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(80.dp)
+                    .background(Color.White)
+                    .padding(8.dp)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+            ) {
+                TextGeneral(
+                    title = cart.title,
+                    modifier = Modifier.weight(1f),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Default,
                     color = Color.Black
                 )
-                Text(
-                    text = cart.discountPercentage.toString(),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
+                TextGeneral(
+                    title = cart.discountPercentage.toString(),
+                    modifier = Modifier.weight(1f),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Default,
                     color = Color.Gray
                 )
 
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "$${cart.price}",
+                Spacer(modifier = Modifier.height(8.dp))
+                TextGeneral(
+                    title = "$${cart.price}",
+                    modifier = Modifier.weight(1f),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Default,
+                    color = Color.Black
+                )
+            }
+            TextGeneral(
+                title = stringResource(R.string.x, cart.quantity),
+                modifier = Modifier.weight(1f),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black
+                fontFamily = FontFamily.Default,
+                color = Color.Gray
             )
-        }
-        Text(
-            text = "${cart.quantity}x",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Normal,
-            color = Color.Black
-        )
-        Spacer(modifier = Modifier.width(25.dp))
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(8.dp)
-                .size(50.dp)
-                .weight(1f)
-                .background(
-                    colorResource(id = R.color.primary_color),
-                    shape = CircleShape.copy(
-                        topEnd = CornerSize(10.dp),
-                        bottomEnd = CornerSize(10.dp),
-                    )
+            Spacer(modifier = Modifier.width(25.dp))
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .size(60.dp)
+                    .weight(1f)
+                    .background(
+                        colorResource(id = R.color.primary_color),
+                        shape = CircleShape.copy(
+                            topEnd = CornerSize(10.dp),
+                            bottomEnd = CornerSize(10.dp),
+                        )
 //                    RoundedCornerShape(corner = CornerSize(10.dp))
-                )
-                .clickable { onClickDelete() },
-        ) {
+                    )
+                    .clickable { onClickDelete() },
+            ) {
 //            Icon(
 //                painter = painterResource(id = R.drawable.baseline_favorite_border_24),
 //                contentDescription = "Wishlist",
@@ -271,17 +288,55 @@ fun CartItem(
 //                modifier = Modifier.size(24.dp)
 //            )
 //            Spacer(modifier = Modifier.height(8.dp))
-            Icon(
-                painter = painterResource(id = R.drawable.outline_delete),
-                contentDescription = "Delete",
-                tint = colorResource(id = R.color.white),
-                modifier = Modifier.size(28.dp)
-            )
+                Icon(
+                    painter = painterResource(id = R.drawable.outline_delete),
+                    contentDescription = "Delete",
+                    tint = colorResource(id = R.color.white),
+                    modifier = Modifier.size(28.dp)
+                )
+            }
 
         }
     }
-
 }
+
+@Composable
+fun DisplayTotalsItems_Price(itemsTotal: Int, priceTotal: Double) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+    ) {
+        TextGeneral(
+            title = stringResource(R.string.total_items, itemsTotal),
+            modifier = Modifier.padding(top = 16.dp),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Default,
+            color = Color.LightGray
+        )
+
+        TextGeneral(
+            title = stringResource(R.string.stander_delivery_fee_12_00),
+            modifier = Modifier.padding(top = 16.dp),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Default,
+            color = Color.LightGray
+        )
+        TextGeneral(
+            title = stringResource(R.string.total_payment, "%.2f".format(priceTotal)),
+            modifier = Modifier.padding(top = 4.dp),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Default,
+            color = Color.LightGray
+
+        )
+    }
+}
+
 
 
 
