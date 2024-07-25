@@ -63,11 +63,8 @@ fun HomeContainer(navController: NavController) {
     Scaffold(
         bottomBar = { BottomNavigationBar(navController = navController) }
     ) {
-        FullScreenLoading(
-            modifier = Modifier.fillMaxSize(),
-            isLoading = uiState.isLoading,
-        )
-
+        if (uiState.error.isNotEmpty())
+            Text(text = uiState.error)
 
         HomeScreen(
             products = uiState.products,
@@ -85,9 +82,11 @@ fun HomeContainer(navController: NavController) {
             },
             onClickCart = viewModel::onAddProductToCart
         )
+        FullScreenLoading(
+            modifier = Modifier.fillMaxSize(),
+            isLoading = uiState.isLoading,
+        )
 
-        if (uiState.error.isNotEmpty())
-            Text(text = uiState.error)
     }
 
 }

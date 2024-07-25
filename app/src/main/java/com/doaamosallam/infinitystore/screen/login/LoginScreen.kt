@@ -44,8 +44,8 @@ import androidx.core.util.PatternsCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.doaamosallam.infinitystore.R
-import com.doaamosallam.infinitystore.compose.AuthButton
 import com.doaamosallam.infinitystore.compose.ForgetTextButton
+import com.doaamosallam.infinitystore.compose.GenericButton
 import com.doaamosallam.infinitystore.compose.Header
 import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
@@ -213,7 +213,7 @@ private fun LoginScreen(
             )
         }
         Spacer(modifier = Modifier.height(30.dp))
-        AuthButton(
+        GenericButton(
             onClick = onClickLogin,
             buttonText = stringResource(id = R.string.login),
             buttonColor = Color.White, // Set your desired background color

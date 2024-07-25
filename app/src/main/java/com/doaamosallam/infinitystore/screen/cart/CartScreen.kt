@@ -1,15 +1,20 @@
 package com.doaamosallam.infinitystore.screen.cart
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,6 +22,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,9 +31,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.doaamosallam.domain.models.cart.CartProduct
-import com.doaamosallam.infinitystore.compose.FullScreenLoading
-import com.doaamosallam.infinitystore.navigation.BottomNavigationBar
+import com.doaamosallam.infinitystore.R
 import com.doaamosallam.infinitystore.compose.CartItem
+import com.doaamosallam.infinitystore.compose.CheckOut_PayNow
+import com.doaamosallam.infinitystore.compose.DisplayTotalsItems_Price
+import com.doaamosallam.infinitystore.compose.FullScreenLoading
+import com.doaamosallam.infinitystore.compose.TopBarScreen
+import com.doaamosallam.infinitystore.navigation.Screen
 import com.doaamosallam.infinitystore.ui.theme.Merri
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -37,91 +48,138 @@ import kotlinx.coroutines.flow.flowOf
 fun CartContainer(navController: NavController) {
     val viewModel: CartViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
-    Scaffold(
-        bottomBar = { BottomNavigationBar(navController = navController) }
-    ) {
-        if (uiState.isLoading) {
-            FullScreenLoading(
-                modifier = Modifier.fillMaxSize(),
-                isLoading = uiState.isLoading
-            )
-        } else {
-            CartScreen(
-                cart = uiState.cart,
-                onClickDelete = { product->
-                    viewModel.onDeleteProduct(product)
-                }
-            )
-        }
-        if (uiState.error.isNotEmpty()) {
-            Text(
-                text = uiState.error,
-                color = Color.Red,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                fontSize = 18.sp
-            )
-        }
+
+//    Scaffold(
+//        bottomBar = { BottomNavigationBar(navController = navController) }
+//    ) {
+
+    if (uiState.isLoading) {
+        FullScreenLoading(
+            modifier = Modifier.fillMaxSize(),
+            isLoading = uiState.isLoading
+        )
+    } else {
+        CartScreen(
+            cart = uiState.cart,
+            onClickDelete = { product ->
+                viewModel.onDeleteProduct(product)
+            },
+            itemsTotal = uiState.totalItems,
+            priceTotal = uiState.totalPrice,
+            onClickBack = { navController.popBackStack() },
+            onClickCheckOut = { navController.navigate(Screen.PaymentScreen.route) }
+
+        )
     }
+    if (uiState.error.isNotEmpty()) {
+        Text(
+            text = uiState.error,
+            color = Color.Red,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            fontSize = 18.sp
+        )
+    }
+
 }
+//}
 
 @Composable
 fun CartScreen(
     cart: Flow<List<CartProduct>>,
     onClickDelete: (CartProduct) -> Unit,
+    itemsTotal: Int,
+    priceTotal: Double,
+    onClickBack: () -> Unit,
+    onClickCheckOut: () -> Unit
 ) {
     val cartItems by cart.collectAsState(initial = emptyList())
-
-    Column(
+    Box(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 30.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxSize(),
+        contentAlignment = Alignment.BottomEnd,
     ) {
-        Text(
-            text = "My Orders",
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+        ) {
+            TopBarScreen(
+                modifier = Modifier.padding(top = 10.dp, start = 16.dp),
+                onClickBack = onClickBack,
+                text = "My Orders",
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+                fontFamily = Merri,
+                color = Color.DarkGray
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            DisplayProducts(
+                cartsItem = cartItems,
+                onClickDelete = onClickDelete,
+            )
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 10.dp, top = 10.dp),
-            fontSize = 30.sp,
-            fontFamily = Merri,
-            fontWeight = FontWeight.Bold,
-            color = Color.DarkGray
-        )
-        DisplayProducts(
-            cartsItem = cartItems,
-            onClickDelete = onClickDelete
-        )
+                .background(Color.White)
+                .border(1.dp, Color.LightGray, RoundedCornerShape(10.dp))
+                .padding(10.dp)
+        ) {
+            // Display total items and total price
+            DisplayTotalsItems_Price(itemsTotal, priceTotal)
+            Spacer(modifier = Modifier.height(8.dp))
+            // PayNow button
+            CheckOut_PayNow(
+                onClick = { onClickCheckOut() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        colorResource(id = R.color.primary_color),
+                        shape = RoundedCornerShape(20.dp)
+                    ),
+                buttonText = stringResource(R.string.checkout),
+                buttonColor = colorResource(id = R.color.primary_color),
+                textColor = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18,
+                fontFamily = Merri,
+                color = Color.White
+            )
+        }
     }
 }
 
 @Composable
 fun DisplayProducts(
     cartsItem: List<CartProduct>,
-    onClickDelete: (CartProduct) -> Unit
-) {
+    onClickDelete: (CartProduct) -> Unit,
+
+    ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 10.dp)
     ) {
         items(cartsItem) { cartItem ->
             CartItem(
                 cart = cartItem,
-                onClickDelete = { onClickDelete(cartItem) }
+                onClickDelete = { onClickDelete(cartItem) },
             )
+
         }
     }
-
-
 }
 
 @Composable
-@Preview(showSystemUi = true)
+@Preview(showBackground = true)
 fun PreviewProfileScreen() {
     val sampleCartProducts = listOf(
         CartProduct(
@@ -148,6 +206,10 @@ fun PreviewProfileScreen() {
 
     CartScreen(
         cart = flowOf(sampleCartProducts),
-        onClickDelete = {}
+        onClickDelete = {},
+        itemsTotal = 2,
+        priceTotal = 500.00,
+        onClickBack = {},
+        onClickCheckOut = {}
     )
 }

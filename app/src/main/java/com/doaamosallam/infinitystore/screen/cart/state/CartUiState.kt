@@ -6,7 +6,10 @@ import kotlinx.coroutines.flow.emptyFlow
 
 data class CartUiState(
     val cart: Flow<List<CartProduct>> = emptyFlow(),
-    val isLoading:Boolean = false,
-    val success:Boolean = false,
-    val error:String = ""
+    val isLoading: Boolean = false,
+    val success: Boolean = false,
+    val error: String = "",
+    val totalItems: Int = 0,
+    val totalPrice: Double = 0.0,
+    val orderId: String = ""
 )

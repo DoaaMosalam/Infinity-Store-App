@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -31,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,11 +41,13 @@ import androidx.core.util.PatternsCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.doaamosallam.infinitystore.R
-import com.doaamosallam.infinitystore.compose.AuthButton
-import com.doaamosallam.infinitystore.compose.ClickableImage
+import com.doaamosallam.infinitystore.compose.GenericButton
+import com.doaamosallam.infinitystore.compose.SpacerGeneral
+import com.doaamosallam.infinitystore.compose.TopBarScreen
 import com.doaamosallam.infinitystore.navigation.Screen
 import com.doaamosallam.infinitystore.screen.forget_password.event.ForgetPasswordIntent
 import com.doaamosallam.infinitystore.screen.forget_password.state.ForgetPasViewState
+import com.doaamosallam.infinitystore.ui.theme.Merri
 import kotlinx.coroutines.launch
 
 // state hoisting
@@ -89,6 +93,7 @@ fun ForgetPassword(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ForgetScreen(
@@ -102,26 +107,31 @@ fun ForgetScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) {
-        Column(modifier = Modifier.padding(top = 30.dp, start = 10.dp, end = 10.dp)) {
-            ClickableImage(
-                painter = painterResource(id = R.drawable.baseline_arrow_back_ios_24),
-                contentDescription = null,
-                onClick = onClickBack
+        Column(
+            modifier = Modifier
+                .padding(top = 10.dp)
+                .fillMaxSize()
+        ) {
+            TopBarScreen(
+                modifier = Modifier.padding(top = 20.dp),
+                onClickBack = onClickBack,
+                text = "Forget Password",
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+                fontFamily = Merri,
+                color = Color.DarkGray
             )
+            SpacerGeneral(Spacer(modifier = Modifier.height(16.dp)))
+
         }
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(top = 20.dp, start = 10.dp, end = 10.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = stringResource(R.string.forgot_password),
-                fontSize = 24.sp,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
 
             Text(
                 text = stringResource(R.string.please_enter_your_email_address_you_will_receive_a_link_to_create_a_new_password_via_email),
@@ -160,7 +170,7 @@ fun ForgetScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            AuthButton(
+            GenericButton(
                 onClick = onClickSend,
                 buttonText = "Send",
                 buttonColor = Color.White,

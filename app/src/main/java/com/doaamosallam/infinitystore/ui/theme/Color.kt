@@ -14,5 +14,5 @@ val Orange = Color(0xFFFFA500)
 val Gray_Light = Color(0xFF9098B1)
 val Gray_Dark = Color(0xFF4E525F)
 val Baby_Blue = Color(0xFF25BBFF)
-val MELON_MELEDY=Color(0xFFF8D0AB)
+val MELON_MELEDY = Color(0xFFF8D0AB)
 //f8c291

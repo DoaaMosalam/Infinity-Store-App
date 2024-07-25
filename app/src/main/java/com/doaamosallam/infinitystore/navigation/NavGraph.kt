@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.doaamosallam.infinitystore.screen.cart.PaymentContainer
 import com.doaamosallam.infinitystore.screen.cart.navigation.cartNav
 import com.doaamosallam.infinitystore.screen.category.CategoryContainer
 import com.doaamosallam.infinitystore.screen.forget_password.navigation.forgetPasswordNav
@@ -34,6 +35,8 @@ fun InfinityNavGraph(navController: NavHostController) {
 
         profileNav(navController)
         menuNav(navController)
+
+        composable(Screen.PaymentScreen.route) { PaymentContainer(navController) }
 
     }
 }
