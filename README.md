@@ -84,7 +84,7 @@ Home Screen 1          |  Search Screen 2    |           Category List
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src="https://github.com/user-attachments/assets/79a7e7cd-d197-45fd-a7d1-639ce724aad2" width="400" height="400" /> | <img src="https://github.com/user-attachments/assets/e4f27e52-0b77-4633-baa6-6ec34d0081b1" width="400" height="400"/> |<img src="https://github.com/user-attachments/assets/36b0d01d-25cc-427f-ad9d-1cedab4b8c47" width="400" height="400"/> 
 
-Category Screen           |  Cart Screen     |           Paymwnt Screen 
+Category Screen           |  Cart Screen     |           Payment Screen 
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src="https://github.com/user-attachments/assets/e1b96b76-44e2-4f3a-94fa-cd409e742964" width="400" height="400" /> | <img src="https://github.com/user-attachments/assets/79299c83-1311-45e6-8a69-bdedfe404a9a" width="400" height="400"/> |<img src="https://github.com/user-attachments/assets/09740d44-6552-40c2-839c-5cea6119be5c" width="400" height="400"/> 
       
