@@ -1,3 +1,38 @@
 <resources>
     <string name="app_name">Infinity Store</string>
+
+    <string name="welcome_to_infinity"> Welcome To Infinity Store</string>
+    <string name="sign_in_to_continue">Sign In To Continue</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="logo_image">Logo Image</string>
+    <string name="login">Login</string>
+    <string name="enter_your_name">Enter Your Name</string>
+    <string name="enter_your_email">Enter Your Email</string>
+    <string name="enter_your_password">Enter Your Password</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="forget_password">Forget Password?</string>
+    <string name="register">Register</string>
+    <string name="let_s_get_started">Let\'s Get Started</string>
+    <string name="create_an_new_account">Create an new account.</string>
+    <string name="enter_you_phone_number">Enter Your Phone Number</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="don_t_have_a_account">Don\'t have a account?</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="please_enter_your_email_address_you_will_receive_a_link_to_create_a_new_password_via_email">Please, enter your email address. You will receive a link to create a new password via email.</string>
+    <string name="not_a_valid_email_address_should_be_your_email_com">Not a valid email address. Should be your@email.com</string>
+    <string name="your_name_is_not_valid">Your name is Not Valid</string>
+    <string name="password_must_be_11_number">Password must be 11 number</string>
+    <string name="number_phone_must_be_11_number">Number Phone Must be 11 number</string>
+    <string name="search">Search</string>
+    <string name="checkout">CheckOut</string>
+    <string name="pay_now">Pay Now</string>
+    <string name="total_items">Total Items: %1$s</string>
+    <string name="stander_delivery_fee_12_00">Stander Delivery Fee: $12.00</string>
+    <string name="total_payment">Total Payment: $%1$s</string>
+    <string name="x">%1$sx</string>
+
 </resources>
