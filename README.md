@@ -67,6 +67,12 @@ domain/
         <p><a href ="https://developer.android.com/training/dependency-injection/hilt-android">- Hilt </a></p>
     <p><a href="https://medium.com/@mohammedkhudair57/mvi-architecture-pattern-in-android-0046bf9b8a2e"> -MVI</p>
           <p><a href="https://developer.android.com/training/data-storage/room"> - Room Database</p>
+          <p><a href="https://firebase.google.com/"> - Firebase</p> 
+           <p><a href="https://square.github.io/retrofit/"> - Retrofit </p> 
+              <p><a href="https://developer.android.com/kotlin/coroutines"> - Coroutines </p> 
+
+          
+          
             
   ## UI && UX Dsign Project
 
