@@ -51,8 +51,10 @@ domain/
 <p> - Convert From MVVM to MVI</p>
 <p> - Using Firebase and Crashlytics
 <p>- Using Navigation component with Compose</p>
+</p> - Using Navigation Drawer with Compose </p>
 </p> - Get All Data From API </p>
 </p> - Hide API keys and other sensitive information in Android by using BuildConfig</p>
+</p> - Dark Mode </p>
 
 
   ## Best practice:
