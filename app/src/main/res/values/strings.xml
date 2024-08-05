@@ -34,5 +34,7 @@
     <string name="stander_delivery_fee_12_00">Stander Delivery Fee: $12.00</string>
     <string name="total_payment">Total Payment: $%1$s</string>
     <string name="x">%1$sx</string>
+    <string name="profile">Profile</string>
+    <string name="my_orders">My Orders</string>
 
 </resources>
