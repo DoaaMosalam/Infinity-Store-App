@@ -11,17 +11,34 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.doaamosallam.infinitystore.ui.theme.LIGHT_GRAY
 import com.doaamosallam.infinitystore.ui.theme.Merri
 import com.doaamosallam.infinitystore.ui.theme.PrimaryColor
 import com.doaamosallam.infinitystore.ui.theme.playWriteRegular
 
-/* text = title,
-      textAlign = TextAlign.Center,
-      modifier = Modifier.padding(top = 5.dp),
-      fontSize = 20.sp,
-     fontWeight =  FontWeight.Bold)*/
 @Composable
 fun TextGeneral(
+    title: String,
+    modifier: Modifier,
+    fontSize: TextUnit,
+    fontWeight: FontWeight,
+    fontFamily: FontFamily,
+    color: Color
+) {
+    Text(
+        text = title,
+        textAlign = TextAlign.Center,
+        modifier = modifier,
+        fontSize = fontSize,
+        fontWeight = fontWeight,
+        fontFamily = fontFamily,
+        color = color
+    )
+
+}
+
+@Composable
+fun TextDetails(
     title: String,
     modifier: Modifier,
     fontSize: TextUnit,
@@ -41,6 +58,26 @@ fun TextGeneral(
 
 }
 
+@Composable
+fun TextNote(
+    title: String,
+    modifier: Modifier,
+    fontSize: TextUnit,
+    fontWeight: FontWeight,
+    fontFamily: FontFamily,
+    color: Color,
+) {
+    Text(
+        text = title,
+        textAlign = TextAlign.Center,
+        modifier = modifier,
+        fontSize = fontSize,
+        fontWeight = fontWeight,
+        fontFamily = fontFamily,
+        color = color
+    )
+
+}
 
 @Composable
 fun Header(
@@ -67,14 +104,18 @@ fun Header(
 }
 
 @Composable
-fun HeaderHome(title: String, subtitle: String) {
+fun HeaderHome(
+    title: String,
+    subtitle: String,
+    color: Color
+) {
     Text(
         text = title,
         textAlign = TextAlign.Center,
         modifier = Modifier.padding(top = 20.dp, start = 16.dp),
         fontSize = 30.sp,
         fontFamily = Merri,
-        color = Color.Black
+        color = color
     )
 
     Text(
@@ -83,6 +124,6 @@ fun HeaderHome(title: String, subtitle: String) {
         modifier = Modifier.padding(top = 5.dp, start = 16.dp),
         fontSize = 16.sp,
         fontFamily = playWriteRegular,
-        color = Color.Gray
+        color = LIGHT_GRAY
     )
 }

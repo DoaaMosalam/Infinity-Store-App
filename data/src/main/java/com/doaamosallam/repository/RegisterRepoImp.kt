@@ -27,4 +27,17 @@ class RegisterRepoImp(
         registerDAO.insertRegister(registerEntity)
         loginDAO.insertLogin(loginEntity)
     }
+/*
+* get information user name, email, password from table register.
+* */
+    override suspend fun getUser(): Register {
+        val registerEntity = registerDAO.getUser()
+        return Register(
+            name = registerEntity.name,
+            phone = registerEntity.phone,
+            email = registerEntity.email,
+            password = registerEntity.password,
+            confirmPassword = registerEntity.confirmPassword
+        )
+    }
 }

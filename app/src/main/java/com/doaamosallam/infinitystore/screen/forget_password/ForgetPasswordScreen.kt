@@ -121,7 +121,7 @@ fun ForgetScreen(
                 fontFamily = Merri,
                 color = Color.DarkGray
             )
-            SpacerGeneral(Spacer(modifier = Modifier.height(16.dp)))
+            SpacerGeneral(modifier = Modifier.height(16.dp))
 
         }
 

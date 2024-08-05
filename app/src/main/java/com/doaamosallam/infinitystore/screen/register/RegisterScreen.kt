@@ -194,7 +194,7 @@ private fun RegisterScreen(
             label = { Text(text = stringResource(id = R.string.enter_your_name)) },
             trailingIcon = {
                 Icon(
-                    painter = painterResource(id = R.drawable.outline_person_24),
+                    painter = painterResource(id = R.drawable.person_outline_24),
                     contentDescription = null
                 )
                 if (name.isNotEmpty()) {

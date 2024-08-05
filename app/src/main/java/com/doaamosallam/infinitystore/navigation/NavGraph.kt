@@ -7,11 +7,12 @@ import androidx.navigation.compose.composable
 import com.doaamosallam.infinitystore.screen.cart.PaymentContainer
 import com.doaamosallam.infinitystore.screen.cart.navigation.cartNav
 import com.doaamosallam.infinitystore.screen.category.CategoryContainer
+import com.doaamosallam.infinitystore.screen.favorite.navigation.favoriteNav
 import com.doaamosallam.infinitystore.screen.forget_password.navigation.forgetPasswordNav
 import com.doaamosallam.infinitystore.screen.home.navigation.homeRoute
 import com.doaamosallam.infinitystore.screen.login.navigation.loginNav
-import com.doaamosallam.infinitystore.screen.menu.navigation.menuNav
-import com.doaamosallam.infinitystore.screen.profile.profileNav
+import com.doaamosallam.infinitystore.screen.product_details.navigation.detailsNav
+import com.doaamosallam.infinitystore.screen.profile.navigation.profileNav
 import com.doaamosallam.infinitystore.screen.register.navigation.registerNav
 import com.doaamosallam.infinitystore.screen.setting.SettingContainer
 
@@ -34,7 +35,10 @@ fun InfinityNavGraph(navController: NavHostController) {
         composable(Screen.SettingScreen.route) { SettingContainer(navController) }
 
         profileNav(navController)
-        menuNav(navController)
+
+        detailsNav(navController)
+
+        favoriteNav(navController)
 
         composable(Screen.PaymentScreen.route) { PaymentContainer(navController) }
 

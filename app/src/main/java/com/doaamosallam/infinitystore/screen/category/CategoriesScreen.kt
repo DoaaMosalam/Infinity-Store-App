@@ -1,6 +1,7 @@
 package com.doaamosallam.infinitystore.screen.category
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -73,6 +75,7 @@ fun CategoryScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(top = 30.dp),
         verticalArrangement = Arrangement.Center
     ) {
@@ -84,7 +87,7 @@ fun CategoryScreen(
             fontSize = 20.sp,
             fontFamily = playWriteThin,
             fontWeight = FontWeight.Bold,
-            color = Color.DarkGray
+            color = MaterialTheme.colorScheme.onBackground
         )
         DisplayProducts(
             categoriesItem = categories,
