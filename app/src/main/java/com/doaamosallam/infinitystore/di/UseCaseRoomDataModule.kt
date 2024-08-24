@@ -1,9 +1,11 @@
 package com.doaamosallam.infinitystore.di
 
 import com.doaamosallam.domain.repo.CartRepository
+import com.doaamosallam.domain.repo.FavoriteRepository
 import com.doaamosallam.domain.repo.LoginRepo
 import com.doaamosallam.domain.repo.RegisterRepo
 import com.doaamosallam.domain.usecase.CartUseCase
+import com.doaamosallam.domain.usecase.FavoriteUseCase
 import com.doaamosallam.domain.usecase.LoginUseCase
 import com.doaamosallam.domain.usecase.RegisterUseCase
 import dagger.Module
@@ -32,5 +34,11 @@ object UseCaseRoomDataModule {
     @Singleton
     fun provideCartUseCase(cartRepo: CartRepository): CartUseCase {
         return CartUseCase(cartRepo)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFavoriteUseCase(favoriteRepo: FavoriteRepository): FavoriteUseCase {
+        return FavoriteUseCase(favoriteRepo)
     }
 }

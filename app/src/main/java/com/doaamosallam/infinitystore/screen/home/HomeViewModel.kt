@@ -1,16 +1,20 @@
 package com.doaamosallam.infinitystore.screen.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.models.cart.CartProduct
+import com.doaamosallam.domain.models.favorite.FavoriteProduct
 import com.doaamosallam.domain.models.products.Product
 import com.doaamosallam.domain.usecase.CartUseCase
 import com.doaamosallam.domain.usecase.CategoryListUseCase
+import com.doaamosallam.domain.usecase.FavoriteUseCase
 import com.doaamosallam.domain.usecase.ProductSearchUseCase
 import com.doaamosallam.domain.usecase.ProductsUseCase
 import com.doaamosallam.infinitystore.screen.home.event.HomeEvent
 import com.doaamosallam.infinitystore.screen.home.state.HomeUiState
 import com.doaamosallam.infinitystore.util.BaseViewModel
 import com.doaamosallam.mapper.mapToCart
+import com.doaamosallam.mapper.mapToFavorite
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,6 +25,7 @@ class HomeViewModel @Inject constructor(
     private val cartUseCase: CartUseCase,
     private val categoryListUseCase: CategoryListUseCase,
     private val productSearchUseCase: ProductSearchUseCase,
+    private val favoriteUseCase: FavoriteUseCase
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()) {
 
     override fun reduce(oldState: HomeUiState, sideEffect: HomeEvent) {
@@ -33,6 +38,15 @@ class HomeViewModel @Inject constructor(
                 )
 
                 addToCart(sideEffect.product)
+            }
+
+            is HomeEvent.OnAddToFavorite -> {
+                createNewState(
+                    oldState.copy(
+                        success = true
+                    )
+                )
+                addToFavorite(sideEffect.product)
             }
 
             is HomeEvent.OnFetchProducts -> {
@@ -105,6 +119,19 @@ class HomeViewModel @Inject constructor(
             emitEvent(HomeEvent.OnError(e.message ?: "An error occurred"))
         }
     }
+    private fun addToFavorite(favorite: FavoriteProduct) = viewModelScope.launch {
+        try {
+            emitEvent(HomeEvent.LoadingState(true))
+            favoriteUseCase.addProductToFavorite(favorite)
+            emitEvent(HomeEvent.LoadingState(false))
+            Log.d("ProductDetails", "Product added to favorites: $favorite")
+        } catch (e: Exception) {
+            emitEvent(HomeEvent.LoadingState(false))
+            emitEvent(HomeEvent.OnError(e.message ?: "An error occurred"))
+            Log.e("ProductDetails", "Error adding product to favorites", e)
+        }
+    }
+
 
     private fun onSearchChanges() = viewModelScope.launch {
         try {
@@ -139,10 +166,16 @@ class HomeViewModel @Inject constructor(
 
     fun onAddProductToCart(product: Product) {
         emitEvent(HomeEvent.OnAddToCart(product.mapToCart()))
+    }
+
+    fun onAddProductToFavorite(product: Product) {
+        emitEvent(HomeEvent.OnAddToFavorite(product.mapToFavorite()))
 
     }
 
     fun onSearchEvent(query: String) {
         emitEvent(HomeEvent.OnSearchQueryChange(query))
     }
+
+
 }

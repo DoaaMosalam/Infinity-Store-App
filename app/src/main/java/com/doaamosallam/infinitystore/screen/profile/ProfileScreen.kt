@@ -67,38 +67,7 @@ fun ProfileScreen(
     onPassword: String,
     onPasswordValue: String
 ) {
-    ProfileDisplay(
-        onClickBack = onClickBack,
-        onName = onName,
-        onEmail = onEmail,
-        onEmailValue = onEmailValue,
-        onGender = onGender,
-        onGenderValue = onGenderValue,
-        onBirthday = onBirthday,
-        onBirthdayValue = onBirthdayValue,
-        onPhoneNumber = onPhoneNumber,
-        onPhoneNumberValue = onPhoneNumberValue,
-        onPassword = onPassword,
-        onPasswordValue = onPasswordValue
-    )
-}
 
-@Composable
-fun ProfileDisplay(
-    onClickBack: () -> Unit,
-    onName: String,
-    onEmail: String,
-    onEmailValue: String,
-    onGender: String,
-    onGenderValue: String,
-    onBirthday: String,
-    onBirthdayValue: String,
-    onPhoneNumber: String,
-    onPhoneNumberValue: String,
-    onPassword: String,
-    onPasswordValue: String
-
-) {
     Column(
         modifier = Modifier
             .padding(top = 20.dp, start = 10.dp, end = 10.dp)
@@ -189,7 +158,6 @@ fun ProfileDisplay(
         }
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)

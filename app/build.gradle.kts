@@ -83,7 +83,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.firebase.database)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -106,6 +106,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.play.services.auth)
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.database)
     // third party libraries
     implementation(libs.reactivenetwork.rx2)
     //retrofit
@@ -121,9 +122,17 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.animation)
+    implementation(libs.androidx.foundation)
+    implementation(libs.androidx.navigation.compose.v280beta02)
+
     // loading image from URL
     implementation(libs.coil.compose)
 
     implementation(libs.material3)
     implementation(libs.accompanist.pager)
+
+
+
+
 }
