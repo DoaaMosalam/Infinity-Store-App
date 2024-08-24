@@ -55,6 +55,7 @@ domain/
 </p> - Get All Data From API </p>
 </p> - Hide API keys and other sensitive information in Android by using BuildConfig</p>
 </p> - Dark Mode </p>
+</p> - Shared Element Transitions in Compose </p>
 
 
   ## Best practice:
@@ -72,6 +73,7 @@ domain/
           <p><a href="https://firebase.google.com/"> - Firebase</p> 
            <p><a href="https://square.github.io/retrofit/"> - Retrofit </p> 
               <p><a href="https://developer.android.com/kotlin/coroutines"> - Coroutines </p> 
+               <p><a href="https://developer.android.com/develop/ui/compose/animation/shared-elements"> -Shared Element Transitions in Compose </p> 
 
           
           
