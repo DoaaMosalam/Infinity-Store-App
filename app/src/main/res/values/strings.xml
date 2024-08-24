@@ -36,5 +36,10 @@
     <string name="x">%1$sx</string>
     <string name="profile">Profile</string>
     <string name="my_orders">My Orders</string>
+    <string name="cart">Cart</string>
+    <string name="menu">Menu</string>
+    <string name="details">Details</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="favorite">Favorite</string>
 
 </resources>

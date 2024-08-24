@@ -1,8 +1,13 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalSharedTransitionApi::class)
 
 package com.doaamosallam.infinitystore.screen.home
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,20 +32,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.DismissibleDrawerSheet
 import androidx.compose.material3.DismissibleNavigationDrawer
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -82,8 +82,11 @@ import com.doaamosallam.infinitystore.compose.TextGeneral
 import com.doaamosallam.infinitystore.navigation.BottomNavigationBar
 import com.doaamosallam.infinitystore.navigation.Screen
 import com.doaamosallam.infinitystore.screen.home.navigation.MenuItem
+import com.doaamosallam.infinitystore.screen.home.state.HomeUiState
+import com.doaamosallam.infinitystore.screen.product_details.ProductDetailsScreen
 import com.doaamosallam.infinitystore.ui.theme.Merri
 import com.doaamosallam.infinitystore.ui.theme.PrimaryColor
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
@@ -91,17 +94,20 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeContainer(navController: NavController) {
-
-    val viewModel: HomeViewModel = hiltViewModel()
-    val uiState by viewModel.uiState.collectAsState()
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val coroutineScope = rememberCoroutineScope()
-/*
+    /*
 * Navigation Drawer MenuScreen  (ModalNavigationDrawer)
 * Search bar to search products
 * Category list show all products items
 * Products list show all products
-*
+* */
+    val viewModel: HomeViewModel = hiltViewModel()
+    val uiState by viewModel.uiState.collectAsState()
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val coroutineScope = rememberCoroutineScope()
+    var selectedProduct by remember { mutableStateOf<Product?>(null) }
+
+    /*
+* Drawable Navigation Drawer
 * */
     DismissibleNavigationDrawer(
         drawerContent = {
@@ -111,75 +117,10 @@ fun HomeContainer(navController: NavController) {
                         .fillMaxWidth()
                         .padding(top = 40.dp),
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp, bottom = 20.dp),
-                        horizontalAlignment = Alignment.Start
-                    ) {
-                        TextGeneral(
-                            title = "Menu",
-                            modifier = Modifier.padding(start = 10.dp),
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = Merri,
-                            color = PrimaryColor
-                        )
-                        SpacerGeneral(modifier = Modifier.height(30.dp))
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Image(
-                                painter = painterResource(id = R.drawable.person_outline_24), // replace with your profile picture resource
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .clickable { navController.navigate(Screen.ProfileScreen.route) }
-                                    .size(80.dp)
-                                    .background(Color.Gray, CircleShape)
-                            )
-                            Spacer(modifier = Modifier.width(16.dp))
-                            Column {
-                                TextGeneral(
-                                    title = "Name",
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    fontFamily = FontFamily.Default,
-                                    modifier = Modifier.padding(bottom = 8.dp)
-                                )
-                                TextGeneral(
-                                    title = "Email",
-                                    fontSize = 16 .sp,
-                                    fontWeight = FontWeight.Normal,
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    fontFamily = FontFamily.Default,
-                                    modifier = Modifier.padding(bottom = 8.dp)
-                                )
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(24.dp))
-                    }
-                    val items = listOf(
-                        MenuItem(
-                            title = "Profile",
-                            selectedIcon = ImageVector.vectorResource(id = R.drawable.person_outline_24),
-                            unselectedIcon = ImageVector.vectorResource(id = R.drawable.person_outline_24)
-                        ),
-                        MenuItem(
-                            title = "Favorite",
-                            selectedIcon = ImageVector.vectorResource(id = R.drawable.outline_bookmark_border_24),
-                            unselectedIcon = ImageVector.vectorResource(id = R.drawable.outline_bookmark_border_24),
-                        ),
-                        MenuItem(
-                            title = "Settings",
-                            selectedIcon = ImageVector.vectorResource(id = R.drawable.baseline_settings_24),
-                            unselectedIcon = ImageVector.vectorResource(id = R.drawable.baseline_settings_24)
-                        ),
-                        MenuItem(
-                            title = "Logout",
-                            selectedIcon = ImageVector.vectorResource(id = R.drawable.outline_logout_24),
-                            unselectedIcon = ImageVector.vectorResource(id = R.drawable.outline_logout_24)
-                        )
-                    )
+                    // Display user information in Menu Navigation Drawer
+                    DisplayInfoUser(navController)
+                    // Display menu items List in Menu Navigation Drawer
+                    val items = menuItemsList()
 
                     val selectedItemIndex = rememberSaveable { mutableIntStateOf(0) }
                     items.forEachIndexed { index, item ->
@@ -218,33 +159,80 @@ fun HomeContainer(navController: NavController) {
         },
         drawerState = drawerState
     ) {
-        Scaffold(
-            bottomBar = { BottomNavigationBar(navController = navController) }
-        ) {
-            if (uiState.error.isNotEmpty())
-                Text(text = uiState.error)
+        //  execute all action in HomeContainer
+        ExecuteAllAction(navController,
+            uiState,
+            coroutineScope,
+            drawerState,
+            viewModel,
+            selectedProduct,
+            onProductSelected = { product -> selectedProduct = product },
+            onProductDeselected = { selectedProduct = null }
+        )
+    }
+}
 
-            HomeScreen(
-                products = uiState.products,
-                categoryList = uiState.categories,
-                onClickMenu = {
-                    coroutineScope.launch { drawerState.open() }
-                },
-                onClickProfile = {
-                    navController.navigate(Screen.ProfileScreen.route)
-                },
-                search = uiState.search,
-                onSearchChange = viewModel::onSearchEvent,
-                onClickProduct = {
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+private fun ExecuteAllAction(
+    navController: NavController,
+    uiState: HomeUiState,
+    coroutineScope: CoroutineScope,
+    drawerState: DrawerState,
+    viewModel: HomeViewModel,
+    selectedProduct: Product?,
+    onProductSelected: (Product) -> Unit,
+    onProductDeselected: () -> Unit
+) {
+    Scaffold(
+        bottomBar = { BottomNavigationBar(navController = navController) }
+    ) {
+        if (uiState.error.isNotEmpty())
+            Text(text = uiState.error)
 
-                },
-                onClickCart = viewModel::onAddProductToCart
-            )
-            FullScreenLoading(
-                modifier = Modifier.fillMaxSize(),
-                isLoading = uiState.isLoading,
-            )
+        SharedTransitionLayout {
+            AnimatedContent(
+                targetState = selectedProduct == null,
+                label = "transition"
+            ) { isProductListVisible ->
+                if (isProductListVisible) {
+                    HomeScreen(
+                        products = uiState.products,
+                        transitionScope = this@SharedTransitionLayout,
+                        animatedVisibilityScope = this@AnimatedContent,
+                        categoryList = uiState.categories,
+                        onClickMenu = {
+                            coroutineScope.launch { drawerState.open() }
+                        },
+                        onClickProfile = {
+                            navController.navigate(Screen.ProfileScreen.route)
+                        },
+                        search = uiState.search,
+                        onSearchChange = viewModel::onSearchEvent,
+                        onClickProduct = onProductSelected,
+                        onClickCart = viewModel::onAddProductToCart
+                    )
+                }
+                else {
+                    selectedProduct?.let {
+                        ProductDetailsScreen(
+                            product = selectedProduct,
+                            onClickBack = { onProductDeselected() },
+                            onClickFavorite = viewModel::onAddProductToFavorite,
+                            onClickCart = viewModel::onAddProductToCart
+
+                        )
+                    }
+                }
+
+            }
         }
+
+
+        FullScreenLoading(
+            modifier = Modifier.fillMaxSize(),
+            isLoading = uiState.isLoading,
+        )
     }
 }
 
@@ -252,12 +240,14 @@ fun HomeContainer(navController: NavController) {
 @Composable
 private fun HomeScreen(
     products: List<Product>,
+    onClickProduct: (Product) -> Unit,
+    transitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     categoryList: List<CategoryList>,
     onClickMenu: () -> Unit,
     onClickProfile: () -> Unit,
     search: String,
     onSearchChange: (String) -> Unit,
-    onClickProduct: (Product) -> Unit,
     onClickCart: (Product) -> Unit,
 ) {
     Column(
@@ -273,7 +263,7 @@ private fun HomeScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButtonHome(
-                onClick = {onClickMenu()},
+                onClick = { onClickMenu() },
                 painter = painterResource(id = R.drawable.menu),
                 contentDescription = null,
                 modifier = Modifier.size(24.dp)
@@ -281,7 +271,7 @@ private fun HomeScreen(
             SpacerGeneral(modifier = Modifier.weight(1f))
 
             IconButtonHome(
-                onClick = {onClickProfile()},
+                onClick = { onClickProfile() },
                 painter = painterResource(id = R.drawable.profile_icon),
                 contentDescription = null,
                 modifier = Modifier.size(24.dp)
@@ -324,7 +314,9 @@ private fun HomeScreen(
         DisplayProducts(
             products = products,
             onClickProduct = onClickProduct,
-            onClickCart = onClickCart
+            onClickCart = onClickCart,
+            sharedTransitionScope = transitionScope,
+            animatedVisibilityScope = animatedVisibilityScope
         )
 
     }
@@ -336,7 +328,10 @@ fun DisplayProducts(
     products: List<Product>,
     onClickProduct: (Product) -> Unit,
     onClickCart: (Product) -> Unit,
-) {
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+
+    ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(count = 2),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
@@ -345,14 +340,96 @@ fun DisplayProducts(
         items(
             items = products
         ) { product ->
+
             ProductItem(
                 product = product,
                 onClickProduct = { onClickProduct(product) },
                 onClickCart = onClickCart,
-                modifier = Modifier.animateItemPlacement()
+                modifier = Modifier.animateItemPlacement(),
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope
+
             )
         }
 
+    }
+}
+
+@Composable
+private fun menuItemsList(): List<MenuItem> {
+    val items = listOf(
+        MenuItem(
+            title = "Profile",
+            selectedIcon = ImageVector.vectorResource(id = R.drawable.person_outline_24),
+            unselectedIcon = ImageVector.vectorResource(id = R.drawable.person_outline_24)
+        ),
+        MenuItem(
+            title = "Favorite",
+            selectedIcon = ImageVector.vectorResource(id = R.drawable.outline_bookmark_border_24),
+            unselectedIcon = ImageVector.vectorResource(id = R.drawable.outline_bookmark_border_24),
+        ),
+        MenuItem(
+            title = "Settings",
+            selectedIcon = ImageVector.vectorResource(id = R.drawable.baseline_settings_24),
+            unselectedIcon = ImageVector.vectorResource(id = R.drawable.baseline_settings_24)
+        ),
+        MenuItem(
+            title = "Logout",
+            selectedIcon = ImageVector.vectorResource(id = R.drawable.outline_logout_24),
+            unselectedIcon = ImageVector.vectorResource(id = R.drawable.outline_logout_24)
+        )
+    )
+    return items
+}
+
+@Composable
+private fun DisplayInfoUser(navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, bottom = 20.dp),
+        horizontalAlignment = Alignment.Start
+    ) {
+        TextGeneral(
+            title = stringResource(R.string.menu),
+            modifier = Modifier.padding(start = 10.dp),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = Merri,
+            color = PrimaryColor
+        )
+        SpacerGeneral(modifier = Modifier.height(30.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Image(
+                painter = painterResource(id = R.drawable.person_outline_24), // replace with your profile picture resource
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .clickable { navController.navigate(Screen.ProfileScreen.route) }
+                    .size(80.dp)
+                    .background(Color.Gray, CircleShape)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column {
+                TextGeneral(
+                    title = "Name",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontFamily = FontFamily.Default,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                TextGeneral(
+                    title = "Email",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontFamily = FontFamily.Default,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
@@ -377,17 +454,19 @@ fun DisplayCategory(categoryList: List<CategoryList>) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewHomeScreen() {
-    HomeScreen(
-        products = emptyList(),
-        categoryList = emptyList(),
-        onClickMenu = {},
-        onClickProfile = {},
-        search = "",
-        onSearchChange = {},
-        onClickProduct = {},
-        onClickCart = {}
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewHomeScreen() {
+//    HomeScreen(
+//        products = emptyList(),
+//        transitionScope = this@SharedTransitionLayout ,
+//        animatedVisibilityScope = this@AnimatedContent,
+//        categoryList = emptyList(),
+//        onClickMenu = {},
+//        onClickProfile = {},
+//        search = "",
+//        onSearchChange = {},
+//        onClickProduct = {},
+//        onClickCart = {}
+//    )
+//}

@@ -43,3 +43,7 @@ fun Product.mapToCart(): CartProduct {
         discountedTotal = price
     )
 }
+
+
+
+

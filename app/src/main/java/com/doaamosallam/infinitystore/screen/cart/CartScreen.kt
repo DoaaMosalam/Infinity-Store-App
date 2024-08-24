@@ -38,6 +38,7 @@ import com.doaamosallam.infinitystore.compose.CheckOut_PayNow
 import com.doaamosallam.infinitystore.compose.DisplayTotalsItems_Price
 import com.doaamosallam.infinitystore.compose.FullScreenLoading
 import com.doaamosallam.infinitystore.compose.SpacerGeneral
+import com.doaamosallam.infinitystore.compose.TextGeneral
 import com.doaamosallam.infinitystore.compose.TopBarScreen
 import com.doaamosallam.infinitystore.navigation.Screen
 import com.doaamosallam.infinitystore.ui.theme.Merri
@@ -109,14 +110,22 @@ fun CartScreen(
             TopBarScreen(
                 modifier = Modifier.padding(top = 10.dp, start = 16.dp),
                 onClickBack = onClickBack,
-                text = stringResource(R.string.my_orders),
+                text = stringResource(R.string.cart),
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 fontFamily = Merri,
-                color = Color.DarkGray
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             SpacerGeneral(modifier = Modifier.height(8.dp))
+            TextGeneral(
+                title = stringResource(id = R.string.my_orders),
+                modifier = Modifier.padding(start = 20.dp),
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = Merri,
+                color = MaterialTheme.colorScheme.onBackground
+            )
 
             DisplayProducts(
                 cartsItem = cartItems,

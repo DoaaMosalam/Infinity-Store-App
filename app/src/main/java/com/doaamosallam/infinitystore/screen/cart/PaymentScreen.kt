@@ -1,5 +1,6 @@
 package com.doaamosallam.infinitystore.screen.cart
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -51,16 +53,19 @@ import com.doaamosallam.infinitystore.ui.theme.playWriteRegular
 fun PaymentContainer(navController: NavController) {
     val viewModel: CartViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
 
     PaymentScreen(
         onClickBack = { navController.popBackStack() },
-        deliveryAddress = "",
-        deliveryTime = "",
+        deliveryAddress = "123 Main St, Anytown, USA",
+        deliveryTime = "0:00 AM - 11:00 AM",
         orderId = uiState.orderId,
         itemsTotal = uiState.totalItems,
         priceTotal = uiState.totalPrice,
         deliveryFee = 0.0,
-        onPayClick = { /* Handle payment logic */ },
+        onPayClick = {
+            Toast.makeText(context, "Payment Successful", Toast.LENGTH_SHORT).show()
+        },
         onChangeAddressClick = { /* Handle change address logic */ },
         onAddVoucherClick = { /* Handle add voucher logic */ }
     )
@@ -79,36 +84,6 @@ fun PaymentScreen(
     onPayClick: () -> Unit,
     onChangeAddressClick: () -> Unit,
     onAddVoucherClick: () -> Unit
-) {
-    PaymentDisplay(
-        onClickBack = onClickBack,
-        deliveryAddress = deliveryAddress,
-        deliveryTime = deliveryTime,
-        orderId = orderId,
-        itemsTotal = itemsTotal,
-        priceTotal = priceTotal,
-        deliveryFee = deliveryFee,
-        onPayClick = onPayClick,
-        onChangeAddressClick = onChangeAddressClick,
-        onAddVoucherClick = onAddVoucherClick
-
-    )
-
-}
-
-@Composable
-fun PaymentDisplay(
-    onClickBack: () -> Unit = {},
-    deliveryAddress: String,
-    deliveryTime: String,
-    orderId: String,
-    itemsTotal: Int,
-    priceTotal: Double,
-    deliveryFee: Double,
-    onPayClick: () -> Unit,
-    onChangeAddressClick: () -> Unit,
-    onAddVoucherClick: () -> Unit
-
 ) {
     Column(
         modifier = Modifier
@@ -232,7 +207,9 @@ fun PaymentDisplay(
             )
         }
     }
+
 }
+
 
 @Composable
 private fun NoteText(orderId: String) {
