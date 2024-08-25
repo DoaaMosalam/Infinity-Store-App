@@ -25,7 +25,6 @@ class SettingViewModel @Inject constructor(
 
     fun emitEvent(event: SettingEvent){
         when(event){
-            
             is SettingEvent.IsLoading->{
                 _uiState.value = _uiState.value.copy(
                     loading = event.isLoading
