@@ -53,6 +53,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -69,6 +70,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.doaamosallam.domain.models.categories.CategoryList
 import com.doaamosallam.domain.models.products.Product
 import com.doaamosallam.infinitystore.R
@@ -84,6 +86,8 @@ import com.doaamosallam.infinitystore.navigation.Screen
 import com.doaamosallam.infinitystore.screen.home.navigation.MenuItem
 import com.doaamosallam.infinitystore.screen.home.state.HomeUiState
 import com.doaamosallam.infinitystore.screen.product_details.ProductDetailsScreen
+import com.doaamosallam.infinitystore.screen.profile.ProfileViewModel
+import com.doaamosallam.infinitystore.screen.profile.state.ProfileUiState
 import com.doaamosallam.infinitystore.ui.theme.Merri
 import com.doaamosallam.infinitystore.ui.theme.PrimaryColor
 import kotlinx.coroutines.CoroutineScope
@@ -118,7 +122,9 @@ fun HomeContainer(navController: NavController) {
                         .padding(top = 40.dp),
                 ) {
                     // Display user information in Menu Navigation Drawer
-                    DisplayInfoUser(navController)
+                    DisplayInfoUser(
+                       uiState = uiState
+                    )
                     // Display menu items List in Menu Navigation Drawer
                     val items = menuItemsList()
 
@@ -227,8 +233,6 @@ private fun ExecuteAllAction(
 
             }
         }
-
-
         FullScreenLoading(
             modifier = Modifier.fillMaxSize(),
             isLoading = uiState.isLoading,
@@ -383,7 +387,9 @@ private fun menuItemsList(): List<MenuItem> {
 }
 
 @Composable
-private fun DisplayInfoUser(navController: NavController) {
+private fun DisplayInfoUser(
+    uiState: HomeUiState
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -399,35 +405,23 @@ private fun DisplayInfoUser(navController: NavController) {
             color = PrimaryColor
         )
         SpacerGeneral(modifier = Modifier.height(30.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth()
+        ) {
             Image(
-                painter = painterResource(id = R.drawable.person_outline_24), // replace with your profile picture resource
+                painter = if (uiState.images.imageUri.isNotEmpty()) {
+                    rememberAsyncImagePainter(uiState.images.imageUri)
+                } else {
+                    painterResource(id = R.drawable.person_outline_24)
+                },
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .clickable { navController.navigate(Screen.ProfileScreen.route) }
-                    .size(80.dp)
+                    .clip(CircleShape)
+                    .size(150.dp)
                     .background(Color.Gray, CircleShape)
             )
-            Spacer(modifier = Modifier.width(16.dp))
-            Column {
-                TextGeneral(
-                    title = "Name",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    fontFamily = FontFamily.Default,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-                TextGeneral(
-                    title = "Email",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    fontFamily = FontFamily.Default,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-            }
         }
         Spacer(modifier = Modifier.height(24.dp))
     }

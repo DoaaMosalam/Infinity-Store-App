@@ -5,17 +5,21 @@ import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.models.cart.CartProduct
 import com.doaamosallam.domain.models.favorite.FavoriteProduct
 import com.doaamosallam.domain.models.products.Product
+import com.doaamosallam.domain.models.profile.ImagesUser
 import com.doaamosallam.domain.usecase.CartUseCase
 import com.doaamosallam.domain.usecase.CategoryListUseCase
 import com.doaamosallam.domain.usecase.FavoriteUseCase
 import com.doaamosallam.domain.usecase.ProductSearchUseCase
 import com.doaamosallam.domain.usecase.ProductsUseCase
+import com.doaamosallam.domain.usecase.ProfileUseCase
 import com.doaamosallam.infinitystore.screen.home.event.HomeEvent
 import com.doaamosallam.infinitystore.screen.home.state.HomeUiState
+import com.doaamosallam.infinitystore.screen.profile.event.ProfileEvent
 import com.doaamosallam.infinitystore.util.BaseViewModel
 import com.doaamosallam.mapper.mapToCart
 import com.doaamosallam.mapper.mapToFavorite
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,7 +29,8 @@ class HomeViewModel @Inject constructor(
     private val cartUseCase: CartUseCase,
     private val categoryListUseCase: CategoryListUseCase,
     private val productSearchUseCase: ProductSearchUseCase,
-    private val favoriteUseCase: FavoriteUseCase
+    private val favoriteUseCase: FavoriteUseCase,
+    private val profileUseCase: ProfileUseCase
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()) {
 
     override fun reduce(oldState: HomeUiState, sideEffect: HomeEvent) {
@@ -101,12 +106,21 @@ class HomeViewModel @Inject constructor(
                     )
                 )
             }
+            is HomeEvent.GetImages -> {
+                createNewState(
+                    oldState.copy(
+                        images = sideEffect.imageUri,
+                        success = true
+                    )
+                )
         }
     }
+}
 
     init {
         onSearchChanges()
         fetchCategoryList()
+        loadImage()
     }
 
     private fun addToCart(cart: CartProduct) = viewModelScope.launch {
@@ -148,6 +162,18 @@ class HomeViewModel @Inject constructor(
             emitEvent(HomeEvent.LoadingState(true))
             val result = categoryListUseCase.getAllCategoryList()
             emitEvent(HomeEvent.OnFetchCategories(result))
+        } catch (e: Exception) {
+            emitEvent(HomeEvent.OnError(e.message ?: "An error occurred"))
+        }
+    }
+    fun loadImage() = viewModelScope.launch {
+        try {
+            emitEvent(HomeEvent.LoadingState(true))
+            profileUseCase.getImageFromProfile().collectLatest { result ->
+                val image = result ?: ImagesUser(0,"") // Handle potential null values
+                Log.d("HomeViewModel", "Loaded Image URI: ${uiState.value.images.imageUri}")
+                emitEvent(HomeEvent.GetImages(image))
+            }
         } catch (e: Exception) {
             emitEvent(HomeEvent.OnError(e.message ?: "An error occurred"))
         }

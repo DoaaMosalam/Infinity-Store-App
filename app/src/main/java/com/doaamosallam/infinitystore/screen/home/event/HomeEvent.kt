@@ -4,6 +4,8 @@ import com.doaamosallam.domain.models.cart.CartProduct
 import com.doaamosallam.domain.models.categories.CategoryList
 import com.doaamosallam.domain.models.favorite.FavoriteProduct
 import com.doaamosallam.domain.models.products.Product
+import com.doaamosallam.domain.models.profile.ImagesUser
+import com.doaamosallam.infinitystore.screen.profile.event.ProfileEvent
 import com.doaamosallam.infinitystore.util.ScreenEvent
 
 /**
@@ -17,5 +19,6 @@ sealed class HomeEvent : ScreenEvent {
     data class OnError(val message: String) : HomeEvent()
     data class OnAddToCart(val product: CartProduct) : HomeEvent()
     data class OnAddToFavorite(val product: FavoriteProduct) : HomeEvent()
+    data class GetImages(val imageUri: ImagesUser) : HomeEvent()
 
 }

@@ -11,6 +11,7 @@ import com.doaamosallam.local.AppDatabase
 import com.doaamosallam.local.cartData.CartDAO
 import com.doaamosallam.local.favoriteData.FavoriteDAO
 import com.doaamosallam.local.loginData.LoginDAO
+import com.doaamosallam.local.profileDao.ProfileImageDAO
 import com.doaamosallam.local.registerData.RegisterDAO
 import dagger.Module
 import dagger.Provides
@@ -31,10 +32,9 @@ object NetworkRoomDataModule {
             AppDatabase::class.java,
             Constant.DATABASE_NAME
         )
+            .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3, AppDatabase.MIGRATION_3_4, AppDatabase.MIGRATION_4_5)
             .fallbackToDestructiveMigration() // This will destroy and recreate the database
-            .addMigrations(AppDatabase.MIGRATION_2_3)
             .build()
-
     }
 
 
@@ -53,5 +53,9 @@ object NetworkRoomDataModule {
     @Provides
     @Singleton
     fun providerFavoriteDao(db: AppDatabase): FavoriteDAO = db.favoriteDao()
+
+    @Provides
+    @Singleton
+    fun provideProfileDao(db:AppDatabase) :ProfileImageDAO = db.profileDao()
 
 }
