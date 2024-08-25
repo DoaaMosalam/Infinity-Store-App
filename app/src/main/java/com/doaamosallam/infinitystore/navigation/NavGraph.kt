@@ -14,6 +14,7 @@ import com.doaamosallam.infinitystore.screen.login.navigation.loginNav
 import com.doaamosallam.infinitystore.screen.profile.navigation.profileNav
 import com.doaamosallam.infinitystore.screen.register.navigation.registerNav
 import com.doaamosallam.infinitystore.screen.setting.SettingContainer
+import com.doaamosallam.infinitystore.screen.setting.navigation.settingNav
 
 @Composable
 fun InfinityNavGraph(navController: NavHostController) {
@@ -30,12 +31,10 @@ fun InfinityNavGraph(navController: NavHostController) {
         composable(Screen.CategoryScreen.route) { CategoryContainer(navController) }
 
         cartNav(navController)
-
-        composable(Screen.SettingScreen.route) { SettingContainer(navController) }
+        settingNav(navController)
 
         profileNav(navController)
         favoriteNav(navController)
-
         composable(Screen.PaymentScreen.route) { PaymentContainer(navController) }
 
     }

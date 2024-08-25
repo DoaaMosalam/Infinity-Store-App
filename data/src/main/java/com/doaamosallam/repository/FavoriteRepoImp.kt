@@ -11,11 +11,8 @@ import kotlinx.coroutines.flow.map
 
 class FavoriteRepoImp(private val favoriteDao: FavoriteDAO): FavoriteRepository {
     override suspend fun addProductToFavorite(favorite: FavoriteProduct){
-        Log.d("FavoriteRepoImp", "Adding product to favorites: $favorite")
          favoriteDao.addProductToFavorite(favorite.mapToFavoriteDB())
     }
-
-
 
     override suspend fun getProductFromFavorite(): Flow<List<FavoriteProduct>> =
         favoriteDao.getProductFromFavorite().map { favoriteProductEntities ->

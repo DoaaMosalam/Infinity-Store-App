@@ -20,7 +20,6 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         listenToNetworkConnectivity()
-
     }
 
     @SuppressLint("CheckResult")
