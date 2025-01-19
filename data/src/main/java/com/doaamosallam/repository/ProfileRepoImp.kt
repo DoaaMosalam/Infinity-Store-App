@@ -1,8 +1,10 @@
 package com.doaamosallam.repository
 
+import com.doaamosallam.domain.models.auth.Register
 import com.doaamosallam.domain.models.profile.ImagesUser
 import com.doaamosallam.domain.repo.ProfileRepository
 import com.doaamosallam.local.profileDao.ProfileImageDAO
+import com.doaamosallam.local.registerData.RegisterDAO
 import com.doaamosallam.mapper.toDomain
 
 import com.doaamosallam.mapper.toEntity
@@ -22,8 +24,5 @@ class ProfileRepoImp(
             entity?.toDomain()
 
         }
-
-
     }
-
 }

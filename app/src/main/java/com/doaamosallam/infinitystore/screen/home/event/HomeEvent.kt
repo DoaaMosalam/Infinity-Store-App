@@ -5,7 +5,6 @@ import com.doaamosallam.domain.models.categories.CategoryList
 import com.doaamosallam.domain.models.favorite.FavoriteProduct
 import com.doaamosallam.domain.models.products.Product
 import com.doaamosallam.domain.models.profile.ImagesUser
-import com.doaamosallam.infinitystore.screen.profile.event.ProfileEvent
 import com.doaamosallam.infinitystore.util.ScreenEvent
 
 /**

@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -61,9 +60,10 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun SettingContainer(navController: NavController) {
-
-    val viewModel: ProfileViewModel = hiltViewModel()
+fun SettingContainer(
+    navController: NavController,
+    viewModel: ProfileViewModel = hiltViewModel()
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     val galleryLauncher = selectedProfileImage(viewModel)
@@ -73,11 +73,15 @@ fun SettingContainer(navController: NavController) {
     ) {
         SettingScreen(
             onClickBack = { navController.popBackStack() },
-            onImageClick = {galleryLauncher.launch("image/*") },
+            onImageClick = { galleryLauncher.launch("image/*") },
             uiState = uiState,
-            onName = "Doaa Mosallam",
-            onEmail = "Doaa@yahoo.com",
-            onClickLogOut = {},
+            onName = uiState.name,
+            onEmail = uiState.email,
+            onClickLogOut = {
+                navController.navigate("login") {
+                    popUpTo("login") { inclusive = true }
+                }
+            },
             onConfirmPassword = {},
 
             )
@@ -129,108 +133,112 @@ fun SettingScreen(
         )
 
         SpacerGeneral(modifier = Modifier.height(10.dp))
-            Column(
+        Column(
+            modifier = Modifier
+                .padding(top = 10.dp, start = 10.dp, end = 10.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Profile picture and name
+            SpacerGeneral(modifier = Modifier.height(10.dp))
+            Image(
+                painter = if (uiState.images.imageUri.isNotEmpty()) {
+                    rememberAsyncImagePainter(uiState.images.imageUri)
+                } else {
+                    painterResource(id = R.drawable.person_outline_24)
+                },
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .padding(top = 10.dp, start = 10.dp, end = 10.dp)
-                    .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // Profile picture and name
-                SpacerGeneral(modifier = Modifier.height(10.dp))
-                    Image(
-                        painter = if (uiState.images.imageUri.isNotEmpty()) {
-                            rememberAsyncImagePainter(uiState.images.imageUri)
-                        } else {
-                            painterResource(id = R.drawable.person_outline_24)
-                        },
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .clickable(onClick = onImageClick)
-                            .size(100.dp)
-                            .background(Color.Gray, CircleShape)
-                    )
-                SpacerGeneral(modifier = Modifier.height(30.dp))
+                    .clip(CircleShape)
+                    .clickable(onClick = onImageClick)
+                    .size(100.dp)
+                    .background(Color.Gray, CircleShape)
+            )
+            SpacerGeneral(modifier = Modifier.height(30.dp))
 
-                        TextGeneral(
-                            title = onName,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black,
-                            fontFamily = FontFamily.Default,
-                            modifier = Modifier.padding(bottom = 8.dp)
-                        )
-                        TextGeneral(
-                            title = onEmail,
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Gray,
-                            fontFamily = FontFamily.Default,
-                            modifier = Modifier.padding(bottom = 8.dp)
-                        )
-                }
+              TextGeneral(
+                title = onName,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                fontFamily = FontFamily.Default,
+                modifier = Modifier
+                    .padding(bottom = 8.dp)
+                    .clickable { }
+            )
+            TextGeneral(
+                title = onEmail,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Gray,
+                fontFamily = FontFamily.Default,
+                modifier = Modifier
+                    .padding(bottom = 8.dp)
+                    .clickable { }
+            )
+        }
 
-                Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-                // Language Selector
-                TextGeneral(
-                    title = "Language",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 8.dp),
-                    fontFamily = FontFamily.Default,
-                    color = Color.Black
+        // Language Selector
+        TextGeneral(
+            title = "Language",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 8.dp),
+            fontFamily = FontFamily.Default,
+            color = Color.Black
+        )
+        DropdownMenu(
+            expanded = false, // Set this to true if you want the dropdown to be visible
+            onDismissRequest = { /* Handle dismiss */ }
+        ) {
+            languages.forEach { language ->
+                DropdownMenuItem(
+                    text = { Text(text = language) },
+                    onClick = { selectedLanguage = language }
                 )
-                DropdownMenu(
-                    expanded = false, // Set this to true if you want the dropdown to be visible
-                    onDismissRequest = { /* Handle dismiss */ }
-                ) {
-                    languages.forEach { language ->
-                        DropdownMenuItem(
-                            text = { Text(text = language) },
-                            onClick = { selectedLanguage = language }
-                        )
-                    }
-                }
+            }
+        }
 
-                // Dark Mode Switch
-                Spacer(modifier = Modifier.height(24.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { isDarkTheme = !isDarkTheme }
-                        .padding(vertical = 8.dp)
-                ) {
-                    Text(
-                        text = "Dark Mode",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Switch(checked = isDarkTheme, onCheckedChange = { isDarkTheme = it })
-                }
+        // Dark Mode Switch
+        Spacer(modifier = Modifier.height(24.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { isDarkTheme = !isDarkTheme }
+                .padding(vertical = 8.dp)
+        ) {
+            Text(
+                text = "Dark Mode",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Switch(checked = isDarkTheme, onCheckedChange = { isDarkTheme = it })
+        }
 
-                // Change Password
-                Spacer(modifier = Modifier.height(24.dp))
-                GenericButton(
-                    onClick = showBottomSheet,
-                    buttonText = "Change Password",
-                    buttonColor = Color.White,
-                    textColor = colorResource(id = R.color.primary_color),
-                    modifier = Modifier.fillMaxWidth()
-                )
+        // Change Password
+        Spacer(modifier = Modifier.height(24.dp))
+        GenericButton(
+            onClick = showBottomSheet,
+            buttonText = "Change Password",
+            buttonColor = Color.White,
+            textColor = colorResource(id = R.color.primary_color),
+            modifier = Modifier.fillMaxWidth()
+        )
 
-                // Log Out Button
-                Spacer(modifier = Modifier.height(24.dp))
-                GenericButton(
-                    onClick = { onClickLogOut() },
-                    buttonText = "Log Out",
-                    buttonColor = Color.White,
-                    textColor = colorResource(id = R.color.primary_color),
-                    modifier = Modifier.fillMaxWidth()
-                )
+        // Log Out Button
+        Spacer(modifier = Modifier.height(24.dp))
+        GenericButton(
+            onClick = { onClickLogOut() },
+            buttonText = "Log Out",
+            buttonColor = Color.White,
+            textColor = colorResource(id = R.color.primary_color),
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 
     // Bottom Sheet for Changing Password

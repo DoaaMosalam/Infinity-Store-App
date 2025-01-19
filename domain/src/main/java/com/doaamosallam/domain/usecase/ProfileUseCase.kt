@@ -11,4 +11,5 @@ class ProfileUseCase @Inject constructor(
     suspend fun addImageToProfile(imageUri: List<ImagesUser>) = profileRepository.addImageToProfile(imageUri)
 
     fun getImageFromProfile(): Flow<ImagesUser?> = profileRepository.getImageFromProfile()
+
 }

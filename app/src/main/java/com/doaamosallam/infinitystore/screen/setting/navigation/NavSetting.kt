@@ -7,5 +7,5 @@ import com.doaamosallam.infinitystore.navigation.Screen
 import com.doaamosallam.infinitystore.screen.setting.SettingContainer
 
 fun NavGraphBuilder.settingNav(navController: NavController) {
-        composable(Screen.SettingScreen.route) { SettingContainer(navController) }
+    composable(Screen.SettingScreen.route) { SettingContainer(navController) }
 }

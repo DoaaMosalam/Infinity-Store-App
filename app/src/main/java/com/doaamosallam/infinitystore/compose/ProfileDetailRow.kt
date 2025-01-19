@@ -1,5 +1,6 @@
 package com.doaamosallam.infinitystore.compose
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,14 +25,14 @@ import com.doaamosallam.infinitystore.ui.theme.PrimaryColor
 
 @Composable
 fun ProfileDetailRow(
-//    onItemClick: () -> Unit,
+    onClickChangeItem: () -> Unit,
     painter: Painter,
     label: String,
     value: String
 ) {
     Row(
         modifier = Modifier
-//            .clickable {onItemClick()}
+            .clickable { onClickChangeItem() }
             .fillMaxWidth()
             .padding(vertical = 1.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -47,6 +48,7 @@ fun ProfileDetailRow(
             modifier = Modifier
                 .weight(1f)
                 .padding(bottom = 30.dp)
+
         ) {
             TextGeneral(
                 title = label,

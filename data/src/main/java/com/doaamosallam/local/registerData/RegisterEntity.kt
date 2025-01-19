@@ -2,6 +2,7 @@ package com.doaamosallam.local.registerData
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.doaamosallam.domain.models.auth.Register
 
 @Entity(tableName = "Register_table")
 data class RegisterEntity(

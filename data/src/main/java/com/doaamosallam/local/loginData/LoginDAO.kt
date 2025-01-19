@@ -14,4 +14,8 @@ interface LoginDAO {
     //return user in login data
     @Query("SELECT * FROM login_table WHERE email = :email AND password = :password")
     suspend fun getLogin(email: String, password: String): LoginEntity?
+
+    @Query("DELETE FROM login_table WHERE email = :email")
+    suspend fun logout(email: String)
+
 }

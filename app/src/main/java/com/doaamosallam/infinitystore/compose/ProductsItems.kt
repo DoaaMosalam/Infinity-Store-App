@@ -54,6 +54,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import com.doaamosallam.domain.models.cart.CartProduct
 import com.doaamosallam.domain.models.categories.CategoriesItem
@@ -106,9 +107,8 @@ fun ProductItem(
                 contentAlignment = Alignment.BottomEnd
             ) {
                 with(sharedTransitionScope) {
-                    Image(
-                        painter =
-                        rememberImagePainter(data = product.thumbnail),
+                    AsyncImage(
+                        model = product.thumbnail,
                         contentDescription = null,
                         modifier = Modifier
                             .sharedBounds(
@@ -117,7 +117,8 @@ fun ProductItem(
                             )
                             .fillMaxSize()
                             .height(200.dp)
-                            .background(WHITE)
+                            .background(WHITE),
+                        contentScale = ContentScale.Crop
                     )
                 }
                 IconButtonCart(
@@ -208,8 +209,7 @@ fun CategoriesItem(category: CategoriesItem, onClick: () -> Unit, modifier: Modi
                 contentAlignment = Alignment.BottomEnd
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.logo),
-//                rememberImagePainter(data = category.url),
+                    painter = rememberImagePainter(R.drawable.logo),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxSize()
@@ -261,14 +261,22 @@ fun CartItem(
                 .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = rememberImagePainter(data = cart.thumbnail),
+            AsyncImage(
+                model = cart.thumbnail,
                 contentDescription = null,
                 modifier = Modifier
                     .size(80.dp)
                     .background(Color.White)
                     .padding(8.dp)
             )
+//            Image(
+//                painter = rememberImagePainter(data = cart.thumbnail),
+//                contentDescription = null,
+//                modifier = Modifier
+//                    .size(80.dp)
+//                    .background(Color.White)
+//                    .padding(8.dp)
+//            )
             Spacer(modifier = Modifier.width(16.dp))
             Column(
                 modifier = Modifier
@@ -389,10 +397,9 @@ fun DetailsItems(
     selectedSize: MutableState<String>,
     onClickCart: (Product) -> Unit,
 ) {
-    Image(
-        painter = rememberImagePainter(data = product.thumbnail),
+    AsyncImage(
+        model = product.thumbnail,
         contentDescription = null,
-        contentScale = ContentScale.Crop,
         modifier = Modifier
             .fillMaxWidth()
             .height(400.dp)
@@ -508,8 +515,8 @@ fun ProductFavoriteItem(
                     .fillMaxSize(),
                 contentAlignment = Alignment.BottomEnd
             ) {
-                Image(
-                    painter = rememberImagePainter(data = product.thumbnail),
+                AsyncImage(
+                    model = product.thumbnail,
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
