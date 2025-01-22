@@ -59,7 +59,7 @@ domain/
 
 
   ## Best practice:
-  <p> -try to not taking any code as copy-paste here is like a helper to you.</p> 
+  <p> -try not taking any code as copy-paste here is like a helper to you.</p> 
        <p> -Please make sure to try it yourself firstly.</p>
        
   ## Technology Stack:
@@ -97,6 +97,9 @@ Home Screen 1          |  Search Screen 2    |           Category List
 Category Screen           |  Cart Screen     |           Payment Screen 
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src="https://github.com/user-attachments/assets/e1b96b76-44e2-4f3a-94fa-cd409e742964" width="400" height="400" /> | <img src="https://github.com/user-attachments/assets/79299c83-1311-45e6-8a69-bdedfe404a9a" width="400" height="400"/> |<img src="https://github.com/user-attachments/assets/09740d44-6552-40c2-839c-5cea6119be5c" width="400" height="400"/> 
+
+
+
       
  
 
