@@ -37,7 +37,6 @@ fun ProductDetailsScreen(
         /*
         * Details Items
         * */
-
         DetailsItems(
             product = product,
             sizes = sizes,
