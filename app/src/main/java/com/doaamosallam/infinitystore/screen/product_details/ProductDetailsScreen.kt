@@ -3,6 +3,7 @@ package com.doaamosallam.infinitystore.screen.product_details
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +27,7 @@ fun ProductDetailsScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(16.dp)
     ) {
         /*
@@ -44,7 +45,6 @@ fun ProductDetailsScreen(
             onClickCart = onClickCart
 
         )
-
     }
 }
 

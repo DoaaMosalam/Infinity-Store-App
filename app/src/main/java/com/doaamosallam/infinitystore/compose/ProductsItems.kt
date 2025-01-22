@@ -402,7 +402,7 @@ fun DetailsItems(
         contentDescription = null,
         modifier = Modifier
             .fillMaxWidth()
-            .height(400.dp)
+            .height(350.dp)
             .background(MELON_MELODY, shape = RoundedCornerShape(20.dp))
             .padding(8.dp)
             .clip(RoundedCornerShape(30.dp))
