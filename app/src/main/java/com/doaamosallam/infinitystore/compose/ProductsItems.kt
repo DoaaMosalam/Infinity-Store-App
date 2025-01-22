@@ -208,6 +208,7 @@ fun CategoriesItem(category: CategoriesItem, onClick: () -> Unit, modifier: Modi
                     .fillMaxHeight(),
                 contentAlignment = Alignment.BottomEnd
             ) {
+
                 Image(
                     painter = rememberImagePainter(R.drawable.logo),
                     contentDescription = null,
