@@ -1,6 +1,6 @@
 package com.doaamosallam.infinitystore.screen.register
 
-import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -30,12 +31,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,50 +47,55 @@ import androidx.core.util.PatternsCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.doaamosallam.infinitystore.R
+import com.doaamosallam.infinitystore.compose.FullScreenLoading
 import com.doaamosallam.infinitystore.compose.GenericButton
 import com.doaamosallam.infinitystore.compose.Header
 import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
 import com.doaamosallam.infinitystore.compose.RegisterTextButton
 import com.doaamosallam.infinitystore.navigation.Screen
-import com.doaamosallam.infinitystore.screen.register.event.RegisterEvent
-import com.doaamosallam.infinitystore.screen.register.state.RegisterUiState
+import kotlin.time.Duration
 
 //State Hoisting
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RegisterUser(
     navController: NavController,
     registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
-    val viewState by registerViewModel.viewState.collectAsState()
+    val viewState by registerViewModel.uiState.collectAsState()
     // Create a SnackbarHostState
     val snackbarHostState = remember { SnackbarHostState() }
-// Separate state variables for errors
+
+    // Separate state variables for errors
     var nameError by remember { mutableStateOf(false) }
     var phoneError by remember { mutableStateOf(false) }
     var emailError by remember { mutableStateOf(false) }
     var passwordError by remember { mutableStateOf(false) }
     var confirmPasswordError by remember { mutableStateOf(false) }
-//     Separate state variables for name, phone, email, password, and confirmPassword
-    var name =
-        if (viewState is RegisterUiState.Content) (viewState as RegisterUiState.Content).name else ""
-    var phone =
-        if (viewState is RegisterUiState.Content) (viewState as RegisterUiState.Content).phone else ""
-    var email =
-        if (viewState is RegisterUiState.Content) (viewState as RegisterUiState.Content).email else ""
-    var password =
-        if (viewState is RegisterUiState.Content) (viewState as RegisterUiState.Content).password else ""
-    var confirmPassword =
-        if (viewState is RegisterUiState.Content) (viewState as RegisterUiState.Content).confirmPassword else ""
 
-    LaunchedEffect(viewState) {
-        if (viewState is RegisterUiState.Success) {
-            snackbarHostState.showSnackbar("Registration successful!,\n Verification email and password, so you must be login.")
-            navController.navigate(Screen.Login.route)
+    // Separate state variables for name, phone, email, password, and confirmPassword
+    var name by remember { mutableStateOf(viewState.name) }
+    var phone by remember { mutableStateOf(viewState.phone) }
+    var email by remember { mutableStateOf(viewState.email) }
+    var password by remember { mutableStateOf(viewState.password) }
+    var confirmPassword by remember { mutableStateOf(viewState.confirmPassword) }
+
+    // LaunchedEffect for handling Snackbar based on loading and error states
+    LaunchedEffect(viewState.loading, viewState.error) {
+        if (viewState.loading) {
+            snackbarHostState.showSnackbar(
+                message = "Registration successful! Please verify your email and login.",
+                duration = SnackbarDuration.Long
+            )
 
         }
+        else if (viewState.error.isNotEmpty()) {
+            snackbarHostState.showSnackbar(
+                message = "Error: ${viewState.error}"
+            )
+        }
     }
+
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) {
@@ -104,9 +112,8 @@ fun RegisterUser(
             onPhoneChange = { newPhone ->
                 phone = newPhone
                 registerViewModel.onPhoneChange(newPhone)
-                phoneError = phone.length == 11
+                phoneError = phone.length != 11
             },
-
             email = email,
             errorEmail = emailError,
             onEmailChange = { newEmail ->
@@ -114,7 +121,6 @@ fun RegisterUser(
                 registerViewModel.onEmailChange(newEmail)
                 emailError = !PatternsCompat.EMAIL_ADDRESS.matcher(newEmail).matches()
             },
-
             password = password,
             errorPassword = passwordError,
             onPasswordChange = { newPassword ->
@@ -122,33 +128,26 @@ fun RegisterUser(
                 registerViewModel.onPasswordChange(newPassword)
                 passwordError = password.length < 11 && password.matches(".*[A-Z].*".toRegex())
             },
-
             confirmPassword = confirmPassword,
             errorConfirmPassword = confirmPasswordError,
             onConfirmPasswordChange = { newConfirmPassword ->
+                confirmPassword = newConfirmPassword
                 registerViewModel.onConfirmPasswordChange(newConfirmPassword)
-                confirmPasswordError = confirmPassword == password
+                confirmPasswordError = confirmPassword != password
             },
-
             onClickRegister = {
-                registerViewModel.handleIntent(
-                    RegisterEvent.Register(
-                        name,
-                        phone,
-                        email,
-                        password,
-                        confirmPassword
-                    )
-                )
+                if (!nameError && !phoneError && !emailError && !passwordError && !confirmPasswordError) {
+                    registerViewModel.registerUser()
+                    navController.navigate(Screen.Login.route)
+                }
             },
             onClickLogin = { navController.navigate(Screen.Login.route) }
-
         )
     }
 }
 
 @Composable
-private fun RegisterScreen(
+fun RegisterScreen(
     name: String,
     onNameChange: (String) -> Unit,
     errorName: Boolean,
@@ -168,6 +167,9 @@ private fun RegisterScreen(
     onClickLogin: () -> Unit
 
 ) {
+    var passwordVisible by remember { mutableStateOf(false) }
+    var confirmPasswordVisible by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -194,7 +196,7 @@ private fun RegisterScreen(
             label = { Text(text = stringResource(id = R.string.enter_your_name)) },
             trailingIcon = {
                 Icon(
-                    painter = painterResource(id = R.drawable.outline_person_24),
+                    painter = painterResource(id = R.drawable.person_outline_24),
                     contentDescription = null
                 )
                 if (name.isNotEmpty()) {
@@ -305,21 +307,21 @@ private fun RegisterScreen(
             singleLine = true,
             label = { Text(text = stringResource(id = R.string.enter_your_password)) },
             trailingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.outline_lock_24),
-                    contentDescription = null
-                )
-                if (password.isNotEmpty()) {
-                    IconButton(onClick = { onPasswordChange("") }) {
-                        Icon(Icons.Filled.Clear, contentDescription = "Clear email")
-                    }
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(
+                        painter = if (passwordVisible) painterResource(id = R.drawable.outline_lock_open_24)
+                        else painterResource(id = R.drawable.outline_lock_24),
+                        contentDescription = null
+                    )
                 }
             },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next
-            )
+            ),
+            visualTransformation = if (passwordVisible) VisualTransformation.None
+            else PasswordVisualTransformation()
         )
         if (errorPassword) {
             Text(
@@ -340,21 +342,21 @@ private fun RegisterScreen(
             singleLine = true,
             label = { Text(text = stringResource(R.string.confirm_password)) },
             trailingIcon = {
-                if (confirmPassword.isNotEmpty()) {
-                    IconButton(onClick = { onConfirmPasswordChange("") }) {
-                        Icon(Icons.Filled.Clear, contentDescription = "Clear email")
-                    }
+                IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
+                    Icon(
+                        painter = if (confirmPasswordVisible) painterResource(id = R.drawable.outline_lock_open_24)
+                        else painterResource(id = R.drawable.outline_lock_24),
+                        contentDescription = null
+                    )
                 }
-                Icon(
-                    painter = painterResource(id = R.drawable.outline_lock_24),
-                    contentDescription = null
-                )
             },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
-            )
+            ),
+            visualTransformation = if (confirmPasswordVisible) VisualTransformation.None
+            else PasswordVisualTransformation()
         )
         if (errorConfirmPassword) {
             Text(

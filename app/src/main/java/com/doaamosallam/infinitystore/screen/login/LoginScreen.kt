@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -36,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,8 +53,6 @@ import com.doaamosallam.infinitystore.compose.ImageAuth
 import com.doaamosallam.infinitystore.compose.Images
 import com.doaamosallam.infinitystore.compose.RegisterTextButton
 import com.doaamosallam.infinitystore.navigation.Screen
-import com.doaamosallam.infinitystore.screen.login.event.LoginEvent
-import com.doaamosallam.infinitystore.screen.login.navigation.LoginUiState
 
 //State Hoisting
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -62,24 +62,32 @@ fun LoginUser(
     loginViewModel: LoginViewModel = hiltViewModel(),
 ) {
     val viewState by loginViewModel.uiState.collectAsState()
+
+    // Create a SnackbarHostState
+    val snackbarHostState = remember { SnackbarHostState() }
+
     // Separate state variables for errors
     var emailError by remember { mutableStateOf(false) }
     var passwordError by remember { mutableStateOf(false) }
-    // Create a SnackbarHostState
-    val snackbarHostState = remember { SnackbarHostState() }
-    // Extract email and password from viewState
-    var email =
-        if (viewState is LoginUiState.Content) (viewState as LoginUiState.Content).email else ""
-    var password =
-        if (viewState is LoginUiState.Content) (viewState as LoginUiState.Content).password else ""
-    LaunchedEffect(viewState) {
-        if (viewState is LoginUiState.Success) {
-            snackbarHostState.showSnackbar("Login successful!")
-            navController.navigate(Screen.HomeScreen.route) {
-                popUpTo(Screen.Login.route) { inclusive = true }
-            }
-        }
 
+
+    // Extract email and password from viewState
+    var email by remember { mutableStateOf(viewState.email) }
+    var password by remember { mutableStateOf(viewState.password) }
+
+    LaunchedEffect(viewState.loading, viewState.error) {
+        if (viewState.loading) {
+            snackbarHostState.showSnackbar(
+                message = "Login successful!",
+                duration = SnackbarDuration.Long
+            )
+            navController.navigate(Screen.HomeScreen.route)
+        }
+        else if (viewState.error.isNotEmpty()) {
+            snackbarHostState.showSnackbar(
+                message = "Error: ${viewState.error}"
+            )
+        }
     }
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
@@ -102,8 +110,10 @@ fun LoginUser(
             },
 
             onClickLogin = {
-                // Trigger login event
-                loginViewModel.handleIntent(LoginEvent.Login(email, password))
+                if (!emailError && !passwordError) {
+                    loginViewModel.loginUser()
+                    navController.navigate(Screen.HomeScreen.route)
+                }
             },
             onClickRegister = {
                 navController.navigate(Screen.Register.route)
@@ -127,6 +137,7 @@ private fun LoginScreen(
     onClickRegister: () -> Unit,
     OnClickForgetPassword: () -> Unit
 ) {
+    var passwordVisible by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -188,21 +199,21 @@ private fun LoginScreen(
             singleLine = true,
             label = { Text(text = stringResource(id = R.string.enter_your_password)) },
             trailingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.outline_lock_24),
-                    contentDescription = null
-                )
-                if (password.isNotEmpty()) {
-                    IconButton(onClick = { onPasswordChange("") }) {
-                        Icon(Icons.Filled.Clear, contentDescription = "Clear email")
-                    }
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(
+                        painter = if (passwordVisible) painterResource(id = R.drawable.outline_lock_open_24)
+                        else painterResource(id = R.drawable.outline_lock_24),
+                        contentDescription = null
+                    )
                 }
             },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Next
-            )
+                imeAction = ImeAction.Done
+            ),
+            visualTransformation = if (passwordVisible) VisualTransformation.None
+            else PasswordVisualTransformation()
         )
         if (errorPassword) {
             Text(

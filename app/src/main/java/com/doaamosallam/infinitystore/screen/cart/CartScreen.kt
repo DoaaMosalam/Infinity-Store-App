@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -36,6 +37,8 @@ import com.doaamosallam.infinitystore.compose.CartItem
 import com.doaamosallam.infinitystore.compose.CheckOut_PayNow
 import com.doaamosallam.infinitystore.compose.DisplayTotalsItems_Price
 import com.doaamosallam.infinitystore.compose.FullScreenLoading
+import com.doaamosallam.infinitystore.compose.SpacerGeneral
+import com.doaamosallam.infinitystore.compose.TextGeneral
 import com.doaamosallam.infinitystore.compose.TopBarScreen
 import com.doaamosallam.infinitystore.navigation.Screen
 import com.doaamosallam.infinitystore.ui.theme.Merri
@@ -45,8 +48,10 @@ import kotlinx.coroutines.flow.flowOf
 //state hoisting
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CartContainer(navController: NavController) {
-    val viewModel: CartViewModel = hiltViewModel()
+fun CartContainer(
+    navController: NavController,
+    viewModel: CartViewModel = hiltViewModel()
+) {
     val uiState by viewModel.uiState.collectAsState()
 
 //    Scaffold(
@@ -98,24 +103,31 @@ fun CartScreen(
     Box(
         modifier = Modifier
             .fillMaxSize(),
-        contentAlignment = Alignment.BottomEnd,
+        contentAlignment = Alignment.BottomEnd
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
         ) {
             TopBarScreen(
                 modifier = Modifier.padding(top = 10.dp, start = 16.dp),
                 onClickBack = onClickBack,
-                text = "My Orders",
+                text = stringResource(R.string.cart),
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 fontFamily = Merri,
-                color = Color.DarkGray
+                color = MaterialTheme.colorScheme.onBackground
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            SpacerGeneral(modifier = Modifier.height(8.dp))
+            TextGeneral(
+                title = stringResource(id = R.string.my_orders),
+                modifier = Modifier.padding(start = 20.dp),
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = Merri,
+                color = MaterialTheme.colorScheme.onBackground
+            )
 
             DisplayProducts(
                 cartsItem = cartItems,
@@ -127,12 +139,14 @@ fun CartScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
                 .border(1.dp, Color.LightGray, RoundedCornerShape(10.dp))
-                .padding(10.dp)
-        ) {
+                .padding(10.dp),
+
+            ) {
             // Display total items and total price
             DisplayTotalsItems_Price(itemsTotal, priceTotal)
+
             Spacer(modifier = Modifier.height(8.dp))
             // PayNow button
             CheckOut_PayNow(
@@ -159,8 +173,7 @@ fun CartScreen(
 fun DisplayProducts(
     cartsItem: List<CartProduct>,
     onClickDelete: (CartProduct) -> Unit,
-
-    ) {
+) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(5.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -175,6 +188,11 @@ fun DisplayProducts(
             )
 
         }
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+
+        }
+
     }
 }
 

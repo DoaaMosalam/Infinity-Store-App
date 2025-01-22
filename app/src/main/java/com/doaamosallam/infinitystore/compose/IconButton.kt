@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import com.doaamosallam.domain.models.products.Product
 
 
 @Composable
@@ -39,4 +38,5 @@ fun IconButtonCart(
         modifier = modifier.clickable { onClick() }
     )
 }
+
 

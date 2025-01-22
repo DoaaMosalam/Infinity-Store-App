@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 
-fun SpacerGeneral(spacer: Unit) {
+fun SpacerGeneral(modifier: Modifier) {
 
-    Spacer(modifier = Modifier)
+    Spacer(modifier = modifier)
 }

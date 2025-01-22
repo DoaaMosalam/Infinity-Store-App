@@ -5,7 +5,6 @@ import com.doaamosallam.mapper.mapToDB
 import com.doaamosallam.mapper.mapToUi
 import com.doaamosallam.domain.models.cart.CartProduct
 import com.doaamosallam.domain.repo.CartRepository
-import com.doaamosallam.local.cartData.CartProductEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

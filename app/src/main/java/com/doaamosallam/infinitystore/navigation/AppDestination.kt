@@ -14,6 +14,13 @@ sealed class Screen(val route: String, val icon: Int? = null, val title: String?
     data object CartScreen : Screen("CartScreen", R.drawable.outline_shopping_bag_24, "Cart")
     data object SettingScreen : Screen("SettingScreen", R.drawable.baseline_settings_24, "Setting")
     data object ProfileScreen : Screen("ProfileScreen")
-    data object MenuScreen : Screen("MenuScreen")
+
+// ProfileScreen with dynamic userName argument
+//data object ProfileScreen : Screen("ProfileScreen/{userName}") {
+//    fun createRoute(userName: String) = "ProfileScreen/$userName"
+//}
     data object PaymentScreen : Screen("PaymentScreen")
+    data object FavoriteScreen : Screen("FavoriteScreen")
+    data object CheckoutScreen : Screen("CheckoutScreen")
+
 }
