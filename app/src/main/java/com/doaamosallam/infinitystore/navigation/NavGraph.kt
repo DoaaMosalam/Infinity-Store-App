@@ -19,6 +19,7 @@ import com.doaamosallam.infinitystore.screen.setting.navigation.settingNav
 fun InfinityNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.HomeScreen.route) {
 
+
         registerNav(navController)
 
         loginNav(navController)
