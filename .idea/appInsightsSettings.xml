@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.doaamosallam.infinitystore" />
+                  <option name="mobileSdkAppId" value="1:726448401964:android:edb413ff37959b3b312b89" />
+                  <option name="projectId" value="infinity-store-37956" />
+                  <option name="projectNumber" value="726448401964" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
