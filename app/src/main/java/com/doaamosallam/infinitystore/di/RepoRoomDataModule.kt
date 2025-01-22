@@ -54,5 +54,8 @@ object RepoRoomDataModule {
 
     @Provides
     @Singleton
-    fun provideProfileRepo(profileImageDAO: ProfileImageDAO): ProfileRepository = ProfileRepoImp(profileImageDAO)
+    fun provideProfileRepo(profileImageDAO: ProfileImageDAO): ProfileRepository =
+        ProfileRepoImp(profileImageDAO)
+
+
 }

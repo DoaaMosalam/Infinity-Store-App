@@ -31,9 +31,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
-fun FavoriteContainer(navController: NavController) {
-
-    val viewModel: FavoriteViewModel = hiltViewModel()
+fun FavoriteContainer(
+    navController: NavController,
+    viewModel: FavoriteViewModel = hiltViewModel()
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     if (uiState.isLoading) {
@@ -79,10 +80,10 @@ fun FavoriteScreen(
     ) {
         val favoriteItems by product.collectAsState(initial = emptyList())
 
-      TopBarFavorite(
-          onClickBack = onClickBack,
-          onclickCart = onClickCart
-      )
+        TopBarFavorite(
+            onClickBack = onClickBack,
+            onclickCart = onClickCart
+        )
         SpacerGeneral(modifier = Modifier.weight(1f))
         DisplayProducts(
             items = favoriteItems,
@@ -138,7 +139,7 @@ fun PreviewPCategoryScreen() {
             discountPercentage = 5.0,
             discountedTotal = 285.00,
 
-        )
+            )
     )
     FavoriteScreen(
         product = flowOf(sampleCartProducts),

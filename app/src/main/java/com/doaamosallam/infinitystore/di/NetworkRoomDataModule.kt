@@ -1,11 +1,7 @@
 package com.doaamosallam.infinitystore.di
 
 import android.app.Application
-import android.util.Log
 import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.doaamosallam.infinitystore.util.Constant
 import com.doaamosallam.local.AppDatabase
 import com.doaamosallam.local.cartData.CartDAO
@@ -17,7 +13,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import java.util.concurrent.Executors
 import javax.inject.Singleton
 
 @Module
@@ -32,7 +27,12 @@ object NetworkRoomDataModule {
             AppDatabase::class.java,
             Constant.DATABASE_NAME
         )
-            .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3, AppDatabase.MIGRATION_3_4, AppDatabase.MIGRATION_4_5)
+            .addMigrations(
+                AppDatabase.MIGRATION_1_2,
+                AppDatabase.MIGRATION_2_3,
+                AppDatabase.MIGRATION_3_4,
+                AppDatabase.MIGRATION_4_5
+            )
             .fallbackToDestructiveMigration() // This will destroy and recreate the database
             .build()
     }
@@ -56,6 +56,6 @@ object NetworkRoomDataModule {
 
     @Provides
     @Singleton
-    fun provideProfileDao(db:AppDatabase) :ProfileImageDAO = db.profileDao()
+    fun provideProfileDao(db: AppDatabase): ProfileImageDAO = db.profileDao()
 
 }

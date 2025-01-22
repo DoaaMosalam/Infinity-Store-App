@@ -13,12 +13,11 @@ import com.doaamosallam.infinitystore.screen.home.navigation.homeRoute
 import com.doaamosallam.infinitystore.screen.login.navigation.loginNav
 import com.doaamosallam.infinitystore.screen.profile.navigation.profileNav
 import com.doaamosallam.infinitystore.screen.register.navigation.registerNav
-import com.doaamosallam.infinitystore.screen.setting.SettingContainer
 import com.doaamosallam.infinitystore.screen.setting.navigation.settingNav
 
 @Composable
 fun InfinityNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Screen.HomeScreen.route) {
+    NavHost(navController = navController, startDestination = Screen.Register.route) {
 
         registerNav(navController)
 

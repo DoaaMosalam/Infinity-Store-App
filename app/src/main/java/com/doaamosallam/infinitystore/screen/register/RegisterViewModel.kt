@@ -1,8 +1,11 @@
 package com.doaamosallam.infinitystore.screen.register
 
+import android.util.Log
+import androidx.core.util.PatternsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.models.auth.Register
+import com.doaamosallam.domain.usecase.ProfileUseCase
 import com.doaamosallam.domain.usecase.RegisterUseCase
 import com.doaamosallam.infinitystore.screen.register.event.RegisterEvent
 import com.doaamosallam.infinitystore.screen.register.state.RegisterUiState
@@ -16,99 +19,125 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase
 ) : ViewModel() {
-    private val _viewState = MutableStateFlow<RegisterUiState>(RegisterUiState.Content())
-    val viewState: StateFlow<RegisterUiState> get() = _viewState
+    private val _uiState = MutableStateFlow(RegisterUiState())
+    val uiState: StateFlow<RegisterUiState> get() = _uiState
 
-    //process
-    fun handleIntent(event: RegisterEvent) {
-        when (event) {
-            is RegisterEvent.Register -> register(event)
+
+    private fun emitEvent(event: RegisterEvent) {
+        _uiState.value = when (event) {
+            is RegisterEvent.Register -> _uiState.value.copy(
+                register = event.register
+            )
+
+            is RegisterEvent.SetLoading -> _uiState.value.copy(
+                loading = event.isLoading
+            )
+
+            is RegisterEvent.SetError -> _uiState.value.copy(
+                loading = false,
+                error = event.message,
+                success = false
+            )
+
+            is RegisterEvent.SetSuccess -> _uiState.value.copy(
+                loading = false,
+                error = "",
+            )
+
+            is RegisterEvent.UpdateName -> _uiState.value.copy(
+                register = _uiState.value.register.copy(name = event.name)
+            )
+
+            is RegisterEvent.UpdateEmail -> _uiState.value.copy(
+                register = _uiState.value.register.copy(email = event.email)
+            )
+
+            is RegisterEvent.UpdatePhone -> _uiState.value.copy(
+                register = _uiState.value.register.copy(phone = event.phone)
+            )
+
+            is RegisterEvent.UpdatePassword -> _uiState.value.copy(
+                register = _uiState.value.register.copy(password = event.password)
+            )
+
+            is RegisterEvent.UpdatePasswordInDb -> {
+                viewModelScope.launch {
+                    try {
+                        emitEvent(RegisterEvent.SetLoading(true))
+                        registerUseCase.updatePassword(event.email, event.newPassword)
+                        emitEvent(RegisterEvent.SetSuccess("Password updated successfully"))
+                    } catch (e: Exception) {
+                        emitEvent(RegisterEvent.SetError(e.message ?: "An error occurred"))
+                    } finally {
+                        emitEvent(RegisterEvent.SetLoading(false))
+                    }
+                }
+                _uiState.value
+            }
         }
     }
 
-    private fun register(
-        event: RegisterEvent.Register
-    ) = viewModelScope.launch {
-        _viewState.value = RegisterUiState.Loading
-        try {
-            registerUseCase.RegisterUser(
-                Register(
-                    name = event.name,
-                    phone = event.phone,
-                    email = event.email,
-                    password = event.password,
-                    confirmPassword = event.confirmPassword
-                )
+    fun registerUser() {
+        val currentState = _uiState.value
+        if (validateFields(currentState)) {
+            val register = Register(
+                name = currentState.name,
+                phone = currentState.phone,
+                email = currentState.email,
+                password = currentState.password,
+                confirmPassword = currentState.confirmPassword
             )
-            _viewState.value = RegisterUiState.Success(
-                Register(
-                    name = event.name,
-                    phone = event.phone,
-                    email = event.email,
-                    password = event.password,
-                    confirmPassword = event.confirmPassword
-                )
-            )
-        } catch (e: Exception) {
-            _viewState.value = RegisterUiState.Error("An error occurred: ${e.message}")
+            viewModelScope.launch {
+                try {
+                    emitEvent(RegisterEvent.SetLoading(true))
+                   registerUseCase.registerUser(register)
+                    emitEvent(RegisterEvent.Register(register))
+                    emitEvent(RegisterEvent.SetSuccess("Registration successful"))
+                } catch (e: Exception) {
+                    emitEvent(RegisterEvent.SetError(e.message ?: "An error occurred"))
+                } finally {
+                    emitEvent(RegisterEvent.SetLoading(false))
+                }
+            }
+        } else {
+            emitEvent(RegisterEvent.SetError("Please fill in all fields correctly"))
         }
+    }
+
+    private fun validateFields(state: RegisterUiState): Boolean {
+        return state.name.isNotEmpty() &&
+                state.phone.length == 11 &&
+                PatternsCompat.EMAIL_ADDRESS.matcher(state.email).matches() &&
+                state.password.length >= 6 &&
+                state.password == state.confirmPassword
     }
 
     fun onNameChange(newName: String) {
-        val currentState = _viewState.value
-        if (currentState is RegisterUiState.Content) {
-            _viewState.value = currentState.copy(name = newName)
-        }
+        val currentState = _uiState.value
+        _uiState.value = currentState.copy(name = newName)
     }
 
     fun onPhoneChange(newPhone: String) {
-        val currentState = _viewState.value
-        if (currentState is RegisterUiState.Content) {
-            _viewState.value = currentState.copy(phone = newPhone)
-        }
+        val currentState = _uiState.value
+        _uiState.value = currentState.copy(phone = newPhone)
     }
 
     fun onEmailChange(newEmail: String) {
-        val currentState = _viewState.value
-        if (currentState is RegisterUiState.Content) {
-            _viewState.value = currentState.copy(email = newEmail)
-        }
+        val currentState = _uiState.value
+        _uiState.value = currentState.copy(email = newEmail)
+
     }
 
 
     fun onPasswordChange(newPassword: String) {
-        val currentState = _viewState.value
-        if (currentState is RegisterUiState.Content) {
-            _viewState.value = currentState.copy(password = newPassword)
-        }
+        val currentState = _uiState.value
+
+        _uiState.value = currentState.copy(password = newPassword)
     }
 
     fun onConfirmPasswordChange(newConfirmPassword: String) {
-        val currentState = _viewState.value
-        if (currentState is RegisterUiState.Content) {
-            _viewState.value = currentState.copy(confirmPassword = newConfirmPassword)
-        }
+        val currentState = _uiState.value
+        _uiState.value = currentState.copy(confirmPassword = newConfirmPassword)
 
     }
-
-
-    // Register by MVVM
-//    private val _errorMessage = MutableSharedFlow<String>()
-//    val errorMessage: SharedFlow<String> get() = _errorMessage
-//
-//    private val _registerState = MutableSharedFlow<RequestStatus<Register>>()
-//    val registerState: MutableSharedFlow<RequestStatus<Register>> get() = _registerState
-//
-//    fun register(register: Register) = viewModelScope.launch {
-//        try {
-//            val result = registerUseCase.RegisterUser(register)
-//            if (result != null) {
-//                _registerState.collect { user ->
-//                    _registerState.emit(user)
-//                }
-//            }
-//        } catch (e: Exception) {
-//            _errorMessage.emit("An error occurred:${e.message}")
-//        }
-//    }
 }

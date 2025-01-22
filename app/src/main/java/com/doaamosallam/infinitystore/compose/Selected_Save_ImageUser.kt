@@ -10,7 +10,7 @@ import com.doaamosallam.domain.models.profile.ImagesUser
 import com.doaamosallam.infinitystore.screen.profile.ProfileViewModel
 
 @Composable
- fun selectedProfileImage(viewModel: ProfileViewModel): ManagedActivityResultLauncher<String, Uri?> {
+fun selectedProfileImage(viewModel: ProfileViewModel): ManagedActivityResultLauncher<String, Uri?> {
     // Launch a gallery intent using the Activity Result API
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()

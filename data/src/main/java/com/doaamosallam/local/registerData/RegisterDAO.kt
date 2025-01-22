@@ -11,8 +11,23 @@ interface RegisterDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertRegister(registerEntity: RegisterEntity): Long
 
-    // get info User after register in data
-    @Query("SELECT * FROM register_table Limit 1")
-    suspend fun getUser(): RegisterEntity
+    @Query("SELECT * FROM register_table WHERE name = :name LIMIT 1")
+    suspend fun getUserByName(name: String):RegisterEntity?
+
+
+    // Fetch user by email
+    @Query("SELECT * FROM Register_table WHERE email = :email LIMIT 1")
+    suspend fun getUserByEmail(email: String): RegisterEntity?
+
+
+    @Query("SELECT * FROM register_table WHERE phone = :phone")
+    suspend fun getUserByPhone(phone: String): RegisterEntity?
+
+    @Query("SELECT * FROM register_table WHERE password = :password")
+    suspend fun getUserByPassword(password: String): RegisterEntity?
+
+    @Query("UPDATE register_table SET password = :newPassword WHERE email = :email")
+    suspend fun updatePassword(email: String, newPassword: String)
+
 
 }

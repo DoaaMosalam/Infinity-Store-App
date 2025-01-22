@@ -1,9 +1,5 @@
 package com.doaamosallam.infinitystore.screen.profile
 
-import android.net.Uri
-import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,7 +32,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
-import com.doaamosallam.domain.models.profile.ImagesUser
 import com.doaamosallam.infinitystore.R
 import com.doaamosallam.infinitystore.compose.ProfileDetailRow
 import com.doaamosallam.infinitystore.compose.SpacerGeneral
@@ -47,22 +42,25 @@ import com.doaamosallam.infinitystore.screen.profile.state.ProfileUiState
 import com.doaamosallam.infinitystore.ui.theme.Merri
 
 
-
 @Composable
-fun ProfileContainer(navController: NavController) {
-    val viewModel: ProfileViewModel = hiltViewModel()
+fun ProfileContainer(
+    navController: NavController,
+    viewModel: ProfileViewModel = hiltViewModel(),
+//    userName: String // Pass the username when navigating to this screen
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     val galleryLauncher = selectedProfileImage(viewModel)
-
-
+   // Trigger getName when the screen is launched
+    LaunchedEffect(Unit) {
+        viewModel.getName(uiState.name)  // Fetch the name when the composable is launched
+    }
     ProfileScreen(
         onClickBack = { navController.popBackStack() },
-        onImageClick = { galleryLauncher.launch("image/*") }, // Trigger the gallery
+        onImageClick = { galleryLauncher.launch("image/*") },
         uiState = uiState,
-        onName = "Doaa Mosallam",
-        onEmail = "Email",
-        onEmailValue = "Doaa@yahoo.com",
+        onName = uiState.name,
+        onEmail = uiState.email,
         onGender = "Gender",
         onGenderValue = "Female",
         onBirthday = "Birthday",
@@ -75,7 +73,6 @@ fun ProfileContainer(navController: NavController) {
 }
 
 
-
 @Composable
 fun ProfileScreen(
     onClickBack: () -> Unit,
@@ -83,7 +80,6 @@ fun ProfileScreen(
     uiState: ProfileUiState,
     onName: String,
     onEmail: String,
-    onEmailValue: String,
     onGender: String,
     onGenderValue: String,
     onBirthday: String,
@@ -146,57 +142,64 @@ fun ProfileScreen(
                     Spacer(modifier = Modifier.width(16.dp))
                     Column {
                         TextGeneral(
-                            title = onName,
+                            title = onName, // Name dynamically passed
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.Black,
                             fontFamily = FontFamily.Default,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier
+                                .padding(bottom = 8.dp)
+                                .clickable { }
                         )
                         TextGeneral(
-                            title = onEmail,
+                            title = onEmail, // Email dynamically passed
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.Gray,
                             fontFamily = FontFamily.Default,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier
+                                .padding(bottom = 8.dp)
+                                .clickable {
+
+                                }
                         )
                     }
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Profile details
+                // Profile details (rest of the code remains unchanged)
                 ProfileDetailRow(
                     painter = painterResource(id = R.drawable.baseline_transgender_24),
                     label = onGender,
-                    value = onGenderValue
+                    value = onGenderValue,
+                    onClickChangeItem = {}
                 )
                 ProfileDetailRow(
                     painter = painterResource(id = R.drawable.baseline_date_range_24),
                     label = onBirthday,
-                    value = onBirthdayValue
-                )
-                ProfileDetailRow(
-                    painter = painterResource(id = R.drawable.outline_email_24),
-                    label = onEmail,
-                    value = onEmailValue
+                    value = onBirthdayValue,
+                    onClickChangeItem = {}
                 )
                 ProfileDetailRow(
                     painter = painterResource(id = R.drawable.outline_phone_24),
                     label = onPhoneNumber,
-                    value = onPhoneNumberValue
+                    value = onPhoneNumberValue,
+                    onClickChangeItem = {}
                 )
+
                 ProfileDetailRow(
                     painter = painterResource(id = R.drawable.outline_lock_24),
                     label = onPassword,
-                    value = onPasswordValue
+                    value = onPasswordValue,
+                    onClickChangeItem = {
+
+                    }
                 )
             }
         }
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)
@@ -207,15 +210,14 @@ fun PreviewProfileScreen() {
         uiState = ProfileUiState(),
         onName = "Doaa Mosallam",
         onEmail = "Doaa@yahoo.com",
-        onEmailValue = "",
-        onGender = "Male",
-        onGenderValue = "",
-        onBirthday = "12-12-2000",
-        onBirthdayValue = "",
-        onPhoneNumber = "(307) 555-0133",
-        onPhoneNumberValue = "",
-        onPassword = "********",
-        onPasswordValue = ""
+        onGender = "Gender",
+        onGenderValue = "Female",
+        onBirthday = "Birthday",
+        onBirthdayValue = "12-12-2000",
+        onPhoneNumber = "Phone Number",
+        onPhoneNumberValue = "(307) 555-0133",
+        onPassword = "Password",
+        onPasswordValue = "********"
     )
 }
 

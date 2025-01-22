@@ -8,10 +8,8 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,7 +20,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -60,12 +57,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -86,8 +81,6 @@ import com.doaamosallam.infinitystore.navigation.Screen
 import com.doaamosallam.infinitystore.screen.home.navigation.MenuItem
 import com.doaamosallam.infinitystore.screen.home.state.HomeUiState
 import com.doaamosallam.infinitystore.screen.product_details.ProductDetailsScreen
-import com.doaamosallam.infinitystore.screen.profile.ProfileViewModel
-import com.doaamosallam.infinitystore.screen.profile.state.ProfileUiState
 import com.doaamosallam.infinitystore.ui.theme.Merri
 import com.doaamosallam.infinitystore.ui.theme.PrimaryColor
 import kotlinx.coroutines.CoroutineScope
@@ -97,14 +90,17 @@ import kotlinx.coroutines.launch
 //state hoisting
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeContainer(navController: NavController) {
+fun HomeContainer(
+    navController: NavController,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
     /*
 * Navigation Drawer MenuScreen  (ModalNavigationDrawer)
 * Search bar to search products
 * Category list show all products items
 * Products list show all products
 * */
-    val viewModel: HomeViewModel = hiltViewModel()
+//    val viewModel: HomeViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
@@ -123,7 +119,7 @@ fun HomeContainer(navController: NavController) {
                 ) {
                     // Display user information in Menu Navigation Drawer
                     DisplayInfoUser(
-                       uiState = uiState
+                        uiState = uiState
                     )
                     // Display menu items List in Menu Navigation Drawer
                     val items = menuItemsList()
@@ -218,8 +214,7 @@ private fun ExecuteAllAction(
                         onClickProduct = onProductSelected,
                         onClickCart = viewModel::onAddProductToCart
                     )
-                }
-                else {
+                } else {
                     selectedProduct?.let {
                         ProductDetailsScreen(
                             product = selectedProduct,
@@ -326,7 +321,6 @@ private fun HomeScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DisplayProducts(
     products: List<Product>,
@@ -349,7 +343,6 @@ fun DisplayProducts(
                 product = product,
                 onClickProduct = { onClickProduct(product) },
                 onClickCart = onClickCart,
-                modifier = Modifier.animateItemPlacement(),
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = animatedVisibilityScope
 
@@ -407,7 +400,7 @@ private fun DisplayInfoUser(
         SpacerGeneral(modifier = Modifier.height(30.dp))
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
             Image(
                 painter = if (uiState.images.imageUri.isNotEmpty()) {

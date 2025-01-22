@@ -27,7 +27,7 @@ class FavoriteViewModel @Inject constructor(
         when (event) {
             is FavoriteEvent.OnGetProductFavorite -> {
                 viewModelScope.launch {
-                    event.products.collect{
+                    event.products.collect {
                         _uiState.value = _uiState.value.copy(
                             isLoading = false,
                             favorite = event.products,

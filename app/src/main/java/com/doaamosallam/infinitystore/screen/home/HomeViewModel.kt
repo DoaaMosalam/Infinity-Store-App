@@ -14,7 +14,6 @@ import com.doaamosallam.domain.usecase.ProductsUseCase
 import com.doaamosallam.domain.usecase.ProfileUseCase
 import com.doaamosallam.infinitystore.screen.home.event.HomeEvent
 import com.doaamosallam.infinitystore.screen.home.state.HomeUiState
-import com.doaamosallam.infinitystore.screen.profile.event.ProfileEvent
 import com.doaamosallam.infinitystore.util.BaseViewModel
 import com.doaamosallam.mapper.mapToCart
 import com.doaamosallam.mapper.mapToFavorite
@@ -106,6 +105,7 @@ class HomeViewModel @Inject constructor(
                     )
                 )
             }
+
             is HomeEvent.GetImages -> {
                 createNewState(
                     oldState.copy(
@@ -113,9 +113,9 @@ class HomeViewModel @Inject constructor(
                         success = true
                     )
                 )
+            }
         }
     }
-}
 
     init {
         onSearchChanges()
@@ -133,6 +133,7 @@ class HomeViewModel @Inject constructor(
             emitEvent(HomeEvent.OnError(e.message ?: "An error occurred"))
         }
     }
+
     private fun addToFavorite(favorite: FavoriteProduct) = viewModelScope.launch {
         try {
             emitEvent(HomeEvent.LoadingState(true))
@@ -166,11 +167,12 @@ class HomeViewModel @Inject constructor(
             emitEvent(HomeEvent.OnError(e.message ?: "An error occurred"))
         }
     }
+
     fun loadImage() = viewModelScope.launch {
         try {
             emitEvent(HomeEvent.LoadingState(true))
             profileUseCase.getImageFromProfile().collectLatest { result ->
-                val image = result ?: ImagesUser(0,"") // Handle potential null values
+                val image = result ?: ImagesUser(0, "") // Handle potential null values
                 Log.d("HomeViewModel", "Loaded Image URI: ${uiState.value.images.imageUri}")
                 emitEvent(HomeEvent.GetImages(image))
             }

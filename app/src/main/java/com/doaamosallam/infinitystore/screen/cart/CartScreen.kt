@@ -48,8 +48,10 @@ import kotlinx.coroutines.flow.flowOf
 //state hoisting
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CartContainer(navController: NavController) {
-    val viewModel: CartViewModel = hiltViewModel()
+fun CartContainer(
+    navController: NavController,
+    viewModel: CartViewModel = hiltViewModel()
+) {
     val uiState by viewModel.uiState.collectAsState()
 
 //    Scaffold(

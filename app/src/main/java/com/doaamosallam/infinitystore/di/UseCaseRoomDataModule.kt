@@ -43,6 +43,7 @@ object UseCaseRoomDataModule {
     fun provideFavoriteUseCase(favoriteRepo: FavoriteRepository): FavoriteUseCase {
         return FavoriteUseCase(favoriteRepo)
     }
+
     @Provides
     @Singleton
     fun provideProfileUseCase(profileRepository: ProfileRepository): ProfileUseCase {

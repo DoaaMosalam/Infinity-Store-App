@@ -36,8 +36,10 @@ import com.doaamosallam.infinitystore.ui.theme.playWriteThin
 //state hoisting
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CategoryContainer(navController: NavController) {
-    val viewModel: CategoriesViewModel = hiltViewModel()
+fun CategoryContainer(
+    navController: NavController,
+    viewModel: CategoriesViewModel = hiltViewModel()
+) {
     val uiState by viewModel.viewState.collectAsState()
 
     Scaffold(
