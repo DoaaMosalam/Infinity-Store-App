@@ -17,7 +17,9 @@ import com.doaamosallam.infinitystore.screen.setting.navigation.settingNav
 
 @Composable
 fun InfinityNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Screen.Register.route) {
+    // Create a NavHost and define the start destination for your navigation graph
+    NavHost(navController = navController, startDestination = Screen.HomeScreen.route) {
+
 
         registerNav(navController)
 
